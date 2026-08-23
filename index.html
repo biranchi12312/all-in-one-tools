@@ -1,27 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>AuraStudio — Free Image Compressor & Converter</title>
+    <title>
+        AuraStudio — Free Image Compressor & Converter
+    </title>
 
     <link
         href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
         rel="stylesheet"
     >
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"
+    ></script>
 </head>
+
 
 <body>
 
+    <!-- HEADER -->
+
     <header class="navbar">
+
         <button
             class="logo"
             type="button"
@@ -30,16 +43,26 @@
             Aura<span>Studio</span>
         </button>
 
+
         <div class="nav-status">
+
             <span class="pulse-dot"></span>
+
             Secure Engine Active
+
         </div>
+
     </header>
+
 
 
     <main class="container">
 
-        <!-- DASHBOARD -->
+
+        <!-- =========================
+             DASHBOARD
+        ========================== -->
+
         <div
             id="dashboardView"
             class="view active"
@@ -51,18 +74,22 @@
                     PRO WORKSHOP
                 </span>
 
+
                 <h1>
                     Smart tools.<br>
                     <span>Zero server uploads.</span>
                 </h1>
 
+
                 <p>
-                    Fast image tools that process files directly on your
-                    device. Compress and convert images without uploading
-                    them to a server.
+                    Fast image tools that process files locally.
+                    Compress and convert images without sending
+                    them to an external processing server.
                 </p>
 
+
                 <div class="hero-stats">
+
                     <div class="stat-pill">
                         ⚡ Instant Processing
                     </div>
@@ -74,9 +101,11 @@
                     <div class="stat-pill">
                         ✨ Quality Control
                     </div>
+
                 </div>
 
             </section>
+
 
 
             <div class="category-title">
@@ -84,61 +113,89 @@
             </div>
 
 
+
             <div class="tools-grid">
+
+
+                <!-- COMPRESSOR -->
 
                 <button
                     class="tool-card"
                     type="button"
                     onclick="switchView('compressor')"
                 >
+
                     <div class="tool-icon">
                         🗜️
                     </div>
 
+
                     <div class="tool-info">
-                        <h3>Compress</h3>
+
+                        <h3>
+                            Compress
+                        </h3>
 
                         <p>
                             Reduce image file sizes with adjustable
-                            compression quality directly in your browser.
+                            compression quality.
                         </p>
+
                     </div>
+
 
                     <span class="arrow">
                         →
                     </span>
+
                 </button>
 
+
+
+                <!-- CONVERTER -->
 
                 <button
                     class="tool-card"
                     type="button"
                     onclick="switchView('converter')"
                 >
+
                     <div class="tool-icon">
                         🔄
                     </div>
 
+
                     <div class="tool-info">
-                        <h3>Convert</h3>
+
+                        <h3>
+                            Convert
+                        </h3>
 
                         <p>
                             Convert images between JPG, PNG and WebP
-                            formats directly on your device.
+                            formats.
                         </p>
+
                     </div>
+
 
                     <span class="arrow">
                         →
                     </span>
+
                 </button>
+
 
             </div>
 
 
+
             <section class="info-section">
 
-                <h2>How it works</h2>
+                <h2>
+                    How it works
+                </h2>
+
 
 
                 <div class="faq-item">
@@ -148,17 +205,22 @@
                         type="button"
                     >
                         How does image processing work?
+
                         <span>+</span>
                     </button>
 
+
                     <div class="faq-answer">
+
                         <p>
-                            Images are processed directly inside your
-                            browser using your device.
+                            Images are processed inside your browser
+                            using your device.
                         </p>
+
                     </div>
 
                 </div>
+
 
 
                 <div class="faq-item">
@@ -168,16 +230,21 @@
                         type="button"
                     >
                         What image formats are supported?
+
                         <span>+</span>
                     </button>
 
+
                     <div class="faq-answer">
+
                         <p>
                             JPG, PNG and WebP images are currently supported.
                         </p>
+
                     </div>
 
                 </div>
+
 
 
                 <div class="faq-item">
@@ -187,14 +254,18 @@
                         type="button"
                     >
                         Can I process multiple images?
+
                         <span>+</span>
                     </button>
 
+
                     <div class="faq-answer">
+
                         <p>
-                            Yes. Multiple images can be processed in one
-                            sequential batch.
+                            Yes. You can upload and process up to
+                            100 supported images in one batch.
                         </p>
+
                     </div>
 
                 </div>
@@ -204,11 +275,16 @@
         </div>
 
 
-        <!-- COMPRESSOR -->
+
+        <!-- =========================
+             COMPRESSOR
+        ========================== -->
+
         <div
             id="compressorView"
             class="view"
         >
+
 
             <button
                 class="back-btn"
@@ -219,19 +295,24 @@
             </button>
 
 
+
             <div class="workspace-header">
 
                 <h2>
                     Image Compressor
                 </h2>
 
+
                 <p>
-                    Compress up to 100 JPG, PNG or WebP images directly
-                    on your device.
+                    Upload up to 100 JPG, PNG or WebP images,
+                    review your queue and compress them in one batch.
                 </p>
 
             </div>
 
+
+
+            <!-- UPLOAD BOX -->
 
             <div
                 class="upload-box"
@@ -242,10 +323,12 @@
                     📂
                 </div>
 
+
                 <p>
                     Drag & drop files here, or
                     <span>browse device</span>
                 </p>
+
 
                 <input
                     type="file"
@@ -257,18 +340,106 @@
             </div>
 
 
+
+            <!-- UPLOAD QUEUE + SETTINGS -->
+
             <div
-                class="settings-panel"
+                class="compressor-workspace"
                 id="compSettingsPanel"
                 style="display:none;"
             >
 
-                <div class="slider-group">
 
-                    <label>
-                        Compression Quality:
-                        <span id="compQualityVal">80%</span>
-                    </label>
+                <div class="queue-header">
+
+                    <div>
+
+                        <span class="queue-eyebrow">
+                            UPLOAD QUEUE
+                        </span>
+
+
+                        <h3>
+                            Ready to compress
+                        </h3>
+
+                    </div>
+
+
+                    <div
+                        class="queue-count-badge"
+                        id="compQueueBadge"
+                    >
+                        0 files
+                    </div>
+
+                </div>
+
+
+
+                <div
+                    class="upload-summary"
+                    id="compUploadSummary"
+                >
+
+                    <div class="summary-icon">
+                        ✓
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Upload complete
+                        </strong>
+
+                        <span id="compSummaryText">
+                            Your files are ready for compression.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- FILE PREVIEW QUEUE -->
+
+                <div
+                    class="file-preview-list"
+                    id="compPreviewList"
+                ></div>
+
+
+
+                <!-- QUALITY -->
+
+                <div class="quality-section">
+
+                    <div class="quality-heading">
+
+                        <div>
+
+                            <span class="queue-eyebrow">
+                                COMPRESSION SETTINGS
+                            </span>
+
+                            <h3>
+                                Compression Quality
+                            </h3>
+
+                        </div>
+
+
+                        <div
+                            class="quality-value-box"
+                            id="compQualityVal"
+                        >
+                            80%
+                        </div>
+
+                    </div>
+
 
                     <input
                         type="range"
@@ -281,11 +452,18 @@
                 </div>
 
 
-                <div class="panel-action">
 
-                    <span id="compFileCount">
+                <!-- ACTION -->
+
+                <div class="compress-action-area">
+
+                    <div
+                        class="compress-file-info"
+                        id="compFileCount"
+                    >
                         0 files loaded
-                    </span>
+                    </div>
+
 
                     <button
                         class="action-btn"
@@ -297,14 +475,19 @@
 
                 </div>
 
+
             </div>
 
+
+
+            <!-- RESULTS -->
 
             <div
                 class="results-panel"
                 id="compResultsPanel"
                 style="display:none;"
             >
+
 
                 <div
                     class="notice-box"
@@ -314,10 +497,10 @@
                 </div>
 
 
+
                 <div
                     class="comp-progress-wrap"
                     id="compProgressWrap"
-                    style="display:none;"
                 >
 
                     <div class="comp-progress-text">
@@ -326,16 +509,23 @@
                             Preparing...
                         </span>
 
+                        <span id="compProgressPercent">
+                            0%
+                        </span>
+
                     </div>
 
 
                     <div class="comp-progress-track">
 
-                        <div id="compProgressBar"></div>
+                        <div
+                            id="compProgressBar"
+                        ></div>
 
                     </div>
 
                 </div>
+
 
 
                 <button
@@ -348,7 +538,11 @@
                 </button>
 
 
-                <div id="compResultsList"></div>
+
+                <div
+                    id="compResultsList"
+                ></div>
+
 
 
                 <button
@@ -360,16 +554,22 @@
                     Download Archive (ZIP)
                 </button>
 
+
             </div>
 
         </div>
 
 
-        <!-- CONVERTER -->
+
+        <!-- =========================
+             CONVERTER
+        ========================== -->
+
         <div
             id="converteView"
             class="view"
         >
+
 
             <button
                 class="back-btn"
@@ -380,17 +580,20 @@
             </button>
 
 
+
             <div class="workspace-header">
 
                 <h2>
                     Format Converter
                 </h2>
 
+
                 <p>
-                    Transform JPG, PNG and WebP images directly on your device.
+                    Transform JPG, PNG and WebP images into another format.
                 </p>
 
             </div>
+
 
 
             <div
@@ -402,10 +605,12 @@
                     ⚡
                 </div>
 
+
                 <p>
                     Drop images to convert, or
                     <span>browse device</span>
                 </p>
+
 
                 <input
                     type="file"
@@ -417,11 +622,13 @@
             </div>
 
 
+
             <div
                 class="settings-panel"
                 id="convSettingsPanel"
                 style="display:none;"
             >
+
 
                 <div class="slider-group">
 
@@ -429,10 +636,12 @@
                         Target Format
                     </label>
 
+
                     <select
                         id="targetFormat"
                         class="styled-select"
                     >
+
                         <option value="image/webp">
                             WebP (Optimized for Web)
                         </option>
@@ -444,9 +653,11 @@
                         <option value="image/png">
                             PNG (High Fidelity)
                         </option>
+
                     </select>
 
                 </div>
+
 
 
                 <div class="panel-action">
@@ -454,6 +665,7 @@
                     <span id="convFileCount">
                         0 files loaded
                     </span>
+
 
                     <button
                         class="action-btn"
@@ -468,15 +680,18 @@
             </div>
 
 
+
             <div
                 class="results-panel"
                 id="convResultsPanel"
                 style="display:none;"
             >
 
+
                 <div class="notice-box">
                     Keep this tab open while your images are being converted.
                 </div>
+
 
 
                 <button
@@ -488,7 +703,11 @@
                 </button>
 
 
-                <div id="convResultsList"></div>
+
+                <div
+                    id="convResultsList"
+                ></div>
+
 
 
                 <button
@@ -504,7 +723,9 @@
 
         </div>
 
+
     </main>
+
 
 
     <footer class="footer">
@@ -516,7 +737,9 @@
     </footer>
 
 
+
     <script src="script.js"></script>
 
 </body>
+
 </html>
