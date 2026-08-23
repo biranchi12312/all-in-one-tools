@@ -167,7 +167,7 @@
 
 
                     <p>
-                        Two focused tools. One streamlined workspace.
+                        Three focused tools. One streamlined workspace.
                     </p>
 
                 </div>
@@ -238,6 +238,42 @@
 
                             <h3>
                                 Convert
+                            </h3>
+
+                            <span class="tool-arrow">
+                                →
+                            </span>
+
+                        </div>
+
+                    </button>
+
+
+                    <!-- PDF MERGE -->
+
+                    <button
+                        class="tool-card reveal reveal-delay-3"
+                        type="button"
+                        data-open-view="pdfMerge"
+                    >
+
+                        <div class="tool-card-top">
+
+                            <div class="tool-icon">
+                                📄
+                            </div>
+
+                            <span class="tool-number">
+                                03
+                            </span>
+
+                        </div>
+
+
+                        <div class="tool-card-bottom">
+
+                            <h3>
+                                Merge PDF
                             </h3>
 
                             <span class="tool-arrow">
@@ -1056,6 +1092,226 @@
             </section>
         </section>
 
+        <!-- =========================
+             PDF MERGE
+        ========================== -->
+
+        <section
+            id="pdfMergeView"
+            class="view"
+        >
+
+            <button
+                class="back-btn"
+                type="button"
+                data-back-dashboard
+            >
+                ← Back to Workshop
+            </button>
+
+
+            <div class="workspace-header">
+                <span class="section-label">PDF TOOLS</span>
+                <h2>Merge PDF Files</h2>
+                <p>
+                    Combine multiple PDF files into one document. Arrange them in your preferred order and merge them securely.
+                </p>
+            </div>
+
+
+            <section
+                class="pdf-upload-box"
+                id="pdfMergeDropZone"
+            >
+                <div class="pdf-upload-icon">📄</div>
+                <h3>Upload PDF Files</h3>
+                <p>
+                    Drag & drop your PDF files here or
+                    <span>browse files</span>
+                </p>
+                <div class="pdf-upload-limits">
+                    2–20 PDFs • Max 100 MB each • 250 MB total • 500 pages
+                </div>
+                <input
+                    type="file"
+                    id="pdfMergeFileInput"
+                    multiple
+                    accept="application/pdf,.pdf"
+                >
+            </section>
+
+
+            <section
+                class="pdf-large-warning"
+                id="pdfLargeWarning"
+                hidden
+            >
+                <div class="pdf-warning-copy">
+                    <span class="pdf-warning-icon">⚠</span>
+                    <div>
+                        <h3>Large PDF Files Detected</h3>
+                        <p>For smoother processing, please upload smaller PDF files.</p>
+                    </div>
+                </div>
+                <button
+                    type="button"
+                    class="pdf-warning-close"
+                    id="pdfLargeWarningClose"
+                    aria-label="Close warning"
+                >✕</button>
+            </section>
+
+
+            <section
+                class="pdf-queue-panel"
+                id="pdfMergeQueuePanel"
+                hidden
+            >
+                <div class="pdf-queue-header">
+                    <div>
+                        <span class="section-label">MERGE ORDER</span>
+                        <h3>Your PDF Files</h3>
+                        <p id="pdfMergeQueueSummary">0 PDFs selected</p>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="small-reset-btn"
+                        id="pdfMergeClearBtn"
+                    >
+                        Clear All
+                    </button>
+                </div>
+
+                <div
+                    class="pdf-file-queue"
+                    id="pdfMergeFileQueue"
+                    aria-live="polite"
+                ></div>
+
+                <div class="pdf-queue-summary">
+                    <div>
+                        <span>FILES</span>
+                        <strong id="pdfMergeTotalFiles">0</strong>
+                    </div>
+                    <div>
+                        <span>TOTAL SIZE</span>
+                        <strong id="pdfMergeTotalSize">0 B</strong>
+                    </div>
+                    <div>
+                        <span>TOTAL PAGES</span>
+                        <strong id="pdfMergeTotalPages">0</strong>
+                    </div>
+                </div>
+            </section>
+
+
+            <section
+                class="pdf-settings-panel"
+                id="pdfMergeSettingsPanel"
+                hidden
+            >
+                <div class="pdf-output-name-row">
+                    <div>
+                        <span class="section-label">OUTPUT</span>
+                        <h3>Name your merged PDF</h3>
+                        <p>Your original PDF files stay unchanged.</p>
+                    </div>
+
+                    <label class="pdf-output-field">
+                        <span>OUTPUT FILE NAME</span>
+                        <input
+                            type="text"
+                            id="pdfMergeOutputName"
+                            value="merged-document.pdf"
+                            maxlength="120"
+                            autocomplete="off"
+                        >
+                    </label>
+                </div>
+
+                <div class="panel-action">
+                    <div id="pdfMergeReadyText">
+                        Add at least 2 PDFs to merge.
+                    </div>
+
+                    <button
+                        class="action-btn"
+                        id="pdfMergeStartBtn"
+                        type="button"
+                        disabled
+                    >
+                        Merge PDFs
+                    </button>
+                </div>
+            </section>
+
+
+            <section
+                class="pdf-processing-panel"
+                id="pdfMergeProcessingPanel"
+                hidden
+            >
+                <div class="pdf-processing-orb">⏳</div>
+                <span class="section-label">PROCESSING</span>
+                <h3 id="pdfMergeProgressTitle">Preparing PDF files</h3>
+                <p id="pdfMergeProgressText">Preparing your documents.</p>
+                <div class="pdf-progress-track">
+                    <div
+                        class="pdf-progress-fill"
+                        id="pdfMergeProgressFill"
+                    ></div>
+                </div>
+                <strong id="pdfMergeProgressPercent">0%</strong>
+            </section>
+
+
+            <section
+                class="pdf-results-panel"
+                id="pdfMergeResultsPanel"
+                hidden
+            >
+                <div class="pdf-success-icon">✓</div>
+                <span class="section-label">COMPLETE</span>
+                <h3>PDF Merged Successfully</h3>
+                <p id="pdfMergeResultName">Your merged PDF is ready.</p>
+
+                <div class="pdf-result-stats">
+                    <div>
+                        <span>FILES MERGED</span>
+                        <strong id="pdfMergeResultFiles">0</strong>
+                    </div>
+                    <div>
+                        <span>TOTAL PAGES</span>
+                        <strong id="pdfMergeResultPages">0</strong>
+                    </div>
+                    <div>
+                        <span>OUTPUT SIZE</span>
+                        <strong id="pdfMergeResultSize">0 B</strong>
+                    </div>
+                </div>
+
+                <div class="result-actions">
+                    <button
+                        class="action-btn outline"
+                        id="pdfMergeMoreBtn"
+                        type="button"
+                    >
+                        ↺ Merge More PDFs
+                    </button>
+
+                    <button
+                        class="action-btn"
+                        id="pdfMergeDownloadBtn"
+                        type="button"
+                    >
+                        Download PDF
+                    </button>
+                </div>
+            </section>
+
+        </section>
+
     </main>
 
 
@@ -1073,7 +1329,10 @@
     </footer>
 
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
     <script src="script.js"></script>
+    <script src="pdf-tools.js"></script>
 
 </body>
 </html>

@@ -114,7 +114,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const views = {
         dashboard: document.getElementById("dashboardView"),
         compressor: document.getElementById("compressorView"),
-        converter: document.getElementById("converterView")
+        converter: document.getElementById("converterView"),
+        pdfMerge: document.getElementById("pdfMergeView")
     };
 
 
@@ -138,6 +139,12 @@ document.addEventListener("DOMContentLoaded", () => {
         if (viewName === "dashboard") {
             setTimeout(initScrollAnimations, 100);
         }
+
+        window.dispatchEvent(
+            new CustomEvent("aurastudio:viewchange", {
+                detail: { view: viewName }
+            })
+        );
     }
 
 
@@ -185,7 +192,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (
             hash === "dashboard" ||
             hash === "compressor" ||
-            hash === "converter"
+            hash === "converter" ||
+            hash === "pdfMerge"
         ) {
             return hash;
         }
@@ -267,7 +275,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 if (
                     currentView === "compressor" ||
-                    currentView === "converter"
+                    currentView === "converter" ||
+                    currentView === "pdfMerge"
                 ) {
 
                     history.back();
