@@ -2359,3 +2359,142 @@ input[type="range"] {
     }
 
 }
+
+/* =========================================================
+   AD-SAFE HARDENING
+   Keeps homepage ad embeds contained and responsive.
+   ========================================================= */
+
+.sponsored-dock,
+.ad-slot,
+.ad-safe-inner {
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.ad-slot {
+    isolation: isolate;
+    contain: layout paint;
+    padding: 10px;
+}
+
+.ad-safe-inner {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+    text-align: center;
+}
+
+/* Keep common ad-rendered elements inside the available width. */
+.ad-safe-inner > *,
+.ad-safe-inner iframe,
+.ad-safe-inner img,
+.ad-safe-inner ins,
+.ad-safe-inner div,
+.ad-safe-inner a {
+    box-sizing: border-box;
+    max-width: 100% !important;
+}
+
+/* Responsive embeds may safely use the full available slot width. */
+.ad-safe-inner iframe,
+.ad-safe-inner img {
+    display: block;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* Do not let an injected element create horizontal page overflow. */
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* Standard desktop ad area. */
+.ad-slot-primary .ad-safe-inner {
+    min-height: 108px;
+}
+
+.ad-slot-secondary .ad-safe-inner {
+    min-height: 80px;
+}
+
+/* If an ad network injects a wider fixed creative, center its visible area
+   instead of allowing the page layout itself to stretch horizontally. */
+.ad-safe-inner > div,
+.ad-safe-inner > ins {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* Small-screen protection. */
+@media (max-width: 768px) {
+    .ad-slot {
+        padding: 8px;
+        border-radius: 16px;
+    }
+
+    .ad-slot-primary {
+        min-height: 112px;
+    }
+
+    .ad-slot-secondary {
+        min-height: 88px;
+    }
+
+    .ad-slot-primary .ad-safe-inner {
+        min-height: 94px;
+    }
+
+    .ad-slot-secondary .ad-safe-inner {
+        min-height: 70px;
+    }
+
+    .ad-safe-inner iframe,
+    .ad-safe-inner img {
+        max-width: 100% !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .sponsored-dock {
+        padding: 14px;
+    }
+
+    .sponsored-dock-top {
+        gap: 10px;
+    }
+
+    .sponsored-support {
+        font-size: 10px;
+        text-align: right;
+    }
+
+    .ad-slot {
+        padding: 6px;
+    }
+
+    .ad-slot-primary {
+        min-height: 100px;
+    }
+
+    .ad-slot-secondary {
+        min-height: 78px;
+    }
+
+    .ad-slot-primary .ad-safe-inner {
+        min-height: 84px;
+    }
+
+    .ad-slot-secondary .ad-safe-inner {
+        min-height: 62px;
+    }
+}
