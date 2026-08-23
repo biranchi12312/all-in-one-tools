@@ -924,16 +924,28 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+    function paintRangeProgress(input) {
+        const min = Number(input.min || 0);
+        const max = Number(input.max || 100);
+        const value = Number(input.value);
+        const percent = max === min ? 0 : ((value - min) / (max - min)) * 100;
+
+        input.style.setProperty(
+            "--range-progress",
+            `${Math.max(0, Math.min(100, percent))}%`
+        );
+    }
+
     comp.quality.addEventListener(
         "input",
         event => {
-
             comp.qualityValue.textContent =
                 `${event.target.value}%`;
-
+            paintRangeProgress(event.target);
         }
     );
 
+    paintRangeProgress(comp.quality);
 
     comp.start.addEventListener(
         "click",
@@ -1574,7 +1586,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     conv.quality.addEventListener("input", event => {
         conv.qualityValue.textContent = `${event.target.value}%`;
+        paintRangeProgress(event.target);
     });
+
+    paintRangeProgress(conv.quality);
 
     document.querySelectorAll(".background-option[data-bg]").forEach(button => {
         button.addEventListener("click", () => {
@@ -1770,6 +1785,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 successCount++;
                 completed++;
                 const delta = formatDelta(file.size, result.blob.size);
+                const smartGuardNote =
+                    result.smartGuardAdjusted
+                        ? `<span class="result-smart-guard">Smart Size Guard adjusted output</span>`
+                        : "";
+
                 row.querySelector(".file-meta").innerHTML = `
                     <h4>${escapeHTML(result.name)}</h4>
                     <div class="result-status">✓ Converted successfully</div>
@@ -1778,6 +1798,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <span>→</span>
                         <span>Output: <strong>${formatBytes(result.blob.size)}</strong></span>
                         <span class="result-delta ${delta.className}">${delta.text}</span>
+                        ${smartGuardNote}
                     </div>
                 `;
                 const download = document.createElement("a");
@@ -1816,29 +1837,180 @@ document.addEventListener("DOMContentLoaded", () => {
         conv.results.scrollIntoView({ behavior: "smooth", block: "start" });
     });
 
-    async function convertImage(file, targetFormat, quality, jpgBackground) {
+    function clampQuality(value) {
+        return Math.max(0.02, Math.min(1, Number(value)));
+    }
+
+    function canvasToBlob(canvas, targetFormat, quality) {
+        return new Promise((resolve, reject) => {
+            canvas.toBlob(
+                result => {
+                    if (result) {
+                        resolve(result);
+                    } else {
+                        reject(new Error("The browser could not create the selected output format."));
+                    }
+                },
+                targetFormat,
+                targetFormat === "image/png" ? undefined : clampQuality(quality)
+            );
+        });
+    }
+
+    async function encodeWithSmartSizeGuard(
+        canvas,
+        sourceType,
+        targetFormat,
+        requestedQuality,
+        originalSize
+    ) {
+        // PNG output is intentionally untouched by quality and size guarding.
+        if (targetFormat === "image/png") {
+            return {
+                blob: await canvasToBlob(canvas, targetFormat, undefined),
+                smartGuardAdjusted: false,
+                usedQuality: null
+            };
+        }
+
+        const normalizedSource =
+            sourceType === "image/jpg" ? "image/jpeg" : sourceType;
+
+        const requested = clampQuality(requestedQuality);
+
+        const firstBlob =
+            await canvasToBlob(canvas, targetFormat, requested);
+
+        const needsGuard =
+            ["image/jpeg", "image/webp"].includes(normalizedSource) &&
+            ["image/jpeg", "image/webp"].includes(targetFormat) &&
+            normalizedSource !== targetFormat;
+
+        if (!needsGuard || !originalSize || firstBlob.size <= originalSize) {
+            return {
+                blob: firstBlob,
+                smartGuardAdjusted: false,
+                usedQuality: requested
+            };
+        }
+
+        // Binary-search for the highest quality that fits within original size.
+        let bestBlob = firstBlob;
+        let bestQuality = requested;
+        let highQuality = requested;
+        let lowQuality = 0.02;
+
+        const lowBlob =
+            await canvasToBlob(canvas, targetFormat, lowQuality);
+
+        if (lowBlob.size <= originalSize) {
+            let fittingBlob = lowBlob;
+            let fittingQuality = lowQuality;
+
+            for (let attempt = 0; attempt < 7; attempt++) {
+                const midQuality =
+                    (lowQuality + highQuality) / 2;
+
+                const midBlob =
+                    await canvasToBlob(
+                        canvas,
+                        targetFormat,
+                        midQuality
+                    );
+
+                if (midBlob.size <= originalSize) {
+                    lowQuality = midQuality;
+                    fittingBlob = midBlob;
+                    fittingQuality = midQuality;
+                } else {
+                    highQuality = midQuality;
+                }
+            }
+
+            bestBlob = fittingBlob;
+            bestQuality = fittingQuality;
+        } else if (lowBlob.size < bestBlob.size) {
+            // Rare edge case: preserve the requested output format and use the smallest candidate.
+            bestBlob = lowBlob;
+            bestQuality = 0.02;
+        }
+
+        return {
+            blob: bestBlob,
+            smartGuardAdjusted: true,
+            usedQuality: bestQuality
+        };
+    }
+
+    async function convertImage(
+        file,
+        targetFormat,
+        quality,
+        jpgBackground
+    ) {
         const bitmap = await createImageBitmap(file);
+
         try {
             getPixelSafety(bitmap);
-            const canvas = document.createElement("canvas");
+
+            const canvas =
+                document.createElement("canvas");
+
             canvas.width = bitmap.width;
             canvas.height = bitmap.height;
-            const context = canvas.getContext("2d", { alpha: targetFormat !== "image/jpeg" });
-            if (!context) throw new Error("Canvas processing is unavailable in this browser.");
+
+            const context =
+                canvas.getContext(
+                    "2d",
+                    {
+                        alpha:
+                            targetFormat !== "image/jpeg"
+                    }
+                );
+
+            if (!context) {
+                throw new Error(
+                    "Canvas processing is unavailable in this browser."
+                );
+            }
 
             if (targetFormat === "image/jpeg") {
-                context.fillStyle = jpgBackground || "#ffffff";
-                context.fillRect(0, 0, canvas.width, canvas.height);
+                context.fillStyle =
+                    jpgBackground || "#ffffff";
+
+                context.fillRect(
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                );
             }
+
             context.drawImage(bitmap, 0, 0);
 
-            const blob = await new Promise((resolve, reject) => {
-                canvas.toBlob(result => result ? resolve(result) : reject(new Error("The browser could not create the selected output format.")), targetFormat, targetFormat === "image/png" ? undefined : quality);
-            });
+            const encoded =
+                await encodeWithSmartSizeGuard(
+                    canvas,
+                    normalizeImageType(file),
+                    targetFormat,
+                    quality,
+                    file.size
+                );
 
-            let extension = targetFormat.split("/")[1];
-            if (extension === "jpeg") extension = "jpg";
-            return { blob, name: `${getBaseName(file.name)}_converted.${extension}` };
+            let extension =
+                targetFormat.split("/")[1];
+
+            if (extension === "jpeg") {
+                extension = "jpg";
+            }
+
+            return {
+                blob: encoded.blob,
+                name: `${getBaseName(file.name)}_converted.${extension}`,
+                smartGuardAdjusted: encoded.smartGuardAdjusted,
+                usedQuality: encoded.usedQuality
+            };
+
         } finally {
             bitmap.close();
         }

@@ -1561,13 +1561,64 @@ button {
     font-size: 16px;
 }
 
+/* Thicker, easier-to-use quality sliders */
 input[type="range"] {
     width: 100%;
-    height: 7px;
-
-    accent-color: var(--accent);
-
+    height: 10px;
+    margin: 3px 0;
+    appearance: none;
+    -webkit-appearance: none;
+    border-radius: 999px;
+    outline: none;
+    background:
+        linear-gradient(90deg, var(--accent), #8b8df8) 0 / var(--range-progress, 50%) 100% no-repeat,
+        rgba(255, 255, 255, 0.14);
     cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    height: 10px;
+    border-radius: 999px;
+    background: transparent;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    width: 22px;
+    height: 22px;
+    margin-top: -6px;
+    appearance: none;
+    -webkit-appearance: none;
+    border: 0;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.13);
+    cursor: grab;
+}
+
+input[type="range"]:active::-webkit-slider-thumb {
+    cursor: grabbing;
+}
+
+input[type="range"]::-moz-range-track {
+    height: 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
+}
+
+input[type="range"]::-moz-range-progress {
+    height: 10px;
+    border-radius: 999px;
+    background: var(--accent);
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.13);
+    cursor: grab;
 }
 
 .setting-help {
@@ -2289,6 +2340,28 @@ input[type="range"] {
         font-size: 11px;
     }
 
+    input[type="range"] {
+        height: 11px;
+        margin: 5px 0;
+    }
+
+    input[type="range"]::-webkit-slider-runnable-track,
+    input[type="range"]::-moz-range-track,
+    input[type="range"]::-moz-range-progress {
+        height: 11px;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+        width: 24px;
+        height: 24px;
+        margin-top: -6.5px;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+        width: 24px;
+        height: 24px;
+    }
+
     .styled-select {
         padding: 13px;
 
@@ -2456,4 +2529,18 @@ input[type="range"] {
     .background-option { justify-content:center; }
     .custom-background-option { grid-column:1 / -1; }
     .queue-remove-btn { width:28px; height:28px; }
+}
+
+
+/* Smart Size Guard result indicator */
+.result-smart-guard {
+    color: var(--accent);
+    font-weight: 700;
+}
+
+@media (max-width: 700px) {
+    .result-smart-guard {
+        width: 100%;
+        margin-top: 2px;
+    }
 }
