@@ -13,7 +13,7 @@
 
     <meta
         name="description"
-        content="Compress and convert JPG, PNG and WebP images directly in your browser. Upload up to 100 images and download optimized results."
+        content="Compress and convert JPG, PNG and WebP images directly in your browser. Process up to 100 images in one batch and download optimized results."
     >
 
     <link
@@ -40,9 +40,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
 
+
 <body>
 
-    <!-- HEADER -->
+    <!-- =========================
+         HEADER
+    ========================== -->
+
     <header class="navbar">
 
         <button
@@ -52,6 +56,7 @@
         >
             Aura<span>Studio</span>
         </button>
+
 
         <div class="nav-status">
             <span class="pulse-dot"></span>
@@ -63,42 +68,79 @@
 
     <main class="container">
 
+
         <!-- =========================
-             DASHBOARD
+             DASHBOARD / HOMEPAGE
         ========================== -->
+
         <section
             id="dashboardView"
             class="view active"
         >
 
+
+            <!-- HERO -->
+
             <section class="hero">
 
-                <span class="badge">
-                    PRO WORKSHOP
+                <div class="hero-glow"></div>
+
+
+                <span class="badge hero-enter">
+                    IMAGE WORKSPACE
                 </span>
 
-                <h1>
+
+                <h1 class="hero-title">
                     Powerful image tools.<br>
-                    <span>Simple workflow.</span>
+                    <span>Built for a faster workflow.</span>
                 </h1>
 
-                <p>
-                    Compress and convert your images quickly with a clean,
-                    professional processing workspace.
+
+                <p class="hero-description">
+                    Compress large images, convert formats and process multiple
+                    files from one clean workspace — directly in your browser.
                 </p>
 
-                <div class="hero-stats">
 
-                    <div class="stat-pill">
-                        ⚡ Fast Processing
+                <div class="hero-actions">
+
+                    <button
+                        class="hero-primary-btn"
+                        type="button"
+                        data-open-view="compressor"
+                    >
+                        Compress Images
+                        <span>→</span>
+                    </button>
+
+
+                    <button
+                        class="hero-secondary-btn"
+                        type="button"
+                        data-open-view="converter"
+                    >
+                        Convert Images
+                    </button>
+
+                </div>
+
+
+                <div class="hero-capabilities">
+
+                    <div class="capability-pill">
+                        <span class="capability-icon">100</span>
+                        Images per batch
                     </div>
 
-                    <div class="stat-pill">
-                        🔒 Private Workflow
+                    <div class="capability-pill">
+                        <span class="capability-icon">100 MB</span>
+                        Per image
                     </div>
 
-                    <div class="stat-pill">
-                        📦 Batch Support
+                    <div class="capability-pill">
+                        <span class="capability-icon">✓</span>
+                        Browser processing
                     </div>
 
                 </div>
@@ -106,83 +148,351 @@
             </section>
 
 
-            <div class="category-title">
-                IMAGE TOOLS
-            </div>
 
+            <!-- TOOLS -->
 
-            <div class="tools-grid">
+            <section class="tools-section">
 
-                <!-- COMPRESSOR -->
-                <button
-                    class="tool-card"
-                    type="button"
-                    data-open-view="compressor"
-                >
+                <div class="section-top reveal">
 
-                    <div class="tool-icon">
-                        🗜️
+                    <div>
+                        <span class="section-label">
+                            IMAGE TOOLS
+                        </span>
+
+                        <h2>
+                            Start with the tool you need.
+                        </h2>
                     </div>
 
-                    <div class="tool-info">
+
+                    <p>
+                        Two focused tools. One streamlined workspace.
+                    </p>
+
+                </div>
+
+
+                <div class="tools-grid">
+
+
+                    <!-- COMPRESSOR -->
+
+                    <button
+                        class="tool-card reveal reveal-delay-1"
+                        type="button"
+                        data-open-view="compressor"
+                    >
+
+                        <div class="tool-card-top">
+
+                            <div class="tool-icon">
+                                🗜️
+                            </div>
+
+                            <span class="tool-number">
+                                01
+                            </span>
+
+                        </div>
+
+
+                        <div class="tool-card-bottom">
+
+                            <h3>
+                                Compress
+                            </h3>
+
+                            <span class="tool-arrow">
+                                →
+                            </span>
+
+                        </div>
+
+                    </button>
+
+
+
+                    <!-- CONVERTER -->
+
+                    <button
+                        class="tool-card reveal reveal-delay-2"
+                        type="button"
+                        data-open-view="converter"
+                    >
+
+                        <div class="tool-card-top">
+
+                            <div class="tool-icon">
+                                ↔
+                            </div>
+
+                            <span class="tool-number">
+                                02
+                            </span>
+
+                        </div>
+
+
+                        <div class="tool-card-bottom">
+
+                            <h3>
+                                Convert
+                            </h3>
+
+                            <span class="tool-arrow">
+                                →
+                            </span>
+
+                        </div>
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- INTRO / FEATURE SPLIT -->
+
+            <section class="feature-intro">
+
+                <div class="feature-intro-left reveal">
+
+                    <span class="section-label">
+                        MADE FOR THE WORKFLOW
+                    </span>
+
+                    <h2>
+                        Less friction.<br>
+                        <span>More control.</span>
+                    </h2>
+
+                </div>
+
+
+                <div class="feature-intro-right reveal reveal-delay-1">
+
+                    <p class="large-copy">
+                        AuraStudio keeps the workflow focused. Select your files,
+                        choose your settings and process everything from one place.
+                    </p>
+
+
+                    <div class="feature-points">
+
+                        <div class="feature-point">
+                            <span>01</span>
+
+                            <p>
+                                Upload individual images or build a batch of up to
+                                100 files.
+                            </p>
+                        </div>
+
+
+                        <div class="feature-point">
+                            <span>02</span>
+
+                            <p>
+                                Adjust compression quality or select the format
+                                you need.
+                            </p>
+                        </div>
+
+
+                        <div class="feature-point">
+                            <span>03</span>
+
+                            <p>
+                                Download files individually or collect completed
+                                results in one ZIP.
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- HOW IT WORKS -->
+
+            <section class="workflow-section">
+
+                <div class="workflow-heading reveal">
+
+                    <span class="section-label">
+                        SIMPLE WORKFLOW
+                    </span>
+
+                    <h2>
+                        From upload to download.
+                    </h2>
+
+                </div>
+
+
+                <div class="workflow-grid">
+
+
+                    <article class="workflow-card reveal reveal-delay-1">
+
+                        <div class="workflow-number">
+                            01
+                        </div>
+
+                        <div class="workflow-line"></div>
 
                         <h3>
-                            Compress Images
+                            Upload
                         </h3>
 
                         <p>
-                            Reduce image file size with adjustable compression
-                            quality and batch processing.
+                            Select JPG, PNG or WebP images from your device.
+                        </p>
+
+                    </article>
+
+
+                    <article class="workflow-card reveal reveal-delay-2">
+
+                        <div class="workflow-number">
+                            02
+                        </div>
+
+                        <div class="workflow-line"></div>
+
+                        <h3>
+                            Process
+                        </h3>
+
+                        <p>
+                            Choose compression quality or convert into another format.
+                        </p>
+
+                    </article>
+
+
+                    <article class="workflow-card reveal reveal-delay-3">
+
+                        <div class="workflow-number">
+                            03
+                        </div>
+
+                        <div class="workflow-line"></div>
+
+                        <h3>
+                            Download
+                        </h3>
+
+                        <p>
+                            Save individual results or download completed files together.
+                        </p>
+
+                    </article>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- PERFORMANCE STRIP -->
+
+            <section class="performance-section reveal">
+
+                <div class="performance-content">
+
+                    <span class="section-label">
+                        BUILT FOR BATCH WORK
+                    </span>
+
+                    <h2>
+                        Handle more files without a complicated workflow.
+                    </h2>
+
+                </div>
+
+
+                <div class="performance-stats">
+
+                    <div class="performance-stat">
+                        <strong>100</strong>
+                        <span>Images in one batch</span>
+                    </div>
+
+
+                    <div class="performance-stat">
+                        <strong>100 MB</strong>
+                        <span>Maximum per image</span>
+                    </div>
+
+
+                    <div class="performance-stat">
+                        <strong>JPG · PNG · WebP</strong>
+                        <span>Supported image formats</span>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- PRIVACY / BROWSER PROCESSING -->
+
+            <section class="privacy-section">
+
+                <div class="privacy-panel reveal">
+
+                    <div class="privacy-icon">
+                        ◉
+                    </div>
+
+
+                    <div class="privacy-content">
+
+                        <span class="section-label">
+                            PRIVATE WORKFLOW
+                        </span>
+
+                        <h2>
+                            Process images from your browser workspace.
+                        </h2>
+
+                        <p>
+                            AuraStudio is designed around a direct browser workflow,
+                            so you can select, process and download your images
+                            without navigating through multiple pages.
                         </p>
 
                     </div>
 
-                    <span class="arrow">
-                        →
-                    </span>
+                </div>
 
-                </button>
+            </section>
 
-
-                <!-- CONVERTER -->
-                <button
-                    class="tool-card"
-                    type="button"
-                    data-open-view="converter"
-                >
-
-                    <div class="tool-icon">
-                        🔄
-                    </div>
-
-                    <div class="tool-info">
-
-                        <h3>
-                            Convert Images
-                        </h3>
-
-                        <p>
-                            Convert JPG, PNG and WebP images into another
-                            supported format.
-                        </p>
-
-                    </div>
-
-                    <span class="arrow">
-                        →
-                    </span>
-
-                </button>
-
-            </div>
 
 
             <!-- FAQ -->
-            <section class="info-section">
 
-                <h2>
-                    Frequently Asked Questions
-                </h2>
+            <section class="info-section reveal">
+
+                <div class="faq-heading">
+
+                    <span class="section-label">
+                        FAQ
+                    </span>
+
+                    <h2>
+                        Frequently asked questions.
+                    </h2>
+
+                </div>
 
 
                 <div class="faq-item">
@@ -198,15 +508,17 @@
                         </span>
                     </button>
 
+
                     <div class="faq-answer">
 
                         <p>
-                            You can select up to 100 images in one batch.
+                            You can process up to 100 supported images in one batch.
                         </p>
 
                     </div>
 
                 </div>
+
 
 
                 <div class="faq-item">
@@ -215,17 +527,127 @@
                         class="faq-question"
                         type="button"
                     >
-                        What image formats are supported?
+                        What is the maximum image size?
 
                         <span>
                             +
                         </span>
                     </button>
 
+
                     <div class="faq-answer">
 
                         <p>
-                            JPG, JPEG, PNG and WebP images are supported.
+                            Each individual image can be up to 100 MB, subject to
+                            your device and browser being able to process the batch.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="faq-item">
+
+                    <button
+                        class="faq-question"
+                        type="button"
+                    >
+                        Which image formats are supported?
+
+                        <span>
+                            +
+                        </span>
+                    </button>
+
+
+                    <div class="faq-answer">
+
+                        <p>
+                            JPG, JPEG, PNG and WebP images are supported for upload.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="faq-item">
+
+                    <button
+                        class="faq-question"
+                        type="button"
+                    >
+                        Can I use AuraStudio on mobile?
+
+                        <span>
+                            +
+                        </span>
+                    </button>
+
+
+                    <div class="faq-answer">
+
+                        <p>
+                            Yes. The interface is responsive and the tools can be
+                            used on supported mobile and desktop browsers.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="faq-item">
+
+                    <button
+                        class="faq-question"
+                        type="button"
+                    >
+                        Can I download all completed files together?
+
+                        <span>
+                            +
+                        </span>
+                    </button>
+
+
+                    <div class="faq-answer">
+
+                        <p>
+                            Yes. After successful processing, completed files can
+                            also be collected and downloaded as a ZIP archive.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="faq-item">
+
+                    <button
+                        class="faq-question"
+                        type="button"
+                    >
+                        Does compression affect image quality?
+
+                        <span>
+                            +
+                        </span>
+                    </button>
+
+
+                    <div class="faq-answer">
+
+                        <p>
+                            Compression uses the selected quality level, so lower
+                            quality settings generally create smaller files but can
+                            reduce visual detail.
                         </p>
 
                     </div>
@@ -234,6 +656,7 @@
 
             </section>
 
+
         </section>
 
 
@@ -241,6 +664,7 @@
         <!-- =========================
              COMPRESSOR
         ========================== -->
+
         <section
             id="compressorView"
             class="view"
@@ -268,7 +692,6 @@
             </div>
 
 
-            <!-- UPLOAD -->
             <div
                 class="upload-box"
                 id="compDropZone"
@@ -301,7 +724,7 @@
             </div>
 
 
-            <!-- FILE QUEUE -->
+
             <section
                 class="queue-panel"
                 id="compQueuePanel"
@@ -342,7 +765,7 @@
             </section>
 
 
-            <!-- COMPRESS SETTINGS -->
+
             <section
                 class="settings-panel"
                 id="compSettingsPanel"
@@ -386,6 +809,7 @@
                         0 files loaded
                     </div>
 
+
                     <button
                         class="action-btn"
                         id="compStartBtn"
@@ -399,7 +823,7 @@
             </section>
 
 
-            <!-- RESULTS -->
+
             <section
                 class="results-panel"
                 id="compResultsPanel"
@@ -462,6 +886,7 @@
         <!-- =========================
              CONVERTER
         ========================== -->
+
         <section
             id="converterView"
             class="view"
@@ -489,7 +914,6 @@
             </div>
 
 
-            <!-- UPLOAD -->
             <div
                 class="upload-box"
                 id="convDropZone"
@@ -522,7 +946,7 @@
             </div>
 
 
-            <!-- CONVERTER QUEUE -->
+
             <section
                 class="queue-panel"
                 id="convQueuePanel"
@@ -563,7 +987,7 @@
             </section>
 
 
-            <!-- CONVERTER SETTINGS -->
+
             <section
                 class="settings-panel"
                 id="convSettingsPanel"
@@ -575,6 +999,7 @@
                     <label for="targetFormat">
                         Target Format
                     </label>
+
 
                     <select
                         id="targetFormat"
@@ -604,6 +1029,7 @@
                         0 files loaded
                     </div>
 
+
                     <button
                         class="action-btn"
                         id="convStartBtn"
@@ -617,7 +1043,7 @@
             </section>
 
 
-            <!-- CONVERTER RESULTS -->
+
             <section
                 class="results-panel"
                 id="convResultsPanel"
@@ -675,14 +1101,21 @@
 
         </section>
 
+
     </main>
 
 
-    <!-- FOOTER -->
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
     <footer class="footer">
+
         <p>
             © 2026 AuraStudio. All rights reserved.
         </p>
+
     </footer>
 
 

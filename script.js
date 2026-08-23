@@ -1,16 +1,23 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+    /* =========================================================
+       GLOBAL LIMITS
+    ========================================================= */
+
     const MAX_FILES = 100;
     const MAX_FILE_SIZE = 100 * 1024 * 1024;
     const MAX_TOTAL_SIZE = 500 * 1024 * 1024;
 
 
-    /* =========================
+    /* =========================================================
        HELPERS
-    ========================= */
+    ========================================================= */
 
     function formatBytes(bytes) {
-        if (!bytes) return "0 Bytes";
+
+        if (!bytes) {
+            return "0 Bytes";
+        }
 
         const units = [
             "Bytes",
@@ -25,7 +32,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         return `${(
             bytes / Math.pow(1024, index)
-        ).toFixed(index === 0 ? 0 : 2)} ${units[index]}`;
+        ).toFixed(
+            index === 0 ? 0 : 2
+        )} ${units[index]}`;
     }
 
 
@@ -79,9 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
         files.forEach(item => {
 
             if (item.previewURL) {
-                URL.revokeObjectURL(
-                    item.previewURL
-                );
+                URL.revokeObjectURL(item.previewURL);
             }
 
         });
@@ -93,18 +100,16 @@ document.addEventListener("DOMContentLoaded", () => {
         files.forEach(item => {
 
             if (item.url) {
-                URL.revokeObjectURL(
-                    item.url
-                );
+                URL.revokeObjectURL(item.url);
             }
 
         });
     }
 
 
-    /* =========================
+    /* =========================================================
        VIEW ROUTING
-    ========================= */
+    ========================================================= */
 
     const views = {
         dashboard: document.getElementById("dashboardView"),
@@ -119,14 +124,20 @@ document.addEventListener("DOMContentLoaded", () => {
             view.classList.remove("active");
         });
 
+
         if (views[viewName]) {
             views[viewName].classList.add("active");
         }
+
 
         window.scrollTo({
             top: 0,
             behavior: "smooth"
         });
+
+        if (viewName === "dashboard") {
+            setTimeout(initScrollAnimations, 100);
+        }
     }
 
 
@@ -137,11 +148,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         renderView(viewName);
 
+
         if (!pushHistory) {
             return;
         }
 
+
         const currentState = history.state;
+
 
         if (
             !currentState ||
@@ -162,8 +176,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function getViewFromHash() {
 
-        const hash =
-            window.location.hash.replace("#", "");
+        const hash = window.location.hash.replace(
+            "#",
+            ""
+        );
+
 
         if (
             hash === "dashboard" ||
@@ -173,11 +190,13 @@ document.addEventListener("DOMContentLoaded", () => {
             return hash;
         }
 
+
         return "dashboard";
     }
 
 
     const initialView = getViewFromHash();
+
 
     history.replaceState(
         {
@@ -188,6 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ? location.pathname
             : `#${initialView}`
     );
+
 
     renderView(initialView);
 
@@ -206,115 +226,248 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
-    document
-        .querySelectorAll("[data-open-view]")
-        .forEach(button => {
+    /* =========================================================
+       TOOL BUTTONS + HERO BUTTONS
+    ========================================================= */
 
-            button.addEventListener(
-                "click",
-                () => {
+    document.querySelectorAll(
+        "[data-open-view]"
+    ).forEach(button => {
 
-                    switchView(
-                        button.dataset.openView
-                    );
+        button.addEventListener(
+            "click",
+            () => {
 
-                }
-            );
+                const viewName =
+                    button.dataset.openView;
 
-        });
+                switchView(viewName);
 
+            }
+        );
 
-    document
-        .querySelectorAll("[data-back-dashboard]")
-        .forEach(button => {
-
-            button.addEventListener(
-                "click",
-                () => {
-
-                    const currentView =
-                        getViewFromHash();
-
-                    if (
-                        currentView === "compressor" ||
-                        currentView === "converter"
-                    ) {
-                        history.back();
-                    } else {
-                        switchView("dashboard");
-                    }
-
-                }
-            );
-
-        });
+    });
 
 
-    document
-        .getElementById("logoBtn")
-        .addEventListener(
+    /* =========================================================
+       BACK BUTTONS
+    ========================================================= */
+
+    document.querySelectorAll(
+        "[data-back-dashboard]"
+    ).forEach(button => {
+
+        button.addEventListener(
             "click",
             () => {
 
                 const currentView =
                     getViewFromHash();
 
-                if (currentView !== "dashboard") {
+
+                if (
+                    currentView === "compressor" ||
+                    currentView === "converter"
+                ) {
+
                     history.back();
+
                 } else {
-                    renderView("dashboard");
+
+                    switchView("dashboard");
+
                 }
 
             }
         );
 
+    });
 
-    /* =========================
-       FAQ
-    ========================= */
 
-    document
-        .querySelectorAll(".faq-question")
-        .forEach(button => {
+    /* =========================================================
+       LOGO BUTTON
+    ========================================================= */
 
-            button.addEventListener(
-                "click",
-                () => {
+    const logoButton =
+        document.getElementById("logoBtn");
 
-                    const answer =
-                        button.nextElementSibling;
 
-                    const icon =
-                        button.querySelector("span");
+    logoButton.addEventListener(
+        "click",
+        () => {
 
-                    if (answer.style.maxHeight) {
+            const currentView =
+                getViewFromHash();
 
-                        answer.style.maxHeight = null;
 
-                        if (icon) {
-                            icon.textContent = "+";
+            if (currentView !== "dashboard") {
+
+                history.back();
+
+            } else {
+
+                renderView("dashboard");
+
+            }
+
+        }
+    );
+
+
+    /* =========================================================
+       SCROLL ANIMATIONS
+    ========================================================= */
+
+    let revealObserver;
+
+
+    function initScrollAnimations() {
+
+        if (revealObserver) {
+            revealObserver.disconnect();
+        }
+
+
+        const revealElements =
+            document.querySelectorAll(".reveal");
+
+
+        if (!("IntersectionObserver" in window)) {
+
+            revealElements.forEach(element => {
+                element.classList.add("visible");
+            });
+
+            return;
+        }
+
+
+        revealObserver =
+            new IntersectionObserver(
+                entries => {
+
+                    entries.forEach(entry => {
+
+                        if (entry.isIntersecting) {
+
+                            entry.target.classList.add(
+                                "visible"
+                            );
+
+                            revealObserver.unobserve(
+                                entry.target
+                            );
+
                         }
 
-                    } else {
+                    });
 
-                        answer.style.maxHeight =
-                            `${answer.scrollHeight}px`;
+                },
+                {
+                    threshold: 0.12,
+                    rootMargin: "0px 0px -60px 0px"
+                }
+            );
 
-                        if (icon) {
-                            icon.textContent = "−";
+
+        revealElements.forEach(element => {
+
+            if (
+                element.getBoundingClientRect().top <
+                window.innerHeight
+            ) {
+
+                setTimeout(
+                    () => {
+                        element.classList.add("visible");
+                    },
+                    100
+                );
+
+            } else {
+
+                revealObserver.observe(element);
+
+            }
+
+        });
+
+    }
+
+
+    initScrollAnimations();
+
+
+    /* =========================================================
+       FAQ
+    ========================================================= */
+
+    document.querySelectorAll(
+        ".faq-question"
+    ).forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                const item =
+                    button.closest(".faq-item");
+
+                const answer =
+                    button.nextElementSibling;
+
+
+                const isOpen =
+                    item.classList.contains("open");
+
+
+                document.querySelectorAll(
+                    ".faq-item"
+                ).forEach(otherItem => {
+
+                    if (otherItem !== item) {
+
+                        otherItem.classList.remove("open");
+
+                        const otherAnswer =
+                            otherItem.querySelector(
+                                ".faq-answer"
+                            );
+
+                        if (otherAnswer) {
+                            otherAnswer.style.maxHeight =
+                                null;
                         }
 
                     }
 
+                });
+
+
+                if (isOpen) {
+
+                    item.classList.remove("open");
+
+                    answer.style.maxHeight = null;
+
+                } else {
+
+                    item.classList.add("open");
+
+                    answer.style.maxHeight =
+                        `${answer.scrollHeight}px`;
+
                 }
-            );
 
-        });
+            }
+        );
+
+    });
 
 
-    /* =========================
+    /* =========================================================
        FILE VALIDATION
-    ========================= */
+    ========================================================= */
 
     function validateFiles(
         fileList,
@@ -326,6 +479,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const validFiles = [];
 
+
         const existingTotal =
             existingFiles.reduce(
                 (total, item) =>
@@ -333,7 +487,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 0
             );
 
-        let runningTotal = existingTotal;
+
+        let runningTotal =
+            existingTotal;
 
 
         for (const file of incomingFiles) {
@@ -343,10 +499,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
-            if (
-                file.size >
-                MAX_FILE_SIZE
-            ) {
+            if (file.size > MAX_FILE_SIZE) {
 
                 showError(
                     `"${file.name}" is larger than 100 MB and was skipped.`
@@ -361,14 +514,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 validFiles.length >=
                 MAX_FILES
             ) {
-
                 break;
             }
 
 
             if (
-                runningTotal +
-                file.size >
+                runningTotal + file.size >
                 MAX_TOTAL_SIZE
             ) {
 
@@ -386,6 +537,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     createPreviewURL(file)
             });
 
+
             runningTotal += file.size;
         }
 
@@ -394,9 +546,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =========================
+    /* =========================================================
        QUEUE UI
-    ========================= */
+    ========================================================= */
 
     function renderQueue(
         files,
@@ -432,27 +584,38 @@ document.addEventListener("DOMContentLoaded", () => {
                 files.length !== 1
                     ? "s"
                     : ""
-            } uploaded • ${formatBytes(totalSize)}`;
+            } uploaded • ${
+                formatBytes(totalSize)
+            }`;
 
 
-        files.forEach(item => {
+        files.forEach((item, index) => {
 
             const file = item.file;
+
 
             const row =
                 document.createElement("div");
 
-            row.className =
-                "queue-item";
+
+            row.className = "queue-item";
+
+
+            row.style.animationDelay =
+                `${Math.min(index * 0.03, 0.5)}s`;
 
 
             row.innerHTML = `
+
                 <div class="file-preview">
+
                     <img
                         src="${item.previewURL}"
                         alt=""
                     >
+
                 </div>
+
 
                 <div class="file-details">
 
@@ -463,11 +626,13 @@ document.addEventListener("DOMContentLoaded", () => {
                         ${escapeHTML(file.name)}
                     </div>
 
+
                     <div class="file-size">
                         ${formatBytes(file.size)}
                     </div>
 
                 </div>
+
 
                 <div class="upload-status">
 
@@ -480,17 +645,20 @@ document.addEventListener("DOMContentLoaded", () => {
                     </span>
 
                 </div>
+
             `;
+
 
             queueElement.appendChild(row);
 
         });
+
     }
 
 
-    /* =========================
-       DRAG & DROP
-    ========================= */
+    /* =========================================================
+       DRAG AND DROP
+    ========================================================= */
 
     function setupDropZone(
         dropZone,
@@ -558,12 +726,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
             }
         );
+
     }
 
 
-    /* =========================
+    /* =========================================================
        COMPRESSOR
-    ========================= */
+    ========================================================= */
 
     const comp = {
 
@@ -723,28 +892,36 @@ document.addEventListener("DOMContentLoaded", () => {
         "click",
         () => {
 
-            revokePreviewURLs(
-                compFiles
-            );
-
-            compFiles = [];
-
-            renderQueue(
-                compFiles,
-                comp.queue,
-                comp.queuePanel,
-                comp.queueSummary
-            );
-
-            comp.settings.hidden = true;
-
-            comp.count.textContent =
-                "0 files loaded";
-
-            comp.input.value = "";
+            clearCompressorSelection();
 
         }
     );
+
+
+    function clearCompressorSelection() {
+
+        revokePreviewURLs(compFiles);
+
+        compFiles = [];
+
+
+        renderQueue(
+            compFiles,
+            comp.queue,
+            comp.queuePanel,
+            comp.queueSummary
+        );
+
+
+        comp.settings.hidden = true;
+
+
+        comp.count.textContent =
+            "0 files loaded";
+
+
+        comp.input.value = "";
+    }
 
 
     comp.quality.addEventListener(
@@ -771,24 +948,24 @@ document.addEventListener("DOMContentLoaded", () => {
                 processedCompFiles
             );
 
+
             processedCompFiles = [];
+
 
             comp.resultsList.innerHTML = "";
 
-            comp.start.disabled = true;
 
+            comp.start.disabled = true;
             comp.start.textContent =
                 "Compressing...";
 
-            comp.results.hidden = false;
 
+            comp.results.hidden = false;
             comp.zip.hidden = true;
 
 
             const quality =
-                Number(
-                    comp.quality.value
-                ) / 100;
+                Number(comp.quality.value) / 100;
 
 
             let successCount = 0;
@@ -810,17 +987,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 const row =
                     document.createElement("div");
 
+
                 row.className =
                     "result-row";
 
 
                 row.innerHTML = `
+
                     <div class="result-preview">
+
                         <img
                             src="${item.previewURL}"
                             alt=""
                         >
+
                     </div>
+
 
                     <div class="file-meta">
 
@@ -829,13 +1011,15 @@ document.addEventListener("DOMContentLoaded", () => {
                         </h4>
 
                         <span>
-                            Compressing
-                            ${index + 1}
-                            /
-                            ${compFiles.length}...
+                            Compressing ${
+                                index + 1
+                            } / ${
+                                compFiles.length
+                            }...
                         </span>
 
                     </div>
+
                 `;
 
 
@@ -868,9 +1052,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                     const originalSize =
-                        formatBytes(
-                            file.size
-                        );
+                        formatBytes(file.size);
+
 
                     const newSize =
                         formatBytes(
@@ -894,12 +1077,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                     row.innerHTML = `
+
                         <div class="result-preview">
+
                             <img
                                 src="${item.previewURL}"
                                 alt=""
                             >
+
                         </div>
+
 
                         <div class="file-meta">
 
@@ -920,6 +1107,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         </div>
 
+
                         <a
                             href="${url}"
                             download="${escapeHTML(
@@ -929,6 +1117,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         >
                             Download
                         </a>
+
                     `;
 
 
@@ -938,17 +1127,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                     row.innerHTML = `
+
                         <div class="result-preview">
+
                             <img
                                 src="${item.previewURL}"
                                 alt=""
                             >
+
                         </div>
+
 
                         <div class="file-meta">
 
                             <h4>
-                                ${escapeHTML(file.name)}
+                                ${escapeHTML(
+                                    file.name
+                                )}
                             </h4>
 
                             <span
@@ -958,13 +1153,14 @@ document.addEventListener("DOMContentLoaded", () => {
                             </span>
 
                         </div>
+
                     `;
                 }
+
             }
 
 
             comp.start.disabled = false;
-
             comp.start.textContent =
                 "Compress Images";
 
@@ -982,7 +1178,9 @@ document.addEventListener("DOMContentLoaded", () => {
             if (
                 processedCompFiles.length > 0
             ) {
+
                 comp.zip.hidden = false;
+
             }
 
 
@@ -1012,35 +1210,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         const longestSide =
-            Math.max(
-                width,
-                height
-            );
+            Math.max(width, height);
 
 
         if (
-            longestSide >
-            MAX_DIMENSION
+            longestSide > MAX_DIMENSION
         ) {
 
             const ratio =
                 MAX_DIMENSION /
                 longestSide;
 
+
             width =
                 Math.round(
                     width * ratio
                 );
 
+
             height =
                 Math.round(
                     height * ratio
                 );
+
         }
 
 
         const canvas =
             document.createElement("canvas");
+
 
         canvas.width = width;
         canvas.height = height;
@@ -1064,16 +1262,11 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
-        let outputType =
-            file.type;
+        let outputType = file.type;
 
 
-        if (
-            file.type ===
-            "image/png"
-        ) {
-            outputType =
-                "image/webp";
+        if (file.type === "image/png") {
+            outputType = "image/webp";
         }
 
 
@@ -1115,64 +1308,64 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        const name =
-            `${getBaseName(
-                file.name
-            )}_compressed.${extension}`;
-
-
         return {
             blob,
-            name
+            name:
+                `${getBaseName(
+                    file.name
+                )}_compressed.${extension}`
         };
+    }
+
+
+    function resetCompressor() {
+
+        revokeProcessedURLs(
+            processedCompFiles
+        );
+
+        revokePreviewURLs(
+            compFiles
+        );
+
+
+        processedCompFiles = [];
+        compFiles = [];
+
+
+        comp.input.value = "";
+
+
+        comp.resultsList.innerHTML = "";
+
+
+        comp.results.hidden = true;
+        comp.zip.hidden = true;
+        comp.settings.hidden = true;
+
+
+        renderQueue(
+            compFiles,
+            comp.queue,
+            comp.queuePanel,
+            comp.queueSummary
+        );
+
+
+        comp.count.textContent =
+            "0 files loaded";
+
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
     }
 
 
     comp.processMore.addEventListener(
         "click",
-        () => {
-
-            revokeProcessedURLs(
-                processedCompFiles
-            );
-
-            revokePreviewURLs(
-                compFiles
-            );
-
-
-            processedCompFiles = [];
-            compFiles = [];
-
-
-            comp.input.value = "";
-
-            comp.resultsList.innerHTML = "";
-
-            comp.results.hidden = true;
-            comp.zip.hidden = true;
-
-            comp.settings.hidden = true;
-
-
-            renderQueue(
-                compFiles,
-                comp.queue,
-                comp.queuePanel,
-                comp.queueSummary
-            );
-
-
-            comp.count.textContent =
-                "0 files loaded";
-
-
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-
-        }
+        resetCompressor
     );
 
 
@@ -1188,8 +1381,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             if (
-                typeof JSZip ===
-                "undefined"
+                typeof JSZip === "undefined"
             ) {
 
                 showError(
@@ -1205,7 +1397,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             comp.zip.disabled = true;
-
             comp.zip.textContent =
                 "Creating ZIP...";
 
@@ -1251,18 +1442,18 @@ document.addEventListener("DOMContentLoaded", () => {
             } finally {
 
                 comp.zip.disabled = false;
-
                 comp.zip.textContent =
                     originalText;
+
             }
 
         }
     );
 
 
-    /* =========================
+    /* =========================================================
        CONVERTER
-    ========================= */
+    ========================================================= */
 
     const conv = {
 
@@ -1417,30 +1608,39 @@ document.addEventListener("DOMContentLoaded", () => {
         "click",
         () => {
 
-            revokePreviewURLs(
-                convFiles
-            );
-
-            convFiles = [];
-
-
-            renderQueue(
-                convFiles,
-                conv.queue,
-                conv.queuePanel,
-                conv.queueSummary
-            );
-
-
-            conv.settings.hidden = true;
-
-            conv.count.textContent =
-                "0 files loaded";
-
-            conv.input.value = "";
+            clearConverterSelection();
 
         }
     );
+
+
+    function clearConverterSelection() {
+
+        revokePreviewURLs(
+            convFiles
+        );
+
+
+        convFiles = [];
+
+
+        renderQueue(
+            convFiles,
+            conv.queue,
+            conv.queuePanel,
+            conv.queueSummary
+        );
+
+
+        conv.settings.hidden = true;
+
+
+        conv.count.textContent =
+            "0 files loaded";
+
+
+        conv.input.value = "";
+    }
 
 
     conv.start.addEventListener(
@@ -1456,15 +1656,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 processedConvFiles
             );
 
+
             processedConvFiles = [];
 
+
             conv.resultsList.innerHTML = "";
+
 
             conv.results.hidden = false;
             conv.zip.hidden = true;
 
-            conv.start.disabled = true;
 
+            conv.start.disabled = true;
             conv.start.textContent =
                 "Converting...";
 
@@ -1492,32 +1695,41 @@ document.addEventListener("DOMContentLoaded", () => {
                 const row =
                     document.createElement("div");
 
+
                 row.className =
                     "result-row";
 
 
                 row.innerHTML = `
+
                     <div class="result-preview">
+
                         <img
                             src="${item.previewURL}"
                             alt=""
                         >
+
                     </div>
+
 
                     <div class="file-meta">
 
                         <h4>
-                            ${escapeHTML(file.name)}
+                            ${escapeHTML(
+                                file.name
+                            )}
                         </h4>
 
                         <span>
-                            Converting
-                            ${index + 1}
-                            /
-                            ${convFiles.length}...
+                            Converting ${
+                                index + 1
+                            } / ${
+                                convFiles.length
+                            }...
                         </span>
 
                     </div>
+
                 `;
 
 
@@ -1550,12 +1762,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                     row.innerHTML = `
+
                         <div class="result-preview">
+
                             <img
                                 src="${item.previewURL}"
                                 alt=""
                             >
+
                         </div>
+
 
                         <div class="file-meta">
 
@@ -1576,6 +1792,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         </div>
 
+
                         <a
                             href="${url}"
                             download="${escapeHTML(
@@ -1585,6 +1802,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         >
                             Download
                         </a>
+
                     `;
 
 
@@ -1594,17 +1812,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                     row.innerHTML = `
+
                         <div class="result-preview">
+
                             <img
                                 src="${item.previewURL}"
                                 alt=""
                             >
+
                         </div>
+
 
                         <div class="file-meta">
 
                             <h4>
-                                ${escapeHTML(file.name)}
+                                ${escapeHTML(
+                                    file.name
+                                )}
                             </h4>
 
                             <span
@@ -1614,13 +1838,14 @@ document.addEventListener("DOMContentLoaded", () => {
                             </span>
 
                         </div>
+
                     `;
                 }
+
             }
 
 
             conv.start.disabled = false;
-
             conv.start.textContent =
                 "Convert Images";
 
@@ -1638,7 +1863,9 @@ document.addEventListener("DOMContentLoaded", () => {
             if (
                 processedConvFiles.length > 0
             ) {
+
                 conv.zip.hidden = false;
+
             }
 
 
@@ -1663,6 +1890,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const canvas =
             document.createElement("canvas");
 
+
         canvas.width =
             bitmap.width;
 
@@ -1682,12 +1910,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         if (
-            targetFormat ===
-            "image/jpeg"
+            targetFormat === "image/jpeg"
         ) {
 
-            context.fillStyle =
-                "#ffffff";
+            context.fillStyle = "#ffffff";
 
             context.fillRect(
                 0,
@@ -1695,6 +1921,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 canvas.width,
                 canvas.height
             );
+
         }
 
 
@@ -1706,8 +1933,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         const quality =
-            targetFormat ===
-            "image/png"
+            targetFormat === "image/png"
                 ? undefined
                 : 0.92;
 
@@ -1761,51 +1987,54 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+    function resetConverter() {
+
+        revokeProcessedURLs(
+            processedConvFiles
+        );
+
+        revokePreviewURLs(
+            convFiles
+        );
+
+
+        processedConvFiles = [];
+        convFiles = [];
+
+
+        conv.input.value = "";
+
+
+        conv.resultsList.innerHTML = "";
+
+
+        conv.results.hidden = true;
+        conv.zip.hidden = true;
+        conv.settings.hidden = true;
+
+
+        renderQueue(
+            convFiles,
+            conv.queue,
+            conv.queuePanel,
+            conv.queueSummary
+        );
+
+
+        conv.count.textContent =
+            "0 files loaded";
+
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+
+
     conv.processMore.addEventListener(
         "click",
-        () => {
-
-            revokeProcessedURLs(
-                processedConvFiles
-            );
-
-            revokePreviewURLs(
-                convFiles
-            );
-
-
-            processedConvFiles = [];
-            convFiles = [];
-
-
-            conv.input.value = "";
-
-            conv.resultsList.innerHTML = "";
-
-            conv.results.hidden = true;
-            conv.zip.hidden = true;
-
-            conv.settings.hidden = true;
-
-
-            renderQueue(
-                convFiles,
-                conv.queue,
-                conv.queuePanel,
-                conv.queueSummary
-            );
-
-
-            conv.count.textContent =
-                "0 files loaded";
-
-
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-
-        }
+        resetConverter
     );
 
 
@@ -1821,8 +2050,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             if (
-                typeof JSZip ===
-                "undefined"
+                typeof JSZip === "undefined"
             ) {
 
                 showError(
@@ -1838,7 +2066,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             conv.zip.disabled = true;
-
             conv.zip.textContent =
                 "Creating ZIP...";
 
@@ -1884,18 +2111,18 @@ document.addEventListener("DOMContentLoaded", () => {
             } finally {
 
                 conv.zip.disabled = false;
-
                 conv.zip.textContent =
                     originalText;
+
             }
 
         }
     );
 
 
-    /* =========================
+    /* =========================================================
        DOWNLOAD HELPER
-    ========================= */
+    ========================================================= */
 
     function downloadBlob(
         blob,
@@ -1909,13 +2136,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const anchor =
             document.createElement("a");
 
+
         anchor.href = url;
         anchor.download = fileName;
 
 
-        document.body.appendChild(
-            anchor
-        );
+        document.body.appendChild(anchor);
 
         anchor.click();
 
