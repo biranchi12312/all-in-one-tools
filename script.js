@@ -130,6 +130,11 @@ document.addEventListener("DOMContentLoaded", () => {
             views[viewName].classList.add("active");
         }
 
+        document.querySelector(".navbar")?.classList.toggle(
+            "is-dashboard",
+            viewName === "dashboard"
+        );
+
 
         window.scrollTo({
             top: 0,
@@ -322,6 +327,29 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     );
 
+
+    /* =========================================================
+       GLOBAL TOOLS MENU
+    ========================================================= */
+
+    const menuToggle = document.getElementById("menuToggle");
+    const toolsMenu = document.getElementById("toolsMenu");
+    const menuClose = document.getElementById("menuClose");
+
+    function setToolsMenu(open) {
+        if (!menuToggle || !toolsMenu) return;
+        toolsMenu.classList.toggle("open", open);
+        menuToggle.classList.toggle("active", open);
+        menuToggle.setAttribute("aria-expanded", String(open));
+        toolsMenu.setAttribute("aria-hidden", String(!open));
+    }
+
+    menuToggle?.addEventListener("click", event => { event.stopPropagation(); setToolsMenu(!toolsMenu.classList.contains("open")); });
+    menuClose?.addEventListener("click", () => setToolsMenu(false));
+    document.querySelectorAll("[data-open-menu]").forEach(button => button.addEventListener("click", () => setToolsMenu(true)));
+    document.addEventListener("click", event => { if (!toolsMenu?.classList.contains("open")) return; if (toolsMenu.contains(event.target) || menuToggle?.contains(event.target)) return; setToolsMenu(false); });
+    document.addEventListener("keydown", event => { if (event.key === "Escape") setToolsMenu(false); });
+    toolsMenu?.querySelectorAll("[data-open-view]").forEach(button => button.addEventListener("click", () => setToolsMenu(false)));
 
     /* =========================================================
        SCROLL ANIMATIONS
