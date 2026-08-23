@@ -1452,673 +1452,427 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       CONVERTER
+       CONVERTER V2
     ========================================================= */
 
     const conv = {
-
-        input:
-            document.getElementById(
-                "convFileInput"
-            ),
-
-        dropZone:
-            document.getElementById(
-                "convDropZone"
-            ),
-
-        queuePanel:
-            document.getElementById(
-                "convQueuePanel"
-            ),
-
-        queue:
-            document.getElementById(
-                "convFileQueue"
-            ),
-
-        queueSummary:
-            document.getElementById(
-                "convQueueSummary"
-            ),
-
-        clearButton:
-            document.getElementById(
-                "convClearBtn"
-            ),
-
-        settings:
-            document.getElementById(
-                "convSettingsPanel"
-            ),
-
-        format:
-            document.getElementById(
-                "targetFormat"
-            ),
-
-        count:
-            document.getElementById(
-                "convFileCount"
-            ),
-
-        start:
-            document.getElementById(
-                "convStartBtn"
-            ),
-
-        results:
-            document.getElementById(
-                "convResultsPanel"
-            ),
-
-        resultsList:
-            document.getElementById(
-                "convResultsList"
-            ),
-
-        resultSummary:
-            document.getElementById(
-                "convResultSummary"
-            ),
-
-        processMore:
-            document.getElementById(
-                "convProcessMoreBtn"
-            ),
-
-        zip:
-            document.getElementById(
-                "convZipBtn"
-            )
+        input: document.getElementById("convFileInput"),
+        dropZone: document.getElementById("convDropZone"),
+        queuePanel: document.getElementById("convQueuePanel"),
+        queue: document.getElementById("convFileQueue"),
+        queueSummary: document.getElementById("convQueueSummary"),
+        clearButton: document.getElementById("convClearBtn"),
+        settings: document.getElementById("convSettingsPanel"),
+        sourceList: document.getElementById("sourceFormatList"),
+        targetList: document.getElementById("targetFormatList"),
+        formatSummary: document.getElementById("convFormatSummary"),
+        formatNote: document.getElementById("convFormatNote"),
+        qualityGroup: document.getElementById("convQualityGroup"),
+        quality: document.getElementById("convQualitySlider"),
+        qualityValue: document.getElementById("convQualityVal"),
+        jpgBackgroundGroup: document.getElementById("convJpgBackgroundGroup"),
+        customBackground: document.getElementById("convCustomBackground"),
+        readySummary: document.getElementById("convReadySummary"),
+        progress: document.getElementById("convProgressPanel"),
+        progressTitle: document.getElementById("convProgressTitle"),
+        progressPercent: document.getElementById("convProgressPercent"),
+        progressFill: document.getElementById("convProgressFill"),
+        progressText: document.getElementById("convProgressText"),
+        count: document.getElementById("convFileCount"),
+        start: document.getElementById("convStartBtn"),
+        results: document.getElementById("convResultsPanel"),
+        resultsList: document.getElementById("convResultsList"),
+        resultSummary: document.getElementById("convResultSummary"),
+        processMore: document.getElementById("convProcessMoreBtn"),
+        zip: document.getElementById("convZipBtn")
     };
 
+    const FORMAT_NAMES = {
+        auto: "AUTO DETECT",
+        "image/jpeg": "JPEG / JPG",
+        "image/png": "PNG",
+        "image/webp": "WEBP"
+    };
+
+    const FORMAT_ACCEPT = {
+        auto: "image/jpeg,image/jpg,image/png,image/webp",
+        "image/jpeg": "image/jpeg,image/jpg",
+        "image/png": "image/png",
+        "image/webp": "image/webp"
+    };
 
     let convFiles = [];
     let processedConvFiles = [];
+    let convSourceFormat = "auto";
+    let convTargetFormat = "image/webp";
+    let convJpgBackground = "#ffffff";
 
+    function normalizeImageType(file) {
+        if (file.type === "image/jpg") return "image/jpeg";
+        return file.type;
+    }
+
+    function sourceMatches(file) {
+        return convSourceFormat === "auto" || normalizeImageType(file) === convSourceFormat;
+    }
+
+    function updateConverterFormatUI() {
+        conv.sourceList.querySelectorAll("[data-source-format]").forEach(button => {
+            button.classList.toggle("selected", button.dataset.sourceFormat === convSourceFormat);
+        });
+        conv.targetList.querySelectorAll("[data-target-format]").forEach(button => {
+            button.classList.toggle("selected", button.dataset.targetFormat === convTargetFormat);
+        });
+
+        conv.input.accept = FORMAT_ACCEPT[convSourceFormat];
+        conv.formatSummary.innerHTML = `${FORMAT_NAMES[convSourceFormat]} <span>→</span> ${FORMAT_NAMES[convTargetFormat]}`;
+
+        if (convSourceFormat === "auto") {
+            conv.formatNote.textContent = "Auto Detect accepts a mixed batch of currently supported JPG, PNG and WebP images.";
+        } else {
+            conv.formatNote.textContent = `Upload filter is set to ${FORMAT_NAMES[convSourceFormat]}. The browser will still verify the actual image type.`;
+        }
+
+        const usesQuality = convTargetFormat === "image/jpeg" || convTargetFormat === "image/webp";
+        conv.qualityGroup.hidden = !usesQuality;
+        conv.jpgBackgroundGroup.hidden = convTargetFormat !== "image/jpeg";
+
+        const sameManualFormat = convSourceFormat !== "auto" && convSourceFormat === convTargetFormat;
+        conv.start.disabled = sameManualFormat || convFiles.length === 0;
+        conv.start.textContent = sameManualFormat ? "Choose a Different Output Format" : "Convert Images";
+
+        if (sameManualFormat) {
+            conv.count.textContent = "Source and output formats are the same.";
+        } else if (convFiles.length === 0) {
+            conv.count.textContent = "0 files loaded";
+        } else {
+            updateConverterReadyState();
+        }
+    }
+
+    function updateConverterReadyState() {
+        const alreadyTarget = convFiles.filter(item => normalizeImageType(item.file) === convTargetFormat).length;
+        const willConvert = convFiles.length - alreadyTarget;
+        conv.readySummary.textContent = `${willConvert} to convert${alreadyTarget ? ` • ${alreadyTarget} already target` : ""}`;
+        conv.count.textContent = `${convFiles.length} file${convFiles.length !== 1 ? "s" : ""} loaded • ${willConvert} ready to convert`;
+        conv.start.disabled = convFiles.length === 0 || (convSourceFormat !== "auto" && convSourceFormat === convTargetFormat);
+    }
+
+    conv.sourceList.querySelectorAll("[data-source-format]").forEach(button => {
+        button.addEventListener("click", () => {
+            convSourceFormat = button.dataset.sourceFormat;
+            updateConverterFormatUI();
+        });
+    });
+
+    conv.targetList.querySelectorAll("[data-target-format]").forEach(button => {
+        button.addEventListener("click", () => {
+            convTargetFormat = button.dataset.targetFormat;
+            updateConverterFormatUI();
+        });
+    });
+
+    conv.quality.addEventListener("input", event => {
+        conv.qualityValue.textContent = `${event.target.value}%`;
+    });
+
+    document.querySelectorAll(".background-option[data-bg]").forEach(button => {
+        button.addEventListener("click", () => {
+            convJpgBackground = button.dataset.bg;
+            document.querySelectorAll(".background-option[data-bg]").forEach(item => item.classList.remove("selected"));
+            document.querySelector(".custom-background-option").classList.remove("selected");
+            button.classList.add("selected");
+        });
+    });
+
+    conv.customBackground.addEventListener("input", event => {
+        convJpgBackground = event.target.value;
+        document.querySelectorAll(".background-option[data-bg]").forEach(item => item.classList.remove("selected"));
+        document.querySelector(".custom-background-option").classList.add("selected");
+    });
+
+    function renderConverterQueue() {
+        conv.queue.innerHTML = "";
+        if (convFiles.length === 0) {
+            conv.queuePanel.hidden = true;
+            return;
+        }
+        conv.queuePanel.hidden = false;
+        const totalSize = convFiles.reduce((total, item) => total + item.file.size, 0);
+        conv.queueSummary.textContent = `${convFiles.length} image${convFiles.length !== 1 ? "s" : ""} uploaded • ${formatBytes(totalSize)}`;
+
+        convFiles.forEach((item, index) => {
+            const row = document.createElement("div");
+            row.className = "queue-item";
+            row.innerHTML = `
+                <div class="file-preview"><img src="${item.previewURL}" alt=""></div>
+                <div class="file-details">
+                    <div class="file-name" title="${escapeHTML(item.file.name)}">${escapeHTML(item.file.name)}</div>
+                    <div class="file-size">${formatBytes(item.file.size)} • ${FORMAT_NAMES[normalizeImageType(item.file)] || "IMAGE"}</div>
+                </div>
+                <div class="upload-status"><div class="green-check">✓</div><span>Uploaded</span></div>
+                <button type="button" class="queue-remove-btn" data-conv-remove="${index}" aria-label="Remove file">×</button>
+            `;
+            conv.queue.appendChild(row);
+        });
+
+        conv.queue.querySelectorAll("[data-conv-remove]").forEach(button => {
+            button.addEventListener("click", () => removeConverterFile(Number(button.dataset.convRemove)));
+        });
+        updateConverterReadyState();
+    }
+
+    function removeConverterFile(index) {
+        const item = convFiles[index];
+        if (!item) return;
+        if (item.previewURL) URL.revokeObjectURL(item.previewURL);
+        convFiles.splice(index, 1);
+        renderConverterQueue();
+        if (convFiles.length === 0) conv.settings.hidden = true;
+        updateConverterFormatUI();
+    }
 
     function addConverterFiles(fileList) {
-
-        const newFiles =
-            validateFiles(
-                fileList,
-                convFiles
-            );
-
-
-        if (newFiles.length === 0) {
-
-            if (convFiles.length === 0) {
-                conv.input.value = "";
+        const incoming = Array.from(fileList);
+        const filtered = incoming.filter(file => {
+            if (!isSupportedImage(file)) return false;
+            if (!sourceMatches(file)) {
+                showError(`"${file.name}" does not match the selected source format (${FORMAT_NAMES[convSourceFormat]}).`);
+                return false;
             }
+            return true;
+        });
 
+        const newFiles = validateFiles(filtered, convFiles);
+        if (newFiles.length === 0) {
+            if (convFiles.length === 0) conv.input.value = "";
             return;
         }
 
-
-        convFiles = [
-            ...convFiles,
-            ...newFiles
-        ];
-
-
-        renderQueue(
-            convFiles,
-            conv.queue,
-            conv.queuePanel,
-            conv.queueSummary
-        );
-
-
+        convFiles = [...convFiles, ...newFiles];
         conv.settings.hidden = false;
-
-
-        conv.count.textContent =
-            `${convFiles.length} file${
-                convFiles.length !== 1
-                    ? "s"
-                    : ""
-            } ready`;
-
-
+        conv.results.hidden = true;
+        conv.zip.hidden = true;
+        renderConverterQueue();
+        updateConverterFormatUI();
         conv.input.value = "";
     }
 
+    conv.input.addEventListener("change", event => addConverterFiles(event.target.files));
+    setupDropZone(conv.dropZone, addConverterFiles);
 
-    conv.input.addEventListener(
-        "change",
-        event => {
-
-            addConverterFiles(
-                event.target.files
-            );
-
-        }
-    );
-
-
-    setupDropZone(
-        conv.dropZone,
-        addConverterFiles
-    );
-
-
-    conv.clearButton.addEventListener(
-        "click",
-        () => {
-
-            clearConverterSelection();
-
-        }
-    );
-
+    conv.clearButton.addEventListener("click", clearConverterSelection);
 
     function clearConverterSelection() {
-
-        revokePreviewURLs(
-            convFiles
-        );
-
-
+        revokePreviewURLs(convFiles);
+        revokeProcessedURLs(processedConvFiles);
         convFiles = [];
-
-
-        renderQueue(
-            convFiles,
-            conv.queue,
-            conv.queuePanel,
-            conv.queueSummary
-        );
-
-
-        conv.settings.hidden = true;
-
-
-        conv.count.textContent =
-            "0 files loaded";
-
-
-        conv.input.value = "";
-    }
-
-
-    conv.start.addEventListener(
-        "click",
-        async () => {
-
-            if (convFiles.length === 0) {
-                return;
-            }
-
-
-            revokeProcessedURLs(
-                processedConvFiles
-            );
-
-
-            processedConvFiles = [];
-
-
-            conv.resultsList.innerHTML = "";
-
-
-            conv.results.hidden = false;
-            conv.zip.hidden = true;
-
-
-            conv.start.disabled = true;
-            conv.start.textContent =
-                "Converting...";
-
-
-            const targetFormat =
-                conv.format.value;
-
-
-            let successCount = 0;
-
-
-            for (
-                let index = 0;
-                index < convFiles.length;
-                index++
-            ) {
-
-                const item =
-                    convFiles[index];
-
-                const file =
-                    item.file;
-
-
-                const row =
-                    document.createElement("div");
-
-
-                row.className =
-                    "result-row";
-
-
-                row.innerHTML = `
-
-                    <div class="result-preview">
-
-                        <img
-                            src="${item.previewURL}"
-                            alt=""
-                        >
-
-                    </div>
-
-
-                    <div class="file-meta">
-
-                        <h4>
-                            ${escapeHTML(
-                                file.name
-                            )}
-                        </h4>
-
-                        <span>
-                            Converting ${
-                                index + 1
-                            } / ${
-                                convFiles.length
-                            }...
-                        </span>
-
-                    </div>
-
-                `;
-
-
-                conv.resultsList.appendChild(row);
-
-
-                try {
-
-                    const result =
-                        await convertImage(
-                            file,
-                            targetFormat
-                        );
-
-
-                    const url =
-                        URL.createObjectURL(
-                            result.blob
-                        );
-
-
-                    processedConvFiles.push({
-                        name: result.name,
-                        blob: result.blob,
-                        url: url
-                    });
-
-
-                    successCount++;
-
-
-                    row.innerHTML = `
-
-                        <div class="result-preview">
-
-                            <img
-                                src="${item.previewURL}"
-                                alt=""
-                            >
-
-                        </div>
-
-
-                        <div class="file-meta">
-
-                            <h4>
-                                ${escapeHTML(
-                                    result.name
-                                )}
-                            </h4>
-
-                            <span>
-                                Output:
-                                <strong>
-                                    ${formatBytes(
-                                        result.blob.size
-                                    )}
-                                </strong>
-                            </span>
-
-                        </div>
-
-
-                        <a
-                            href="${url}"
-                            download="${escapeHTML(
-                                result.name
-                            )}"
-                            class="download-link"
-                        >
-                            Download
-                        </a>
-
-                    `;
-
-
-                } catch (error) {
-
-                    console.error(error);
-
-
-                    row.innerHTML = `
-
-                        <div class="result-preview">
-
-                            <img
-                                src="${item.previewURL}"
-                                alt=""
-                            >
-
-                        </div>
-
-
-                        <div class="file-meta">
-
-                            <h4>
-                                ${escapeHTML(
-                                    file.name
-                                )}
-                            </h4>
-
-                            <span
-                                style="color:#ef4444;"
-                            >
-                                Failed conversion
-                            </span>
-
-                        </div>
-
-                    `;
-                }
-
-            }
-
-
-            conv.start.disabled = false;
-            conv.start.textContent =
-                "Convert Images";
-
-
-            conv.resultSummary.textContent =
-                `${successCount} of ${
-                    convFiles.length
-                } image${
-                    convFiles.length !== 1
-                        ? "s"
-                        : ""
-                } converted successfully.`;
-
-
-            if (
-                processedConvFiles.length > 0
-            ) {
-
-                conv.zip.hidden = false;
-
-            }
-
-
-            conv.results.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
-
-        }
-    );
-
-
-    async function convertImage(
-        file,
-        targetFormat
-    ) {
-
-        const bitmap =
-            await createImageBitmap(file);
-
-
-        const canvas =
-            document.createElement("canvas");
-
-
-        canvas.width =
-            bitmap.width;
-
-        canvas.height =
-            bitmap.height;
-
-
-        const context =
-            canvas.getContext(
-                "2d",
-                {
-                    alpha:
-                        targetFormat !==
-                        "image/jpeg"
-                }
-            );
-
-
-        if (
-            targetFormat === "image/jpeg"
-        ) {
-
-            context.fillStyle = "#ffffff";
-
-            context.fillRect(
-                0,
-                0,
-                canvas.width,
-                canvas.height
-            );
-
-        }
-
-
-        context.drawImage(
-            bitmap,
-            0,
-            0
-        );
-
-
-        const quality =
-            targetFormat === "image/png"
-                ? undefined
-                : 0.92;
-
-
-        const blob =
-            await new Promise(
-                (resolve, reject) => {
-
-                    canvas.toBlob(
-                        result => {
-
-                            if (result) {
-                                resolve(result);
-                            } else {
-                                reject(
-                                    new Error(
-                                        "Conversion failed"
-                                    )
-                                );
-                            }
-
-                        },
-                        targetFormat,
-                        quality
-                    );
-
-                }
-            );
-
-
-        bitmap.close();
-
-
-        let extension =
-            targetFormat.split("/")[1];
-
-
-        if (extension === "jpeg") {
-            extension = "jpg";
-        }
-
-
-        return {
-            blob,
-
-            name:
-                `${getBaseName(
-                    file.name
-                )}.${extension}`
-        };
-    }
-
-
-    function resetConverter() {
-
-        revokeProcessedURLs(
-            processedConvFiles
-        );
-
-        revokePreviewURLs(
-            convFiles
-        );
-
-
         processedConvFiles = [];
-        convFiles = [];
-
-
         conv.input.value = "";
-
-
         conv.resultsList.innerHTML = "";
-
-
         conv.results.hidden = true;
         conv.zip.hidden = true;
         conv.settings.hidden = true;
-
-
-        renderQueue(
-            convFiles,
-            conv.queue,
-            conv.queuePanel,
-            conv.queueSummary
-        );
-
-
-        conv.count.textContent =
-            "0 files loaded";
-
-
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
+        conv.progress.hidden = true;
+        renderConverterQueue();
+        updateConverterFormatUI();
     }
 
+    function setConverterProgress(completed, total, statusText, currentName = "") {
+        const percent = total ? Math.round((completed / total) * 100) : 0;
+        conv.progress.hidden = false;
+        conv.progressFill.style.width = `${percent}%`;
+        conv.progressPercent.textContent = `${percent}%`;
+        conv.progressTitle.textContent = statusText;
+        conv.progressText.textContent = currentName ? `${completed} of ${total} complete • ${currentName}` : `${completed} of ${total} complete`;
+    }
 
-    conv.processMore.addEventListener(
-        "click",
-        resetConverter
-    );
+    function getPixelSafety(bitmap) {
+        const pixels = bitmap.width * bitmap.height;
+        const MAX_PIXELS = 40000000;
+        const MAX_DIMENSION = 9000;
+        if (pixels > MAX_PIXELS || Math.max(bitmap.width, bitmap.height) > MAX_DIMENSION) {
+            throw new Error("Image resolution is too large for safe browser-side conversion on this device.");
+        }
+    }
 
+    function buildResultRow(item) {
+        const row = document.createElement("div");
+        row.className = "result-row converter-result-row";
+        row.innerHTML = `
+            <div class="result-preview"><img src="${item.previewURL}" alt=""></div>
+            <div class="file-meta"><h4>${escapeHTML(item.file.name)}</h4><span>Waiting to convert...</span></div>
+        `;
+        return row;
+    }
 
-    conv.zip.addEventListener(
-        "click",
-        async () => {
+    function formatDelta(original, output) {
+        if (!original) return { text: "", className: "" };
+        const percent = Math.round(Math.abs((output - original) / original) * 100);
+        if (output < original) return { text: `${percent}% smaller`, className: "positive" };
+        if (output > original) return { text: `${percent}% larger`, className: "negative" };
+        return { text: "Same size", className: "" };
+    }
 
-            if (
-                processedConvFiles.length === 0
-            ) {
-                return;
+    conv.start.addEventListener("click", async () => {
+        if (convFiles.length === 0) return;
+        if (convSourceFormat !== "auto" && convSourceFormat === convTargetFormat) {
+            showError("Please choose a different output format.");
+            return;
+        }
+
+        revokeProcessedURLs(processedConvFiles);
+        processedConvFiles = [];
+        conv.resultsList.innerHTML = "";
+        conv.results.hidden = false;
+        conv.zip.hidden = true;
+        conv.start.disabled = true;
+        conv.clearButton.disabled = true;
+        conv.start.textContent = "Converting...";
+
+        const rows = convFiles.map(item => {
+            const row = buildResultRow(item);
+            conv.resultsList.appendChild(row);
+            return row;
+        });
+
+        let successCount = 0;
+        let skippedCount = 0;
+        let completed = 0;
+        setConverterProgress(0, convFiles.length, "Starting conversion");
+
+        for (let index = 0; index < convFiles.length; index++) {
+            const item = convFiles[index];
+            const file = item.file;
+            const row = rows[index];
+            const actualType = normalizeImageType(file);
+            setConverterProgress(completed, convFiles.length, "Converting images", file.name);
+
+            if (actualType === convTargetFormat) {
+                skippedCount++;
+                completed++;
+                row.classList.add("is-skipped");
+                row.querySelector(".file-meta").innerHTML = `
+                    <h4>${escapeHTML(file.name)}</h4>
+                    <div class="result-status skipped">↷ Already ${FORMAT_NAMES[convTargetFormat]} — skipped</div>
+                    <div class="result-comparison"><span>No format change required</span></div>
+                `;
+                setConverterProgress(completed, convFiles.length, "Checking images", file.name);
+                continue;
             }
 
-
-            if (
-                typeof JSZip === "undefined"
-            ) {
-
-                showError(
-                    "ZIP library could not be loaded. Please check your internet connection."
-                );
-
-                return;
-            }
-
-
-            const originalText =
-                conv.zip.textContent;
-
-
-            conv.zip.disabled = true;
-            conv.zip.textContent =
-                "Creating ZIP...";
-
+            row.querySelector(".file-meta").innerHTML = `<h4>${escapeHTML(file.name)}</h4><span>Converting ${index + 1} / ${convFiles.length}...</span>`;
 
             try {
-
-                const zip =
-                    new JSZip();
-
-
-                processedConvFiles.forEach(
-                    item => {
-
-                        zip.file(
-                            item.name,
-                            item.blob
-                        );
-
-                    }
-                );
-
-
-                const zipBlob =
-                    await zip.generateAsync({
-                        type: "blob"
-                    });
-
-
-                downloadBlob(
-                    zipBlob,
-                    "AuraStudio_Converted_Images.zip"
-                );
-
-
+                const result = await convertImage(file, convTargetFormat, Number(conv.quality.value) / 100, convJpgBackground);
+                const url = URL.createObjectURL(result.blob);
+                processedConvFiles.push({ name: result.name, blob: result.blob, url });
+                successCount++;
+                completed++;
+                const delta = formatDelta(file.size, result.blob.size);
+                row.querySelector(".file-meta").innerHTML = `
+                    <h4>${escapeHTML(result.name)}</h4>
+                    <div class="result-status">✓ Converted successfully</div>
+                    <div class="result-comparison">
+                        <span>Original: <strong>${formatBytes(file.size)}</strong></span>
+                        <span>→</span>
+                        <span>Output: <strong>${formatBytes(result.blob.size)}</strong></span>
+                        <span class="result-delta ${delta.className}">${delta.text}</span>
+                    </div>
+                `;
+                const download = document.createElement("a");
+                download.href = url;
+                download.download = result.name;
+                download.className = "download-link";
+                download.textContent = "Download";
+                row.appendChild(download);
             } catch (error) {
-
                 console.error(error);
-
-                showError(
-                    "Could not create ZIP archive."
-                );
-
-            } finally {
-
-                conv.zip.disabled = false;
-                conv.zip.textContent =
-                    originalText;
-
+                completed++;
+                row.classList.add("is-failed");
+                row.querySelector(".file-meta").innerHTML = `
+                    <h4>${escapeHTML(file.name)}</h4>
+                    <div class="result-status failed">Failed conversion</div>
+                    <div class="result-comparison"><span>${escapeHTML(error.message || "This image could not be converted safely.")}</span></div>
+                `;
             }
-
+            setConverterProgress(completed, convFiles.length, completed === convFiles.length ? "Finalizing results" : "Converting images", file.name);
+            await new Promise(resolve => setTimeout(resolve, 0));
         }
-    );
 
+        conv.start.disabled = false;
+        conv.clearButton.disabled = false;
+        conv.start.textContent = "Convert Images";
+        conv.progressTitle.textContent = "Conversion complete";
+        conv.progressText.textContent = `${completed} of ${convFiles.length} files processed.`;
+
+        const summaryParts = [`${successCount} converted successfully`];
+        if (skippedCount) summaryParts.push(`${skippedCount} already in target format`);
+        const failedCount = convFiles.length - successCount - skippedCount;
+        if (failedCount) summaryParts.push(`${failedCount} failed`);
+        conv.resultSummary.textContent = summaryParts.join(" • ");
+
+        if (processedConvFiles.length > 0) conv.zip.hidden = false;
+        conv.results.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    async function convertImage(file, targetFormat, quality, jpgBackground) {
+        const bitmap = await createImageBitmap(file);
+        try {
+            getPixelSafety(bitmap);
+            const canvas = document.createElement("canvas");
+            canvas.width = bitmap.width;
+            canvas.height = bitmap.height;
+            const context = canvas.getContext("2d", { alpha: targetFormat !== "image/jpeg" });
+            if (!context) throw new Error("Canvas processing is unavailable in this browser.");
+
+            if (targetFormat === "image/jpeg") {
+                context.fillStyle = jpgBackground || "#ffffff";
+                context.fillRect(0, 0, canvas.width, canvas.height);
+            }
+            context.drawImage(bitmap, 0, 0);
+
+            const blob = await new Promise((resolve, reject) => {
+                canvas.toBlob(result => result ? resolve(result) : reject(new Error("The browser could not create the selected output format.")), targetFormat, targetFormat === "image/png" ? undefined : quality);
+            });
+
+            let extension = targetFormat.split("/")[1];
+            if (extension === "jpeg") extension = "jpg";
+            return { blob, name: `${getBaseName(file.name)}_converted.${extension}` };
+        } finally {
+            bitmap.close();
+        }
+    }
+
+    conv.processMore.addEventListener("click", () => {
+        clearConverterSelection();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    conv.zip.addEventListener("click", async () => {
+        if (processedConvFiles.length === 0) return;
+        if (typeof JSZip === "undefined") {
+            showError("ZIP library could not be loaded. Please check your internet connection.");
+            return;
+        }
+        const originalText = conv.zip.textContent;
+        conv.zip.disabled = true;
+        conv.zip.textContent = "Creating ZIP...";
+        try {
+            const zip = new JSZip();
+            processedConvFiles.forEach(item => zip.file(item.name, item.blob));
+            const zipBlob = await zip.generateAsync({ type: "blob" });
+            downloadBlob(zipBlob, "AuraStudio_Converted_Images.zip");
+        } catch (error) {
+            console.error(error);
+            showError("Could not create ZIP archive.");
+        } finally {
+            conv.zip.disabled = false;
+            conv.zip.textContent = originalText;
+        }
+    });
+
+    updateConverterFormatUI();
 
     /* =========================================================
        DOWNLOAD HELPER

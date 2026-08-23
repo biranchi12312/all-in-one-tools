@@ -13,7 +13,7 @@
 
     <meta
         name="description"
-        content="Compress and convert JPG, PNG and WebP images directly in your browser. Process up to 100 images in one batch and download optimized results."
+        content="Compress and convert supported image formats directly in your browser. Process up to 100 images in one batch and download optimized results."
     >
 
     <link
@@ -148,37 +148,6 @@
             </section>
 
 
-
-
-
-            <!-- =========================
-                 PRIMARY SPONSORED AD DOCK
-            ========================== -->
-            <section class="sponsored-dock sponsored-dock-primary reveal" aria-label="Sponsored content">
-
-                <div class="sponsored-dock-top">
-                    <span class="sponsored-kicker">
-                        <span class="sponsored-dot"></span>
-                        SPONSORED
-                    </span>
-
-                    <span class="sponsored-support">
-                        Supporting AuraStudio
-                    </span>
-                </div>
-
-                <!-- Paste your approved ad network code inside the ad-safe-inner wrapper. -->
-                <div
-                    class="ad-slot ad-slot-primary"
-                    id="homeAdPrimary"
-                    aria-label="Advertisement"
-                >
-                    <div class="ad-safe-inner">
-                        <span class="ad-slot-label">ADVERTISEMENT</span>
-                    </div>
-                </div>
-
-            </section>
 
             <!-- TOOLS -->
 
@@ -509,35 +478,6 @@
 
 
 
-
-
-            <!-- =========================
-                 SECONDARY SPONSORED AD DOCK
-            ========================== -->
-            <section class="sponsored-dock sponsored-dock-secondary reveal" aria-label="Sponsored content">
-
-                <div class="sponsored-dock-top">
-                    <span class="sponsored-kicker">
-                        <span class="sponsored-dot"></span>
-                        SPONSORED
-                    </span>
-
-                    <span class="sponsored-support">
-                        Featured partner
-                    </span>
-                </div>
-
-                <!-- Keep this reserved for a second approved ad unit if needed. -->
-                <div
-                    class="ad-slot ad-slot-secondary"
-                    id="homeAdSecondary"
-                    aria-label="Advertisement"
-                >
-                    <span class="ad-slot-label">ADVERTISEMENT</span>
-                </div>
-
-            </section>
-
             <!-- FAQ -->
 
             <section class="info-section reveal">
@@ -625,7 +565,7 @@
                     <div class="faq-answer">
 
                         <p>
-                            JPG, JPEG, PNG and WebP images are supported for upload.
+                            JPG, JPEG, PNG and WebP are currently supported. Additional formats are visible in the converter and marked unsupported until their processing engine is added.
                         </p>
 
                     </div>
@@ -946,7 +886,6 @@
         <!-- =========================
              CONVERTER
         ========================== -->
-
         <section
             id="converterView"
             class="view"
@@ -960,207 +899,162 @@
                 ← Back to Workshop
             </button>
 
-
             <div class="workspace-header">
-
-                <h2>
-                    Format Converter
-                </h2>
-
-                <p>
-                    Convert multiple images into JPG, PNG or WebP.
-                </p>
-
+                <h2>Format Converter</h2>
+                <p>Choose the source and output format, then convert up to 100 images in one batch.</p>
             </div>
 
-
-            <div
-                class="upload-box"
-                id="convDropZone"
-            >
-
-                <div class="upload-icon-pulse">
-                    ⚡
-                </div>
-
-                <h3>
-                    Upload Images
-                </h3>
-
-                <p>
-                    Drag & drop your images here or
-                    <span>browse files</span>
-                </p>
-
-                <div class="upload-limits">
-                    Up to 100 images • Max 100 MB per image
-                </div>
-
-                <input
-                    type="file"
-                    id="convFileInput"
-                    multiple
-                    accept="image/jpeg,image/jpg,image/png,image/webp"
-                >
-
-            </div>
-
-
-
-            <section
-                class="queue-panel"
-                id="convQueuePanel"
-                hidden
-            >
-
-                <div class="queue-header">
-
+            <!-- FORMAT WORKSPACE -->
+            <section class="converter-format-panel" id="convFormatPanel">
+                <div class="converter-format-heading">
                     <div>
+                        <span class="section-label">CONVERSION SETUP</span>
+                        <h3>Choose your formats.</h3>
+                        <p>Select what you have on the left and what you want on the right.</p>
+                    </div>
+                    <div class="format-live-summary" id="convFormatSummary">AUTO DETECT <span>→</span> WEBP</div>
+                </div>
 
-                        <h3>
-                            Uploaded Images
-                        </h3>
-
-                        <p id="convQueueSummary">
-                            0 images uploaded
-                        </p>
-
+                <div class="format-columns">
+                    <div class="format-column">
+                        <div class="format-column-top">
+                            <span class="format-eyebrow">SOURCE</span>
+                            <strong>FROM</strong>
+                        </div>
+                        <div class="format-list" id="sourceFormatList" role="radiogroup" aria-label="Source image format">
+                            <button type="button" class="format-option selected" data-source-format="auto">
+                                <span class="format-option-main"><span class="format-code">AUTO</span><span><b>Auto Detect</b><small>Mixed supported formats</small></span></span>
+                                <span class="format-check">✓</span>
+                            </button>
+                            <button type="button" class="format-option" data-source-format="image/jpeg">
+                                <span class="format-option-main"><span class="format-code">JPG</span><span><b>JPEG / JPG</b><small>Universal image format</small></span></span>
+                                <span class="format-check">✓</span>
+                            </button>
+                            <button type="button" class="format-option" data-source-format="image/png">
+                                <span class="format-option-main"><span class="format-code">PNG</span><span><b>PNG</b><small>Lossless image format</small></span></span>
+                                <span class="format-check">✓</span>
+                            </button>
+                            <button type="button" class="format-option" data-source-format="image/webp">
+                                <span class="format-option-main"><span class="format-code">WEBP</span><span><b>WebP</b><small>Modern web format</small></span></span>
+                                <span class="format-check">✓</span>
+                            </button>
+                            <button type="button" class="format-option is-disabled" disabled><span class="format-option-main"><span class="format-code">AVIF</span><span><b>AVIF</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+                            <button type="button" class="format-option is-disabled" disabled><span class="format-option-main"><span class="format-code">BMP</span><span><b>BMP</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+                            <button type="button" class="format-option is-disabled" disabled><span class="format-option-main"><span class="format-code">GIF</span><span><b>GIF</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+                            <button type="button" class="format-option is-disabled" disabled><span class="format-option-main"><span class="format-code">TIFF</span><span><b>TIFF</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+                            <button type="button" class="format-option is-disabled" disabled><span class="format-option-main"><span class="format-code">ICO</span><span><b>ICO</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+                        </div>
                     </div>
 
+                    <div class="format-flow-arrow" aria-hidden="true"><span>→</span></div>
 
-                    <button
-                        type="button"
-                        class="small-reset-btn"
-                        id="convClearBtn"
-                    >
-                        Clear All
-                    </button>
-
+                    <div class="format-column">
+                        <div class="format-column-top">
+                            <span class="format-eyebrow">OUTPUT</span>
+                            <strong>CONVERT TO</strong>
+                        </div>
+                        <div class="format-list" id="targetFormatList" role="radiogroup" aria-label="Target image format">
+                            <button type="button" class="format-option" data-target-format="image/jpeg">
+                                <span class="format-option-main"><span class="format-code">JPG</span><span><b>JPEG / JPG</b><small>Universal image format</small></span></span>
+                                <span class="format-check">✓</span>
+                            </button>
+                            <button type="button" class="format-option" data-target-format="image/png">
+                                <span class="format-option-main"><span class="format-code">PNG</span><span><b>PNG</b><small>Lossless image format</small></span></span>
+                                <span class="format-check">✓</span>
+                            </button>
+                            <button type="button" class="format-option selected" data-target-format="image/webp">
+                                <span class="format-option-main"><span class="format-code">WEBP</span><span><b>WebP</b><small>Modern web format</small></span></span>
+                                <span class="format-check">✓</span>
+                            </button>
+                            <button type="button" class="format-option is-disabled" disabled><span class="format-option-main"><span class="format-code">AVIF</span><span><b>AVIF</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+                            <button type="button" class="format-option is-disabled" disabled><span class="format-option-main"><span class="format-code">BMP</span><span><b>BMP</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+                            <button type="button" class="format-option is-disabled" disabled><span class="format-option-main"><span class="format-code">GIF</span><span><b>GIF</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+                            <button type="button" class="format-option is-disabled" disabled><span class="format-option-main"><span class="format-code">TIFF</span><span><b>TIFF</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+                            <button type="button" class="format-option is-disabled" disabled><span class="format-option-main"><span class="format-code">ICO</span><span><b>ICO</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+                        </div>
+                    </div>
                 </div>
-
-
-                <div
-                    class="file-queue"
-                    id="convFileQueue"
-                ></div>
-
+                <p class="format-panel-note" id="convFormatNote">Auto Detect accepts a mixed batch of currently supported JPG, PNG and WebP images.</p>
             </section>
 
+            <!-- UPLOAD -->
+            <div class="upload-box" id="convDropZone">
+                <div class="upload-icon-pulse">⚡</div>
+                <h3>Upload Images</h3>
+                <p>Drag & drop your images here or <span>browse files</span></p>
+                <div class="upload-limits">Up to 100 images • Max 100 MB per image • 500 MB total batch safety</div>
+                <input type="file" id="convFileInput" multiple accept="image/jpeg,image/jpg,image/png,image/webp">
+            </div>
 
+            <!-- CONVERTER QUEUE -->
+            <section class="queue-panel" id="convQueuePanel" hidden>
+                <div class="queue-header">
+                    <div>
+                        <h3>Uploaded Images</h3>
+                        <p id="convQueueSummary">0 images uploaded</p>
+                    </div>
+                    <button type="button" class="small-reset-btn" id="convClearBtn">Clear All</button>
+                </div>
+                <div class="file-queue" id="convFileQueue"></div>
+            </section>
 
-            <section
-                class="settings-panel"
-                id="convSettingsPanel"
-                hidden
-            >
-
-                <div class="slider-group">
-
-                    <label for="targetFormat">
-                        Target Format
-                    </label>
-
-
-                    <select
-                        id="targetFormat"
-                        class="styled-select"
-                    >
-
-                        <option value="image/webp">
-                            WebP — Optimized for Web
-                        </option>
-
-                        <option value="image/jpeg">
-                            JPG — Universal Format
-                        </option>
-
-                        <option value="image/png">
-                            PNG — Lossless Format
-                        </option>
-
-                    </select>
-
+            <!-- CONVERSION SETTINGS -->
+            <section class="settings-panel converter-settings-panel" id="convSettingsPanel" hidden>
+                <div class="converter-settings-head">
+                    <div>
+                        <span class="section-label">OUTPUT SETTINGS</span>
+                        <h3>Fine-tune the conversion.</h3>
+                    </div>
+                    <div class="converter-ready-pill" id="convReadySummary">0 files ready</div>
                 </div>
 
+                <div class="slider-group" id="convQualityGroup">
+                    <div class="setting-label-row">
+                        <label for="convQualitySlider">Conversion Quality</label>
+                        <strong id="convQualityVal">92%</strong>
+                    </div>
+                    <input type="range" id="convQualitySlider" min="10" max="100" value="92">
+                    <p class="setting-help">Used for JPG and WebP output. Higher values prioritize visual quality.</p>
+                </div>
+
+                <div class="jpg-background-group" id="convJpgBackgroundGroup" hidden>
+                    <div class="setting-label-row"><label>Transparent Areas</label><strong>JPG Background</strong></div>
+                    <div class="background-options">
+                        <button type="button" class="background-option selected" data-bg="#ffffff"><span class="bg-swatch bg-white"></span>White</button>
+                        <button type="button" class="background-option" data-bg="#000000"><span class="bg-swatch bg-black"></span>Black</button>
+                        <label class="background-option custom-background-option"><input type="color" id="convCustomBackground" value="#ffffff"><span class="bg-swatch bg-custom"></span>Custom</label>
+                    </div>
+                    <p class="setting-help">JPG does not support transparency, so transparent areas use the selected background.</p>
+                </div>
+
+                <div class="converter-progress" id="convProgressPanel" hidden>
+                    <div class="progress-label-row"><strong id="convProgressTitle">Preparing conversion</strong><span id="convProgressPercent">0%</span></div>
+                    <div class="progress-track"><div class="progress-fill" id="convProgressFill"></div></div>
+                    <p id="convProgressText">Waiting to start.</p>
+                </div>
 
                 <div class="panel-action">
-
-                    <div id="convFileCount">
-                        0 files loaded
-                    </div>
-
-
-                    <button
-                        class="action-btn"
-                        id="convStartBtn"
-                        type="button"
-                    >
-                        Convert Images
-                    </button>
-
+                    <div id="convFileCount">0 files loaded</div>
+                    <button class="action-btn" id="convStartBtn" type="button">Convert Images</button>
                 </div>
-
             </section>
 
-
-
-            <section
-                class="results-panel"
-                id="convResultsPanel"
-                hidden
-            >
-
+            <!-- CONVERTER RESULTS -->
+            <section class="results-panel" id="convResultsPanel" hidden>
                 <div class="results-top">
-
                     <div>
-
-                        <h3>
-                            Conversion Complete
-                        </h3>
-
-                        <p id="convResultSummary">
-                            Your converted files will appear below.
-                        </p>
-
+                        <h3>Conversion Complete</h3>
+                        <p id="convResultSummary">Your converted files will appear below.</p>
                     </div>
-
-
-                    <span class="complete-badge">
-                        ✓ Complete
-                    </span>
-
+                    <span class="complete-badge">✓ Complete</span>
                 </div>
-
-
                 <div id="convResultsList"></div>
-
-
                 <div class="result-actions">
-
-                    <button
-                        class="action-btn outline"
-                        id="convProcessMoreBtn"
-                        type="button"
-                    >
-                        ↺ Convert More Files
-                    </button>
-
-
-                    <button
-                        class="action-btn"
-                        id="convZipBtn"
-                        type="button"
-                        hidden
-                    >
-                        Download All as ZIP
-                    </button>
-
+                    <button class="action-btn outline" id="convProcessMoreBtn" type="button">↺ Convert More Files</button>
+                    <button class="action-btn" id="convZipBtn" type="button" hidden>Download All as ZIP</button>
                 </div>
-
             </section>
-
         </section>
-
 
     </main>
 
