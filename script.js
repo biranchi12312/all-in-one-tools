@@ -1,31 +1,36 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    /* =========================================================
-       GLOBAL LIMITS
-    ========================================================= */
-
     const MAX_FILES = 100;
-    const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100 MB per file
-    const MAX_TOTAL_SIZE = 500 * 1024 * 1024; // 500 MB total safety
+    const MAX_FILE_SIZE = 100 * 1024 * 1024;
+    const MAX_TOTAL_SIZE = 500 * 1024 * 1024;
 
 
-    /* =========================================================
+    /* =========================
        HELPERS
-    ========================================================= */
+    ========================= */
 
     function formatBytes(bytes) {
         if (!bytes) return "0 Bytes";
 
-        const units = ["Bytes", "KB", "MB", "GB"];
-        const index = Math.floor(Math.log(bytes) / Math.log(1024));
+        const units = [
+            "Bytes",
+            "KB",
+            "MB",
+            "GB"
+        ];
 
-        return `${(bytes / Math.pow(1024, index)).toFixed(
-            index === 0 ? 0 : 2
-        )} ${units[index]}`;
+        const index = Math.floor(
+            Math.log(bytes) / Math.log(1024)
+        );
+
+        return `${(
+            bytes / Math.pow(1024, index)
+        ).toFixed(index === 0 ? 0 : 2)} ${units[index]}`;
     }
 
 
     function isSupportedImage(file) {
+
         const supportedTypes = [
             "image/jpeg",
             "image/jpg",
@@ -38,6 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     function getBaseName(fileName) {
+
         const lastDot = fileName.lastIndexOf(".");
 
         if (lastDot === -1) {
@@ -53,32 +59,52 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+    function escapeHTML(value) {
+
+        const div = document.createElement("div");
+
+        div.textContent = value;
+
+        return div.innerHTML;
+    }
+
+
     function createPreviewURL(file) {
         return URL.createObjectURL(file);
     }
 
 
     function revokePreviewURLs(files) {
+
         files.forEach(item => {
+
             if (item.previewURL) {
-                URL.revokeObjectURL(item.previewURL);
+                URL.revokeObjectURL(
+                    item.previewURL
+                );
             }
+
         });
     }
 
 
     function revokeProcessedURLs(files) {
+
         files.forEach(item => {
+
             if (item.url) {
-                URL.revokeObjectURL(item.url);
+                URL.revokeObjectURL(
+                    item.url
+                );
             }
+
         });
     }
 
 
-    /* =========================================================
-       VIEW ROUTING + PHONE BACK BUTTON
-    ========================================================= */
+    /* =========================
+       VIEW ROUTING
+    ========================= */
 
     const views = {
         dashboard: document.getElementById("dashboardView"),
@@ -104,33 +130,45 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    function switchView(viewName, pushHistory = true) {
+    function switchView(
+        viewName,
+        pushHistory = true
+    ) {
 
         renderView(viewName);
 
-        if (pushHistory) {
+        if (!pushHistory) {
+            return;
+        }
 
-            const currentState = history.state;
+        const currentState = history.state;
 
-            if (!currentState || currentState.view !== viewName) {
-                history.pushState(
-                    { view: viewName },
-                    "",
-                    `#${viewName}`
-                );
-            }
+        if (
+            !currentState ||
+            currentState.view !== viewName
+        ) {
+
+            history.pushState(
+                {
+                    view: viewName
+                },
+                "",
+                `#${viewName}`
+            );
+
         }
     }
 
 
     function getViewFromHash() {
 
-        const hash = window.location.hash.replace("#", "");
+        const hash =
+            window.location.hash.replace("#", "");
 
         if (
+            hash === "dashboard" ||
             hash === "compressor" ||
-            hash === "converter" ||
-            hash === "dashboard"
+            hash === "converter"
         ) {
             return hash;
         }
@@ -139,117 +177,149 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    // Initial browser history state
     const initialView = getViewFromHash();
 
     history.replaceState(
-        { view: initialView },
+        {
+            view: initialView
+        },
         "",
-        initialView === "dashboard" ? location.pathname : `#${initialView}`
+        initialView === "dashboard"
+            ? location.pathname
+            : `#${initialView}`
     );
 
     renderView(initialView);
 
 
-    window.addEventListener("popstate", event => {
-
-        const viewName =
-            event.state?.view || getViewFromHash();
-
-        renderView(viewName);
-    });
-
-
-    // Dashboard tool buttons
-    document.querySelectorAll("[data-open-view]").forEach(button => {
-
-        button.addEventListener("click", () => {
+    window.addEventListener(
+        "popstate",
+        event => {
 
             const viewName =
-                button.dataset.openView;
-
-            switchView(viewName);
-        });
-
-    });
-
-
-    // Back buttons
-    document.querySelectorAll("[data-back-dashboard]").forEach(button => {
-
-        button.addEventListener("click", () => {
-
-            const currentView =
+                event.state?.view ||
                 getViewFromHash();
 
-            if (
-                currentView === "compressor" ||
-                currentView === "converter"
-            ) {
-                history.back();
-            } else {
-                switchView("dashboard");
-            }
+            renderView(viewName);
+
+        }
+    );
+
+
+    document
+        .querySelectorAll("[data-open-view]")
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    switchView(
+                        button.dataset.openView
+                    );
+
+                }
+            );
 
         });
 
-    });
+
+    document
+        .querySelectorAll("[data-back-dashboard]")
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    const currentView =
+                        getViewFromHash();
+
+                    if (
+                        currentView === "compressor" ||
+                        currentView === "converter"
+                    ) {
+                        history.back();
+                    } else {
+                        switchView("dashboard");
+                    }
+
+                }
+            );
+
+        });
 
 
     document
         .getElementById("logoBtn")
-        .addEventListener("click", () => {
+        .addEventListener(
+            "click",
+            () => {
 
-            const currentView = getViewFromHash();
+                const currentView =
+                    getViewFromHash();
 
-            if (currentView !== "dashboard") {
-                history.back();
-            } else {
-                renderView("dashboard");
+                if (currentView !== "dashboard") {
+                    history.back();
+                } else {
+                    renderView("dashboard");
+                }
+
             }
+        );
 
-        });
 
-
-    /* =========================================================
+    /* =========================
        FAQ
-    ========================================================= */
+    ========================= */
 
-    document.querySelectorAll(".faq-question").forEach(button => {
+    document
+        .querySelectorAll(".faq-question")
+        .forEach(button => {
 
-        button.addEventListener("click", () => {
+            button.addEventListener(
+                "click",
+                () => {
 
-            const answer = button.nextElementSibling;
-            const icon = button.querySelector("span");
+                    const answer =
+                        button.nextElementSibling;
 
-            if (answer.style.maxHeight) {
+                    const icon =
+                        button.querySelector("span");
 
-                answer.style.maxHeight = null;
+                    if (answer.style.maxHeight) {
 
-                if (icon) {
-                    icon.textContent = "+";
+                        answer.style.maxHeight = null;
+
+                        if (icon) {
+                            icon.textContent = "+";
+                        }
+
+                    } else {
+
+                        answer.style.maxHeight =
+                            `${answer.scrollHeight}px`;
+
+                        if (icon) {
+                            icon.textContent = "−";
+                        }
+
+                    }
+
                 }
-
-            } else {
-
-                answer.style.maxHeight =
-                    `${answer.scrollHeight}px`;
-
-                if (icon) {
-                    icon.textContent = "−";
-                }
-            }
+            );
 
         });
 
-    });
 
+    /* =========================
+       FILE VALIDATION
+    ========================= */
 
-    /* =========================================================
-       GENERIC FILE VALIDATION
-    ========================================================= */
-
-    function validateFiles(fileList, existingFiles = []) {
+    function validateFiles(
+        fileList,
+        existingFiles = []
+    ) {
 
         const incomingFiles =
             Array.from(fileList);
@@ -258,11 +328,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const existingTotal =
             existingFiles.reduce(
-                (total, item) => total + item.file.size,
+                (total, item) =>
+                    total + item.file.size,
                 0
             );
 
         let runningTotal = existingTotal;
+
 
         for (const file of incomingFiles) {
 
@@ -271,7 +343,10 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
-            if (file.size > MAX_FILE_SIZE) {
+            if (
+                file.size >
+                MAX_FILE_SIZE
+            ) {
 
                 showError(
                     `"${file.name}" is larger than 100 MB and was skipped.`
@@ -286,12 +361,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 validFiles.length >=
                 MAX_FILES
             ) {
+
                 break;
             }
 
 
             if (
-                runningTotal + file.size >
+                runningTotal +
+                file.size >
                 MAX_TOTAL_SIZE
             ) {
 
@@ -305,19 +382,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
             validFiles.push({
                 file: file,
-                previewURL: createPreviewURL(file)
+                previewURL:
+                    createPreviewURL(file)
             });
 
             runningTotal += file.size;
         }
 
+
         return validFiles;
     }
 
 
-    /* =========================================================
+    /* =========================
        QUEUE UI
-    ========================================================= */
+    ========================= */
 
     function renderQueue(
         files,
@@ -328,9 +407,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         queueElement.innerHTML = "";
 
+
         if (files.length === 0) {
 
             queuePanel.hidden = true;
+
             return;
         }
 
@@ -348,7 +429,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         summaryElement.textContent =
             `${files.length} image${
-                files.length !== 1 ? "s" : ""
+                files.length !== 1
+                    ? "s"
+                    : ""
             } uploaded • ${formatBytes(totalSize)}`;
 
 
@@ -359,7 +442,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const row =
                 document.createElement("div");
 
-            row.className = "queue-item";
+            row.className =
+                "queue-item";
 
 
             row.innerHTML = `
@@ -391,35 +475,32 @@ document.addEventListener("DOMContentLoaded", () => {
                         ✓
                     </div>
 
-                    <span>Uploaded</span>
+                    <span>
+                        Uploaded
+                    </span>
 
                 </div>
             `;
 
             queueElement.appendChild(row);
+
         });
-
     }
 
 
-    function escapeHTML(value) {
+    /* =========================
+       DRAG & DROP
+    ========================= */
 
-        const div =
-            document.createElement("div");
+    function setupDropZone(
+        dropZone,
+        callback
+    ) {
 
-        div.textContent = value;
-
-        return div.innerHTML;
-    }
-
-
-    /* =========================================================
-       DRAG AND DROP
-    ========================================================= */
-
-    function setupDropZone(dropZone, callback) {
-
-        ["dragenter", "dragover"].forEach(eventName => {
+        [
+            "dragenter",
+            "dragover"
+        ].forEach(eventName => {
 
             dropZone.addEventListener(
                 eventName,
@@ -428,14 +509,20 @@ document.addEventListener("DOMContentLoaded", () => {
                     event.preventDefault();
                     event.stopPropagation();
 
-                    dropZone.classList.add("drag-over");
+                    dropZone.classList.add(
+                        "drag-over"
+                    );
+
                 }
             );
 
         });
 
 
-        ["dragleave", "drop"].forEach(eventName => {
+        [
+            "dragleave",
+            "drop"
+        ].forEach(eventName => {
 
             dropZone.addEventListener(
                 eventName,
@@ -444,7 +531,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     event.preventDefault();
                     event.stopPropagation();
 
-                    dropZone.classList.remove("drag-over");
+                    dropZone.classList.remove(
+                        "drag-over"
+                    );
+
                 }
             );
 
@@ -459,9 +549,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     event.dataTransfer &&
                     event.dataTransfer.files
                 ) {
+
                     callback(
                         event.dataTransfer.files
                     );
+
                 }
 
             }
@@ -469,9 +561,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =========================================================
-       COMPRESSOR ELEMENTS
-    ========================================================= */
+    /* =========================
+       COMPRESSOR
+    ========================= */
 
     const comp = {
 
@@ -561,10 +653,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let processedCompFiles = [];
 
 
-    /* =========================================================
-       COMPRESSOR FILE SELECTION
-    ========================================================= */
-
     function addCompressorFiles(fileList) {
 
         const newFiles =
@@ -584,8 +672,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        compFiles =
-            [...compFiles, ...newFiles];
+        compFiles = [
+            ...compFiles,
+            ...newFiles
+        ];
 
 
         renderQueue(
@@ -598,9 +688,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         comp.settings.hidden = false;
 
+
         comp.count.textContent =
             `${compFiles.length} file${
-                compFiles.length !== 1 ? "s" : ""
+                compFiles.length !== 1
+                    ? "s"
+                    : ""
             } ready`;
 
 
@@ -611,9 +704,11 @@ document.addEventListener("DOMContentLoaded", () => {
     comp.input.addEventListener(
         "change",
         event => {
+
             addCompressorFiles(
                 event.target.files
             );
+
         }
     );
 
@@ -627,31 +722,29 @@ document.addEventListener("DOMContentLoaded", () => {
     comp.clearButton.addEventListener(
         "click",
         () => {
-            clearCompressorSelection();
+
+            revokePreviewURLs(
+                compFiles
+            );
+
+            compFiles = [];
+
+            renderQueue(
+                compFiles,
+                comp.queue,
+                comp.queuePanel,
+                comp.queueSummary
+            );
+
+            comp.settings.hidden = true;
+
+            comp.count.textContent =
+                "0 files loaded";
+
+            comp.input.value = "";
+
         }
     );
-
-
-    function clearCompressorSelection() {
-
-        revokePreviewURLs(compFiles);
-
-        compFiles = [];
-
-        renderQueue(
-            compFiles,
-            comp.queue,
-            comp.queuePanel,
-            comp.queueSummary
-        );
-
-        comp.settings.hidden = true;
-
-        comp.count.textContent =
-            "0 files loaded";
-
-        comp.input.value = "";
-    }
 
 
     comp.quality.addEventListener(
@@ -665,10 +758,6 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
-    /* =========================================================
-       COMPRESSOR PROCESSING
-    ========================================================= */
-
     comp.start.addEventListener(
         "click",
         async () => {
@@ -678,7 +767,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
-            // Remove previous output URLs
             revokeProcessedURLs(
                 processedCompFiles
             );
@@ -698,7 +786,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             const quality =
-                Number(comp.quality.value) / 100;
+                Number(
+                    comp.quality.value
+                ) / 100;
 
 
             let successCount = 0;
@@ -739,11 +829,10 @@ document.addEventListener("DOMContentLoaded", () => {
                         </h4>
 
                         <span>
-                            Compressing ${
-                                index + 1
-                            } / ${
-                                compFiles.length
-                            }...
+                            Compressing
+                            ${index + 1}
+                            /
+                            ${compFiles.length}...
                         </span>
 
                     </div>
@@ -782,7 +871,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         formatBytes(
                             file.size
                         );
-
 
                     const newSize =
                         formatBytes(
@@ -827,7 +915,6 @@ document.addEventListener("DOMContentLoaded", () => {
                                 <strong>
                                     ${newSize}
                                 </strong>
-
                                 • ${saved}% smaller
                             </span>
 
@@ -861,9 +948,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <div class="file-meta">
 
                             <h4>
-                                ${escapeHTML(
-                                    file.name
-                                )}
+                                ${escapeHTML(file.name)}
                             </h4>
 
                             <span
@@ -888,7 +973,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 `${successCount} of ${
                     compFiles.length
                 } image${
-                    compFiles.length !== 1 ? "s" : ""
+                    compFiles.length !== 1
+                        ? "s"
+                        : ""
                 } processed successfully.`;
 
 
@@ -903,6 +990,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 behavior: "smooth",
                 block: "start"
             });
+
         }
     );
 
@@ -924,11 +1012,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         const longestSide =
-            Math.max(width, height);
+            Math.max(
+                width,
+                height
+            );
 
 
         if (
-            longestSide > MAX_DIMENSION
+            longestSide >
+            MAX_DIMENSION
         ) {
 
             const ratio =
@@ -936,10 +1028,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 longestSide;
 
             width =
-                Math.round(width * ratio);
+                Math.round(
+                    width * ratio
+                );
 
             height =
-                Math.round(height * ratio);
+                Math.round(
+                    height * ratio
+                );
         }
 
 
@@ -972,15 +1068,12 @@ document.addEventListener("DOMContentLoaded", () => {
             file.type;
 
 
-        /*
-         PNG quality slider browser mein PNG compression
-         par effectively kaam nahi karta. PNG ko PNG hi
-         output rakhne ke bajaye WebP use karna size
-         reduction ke liye zyada useful hai.
-        */
-
-        if (file.type === "image/png") {
-            outputType = "image/webp";
+        if (
+            file.type ===
+            "image/png"
+        ) {
+            outputType =
+                "image/webp";
         }
 
 
@@ -1035,10 +1128,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =========================================================
-       COMPRESSOR RESET
-    ========================================================= */
-
     comp.processMore.addEventListener(
         "click",
         () => {
@@ -1061,7 +1150,6 @@ document.addEventListener("DOMContentLoaded", () => {
             comp.resultsList.innerHTML = "";
 
             comp.results.hidden = true;
-
             comp.zip.hidden = true;
 
             comp.settings.hidden = true;
@@ -1083,13 +1171,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 top: 0,
                 behavior: "smooth"
             });
+
         }
     );
 
-
-    /* =========================================================
-       COMPRESSOR ZIP DOWNLOAD
-    ========================================================= */
 
     comp.zip.addEventListener(
         "click",
@@ -1103,7 +1188,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             if (
-                typeof JSZip === "undefined"
+                typeof JSZip ===
+                "undefined"
             ) {
 
                 showError(
@@ -1169,13 +1255,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 comp.zip.textContent =
                     originalText;
             }
+
         }
     );
 
 
-    /* =========================================================
-       CONVERTER ELEMENTS
-    ========================================================= */
+    /* =========================
+       CONVERTER
+    ========================= */
 
     const conv = {
 
@@ -1260,10 +1347,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let processedConvFiles = [];
 
 
-    /* =========================================================
-       CONVERTER FILE SELECTION
-    ========================================================= */
-
     function addConverterFiles(fileList) {
 
         const newFiles =
@@ -1283,8 +1366,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        convFiles =
-            [...convFiles, ...newFiles];
+        convFiles = [
+            ...convFiles,
+            ...newFiles
+        ];
 
 
         renderQueue(
@@ -1300,7 +1385,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         conv.count.textContent =
             `${convFiles.length} file${
-                convFiles.length !== 1 ? "s" : ""
+                convFiles.length !== 1
+                    ? "s"
+                    : ""
             } ready`;
 
 
@@ -1351,13 +1438,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 "0 files loaded";
 
             conv.input.value = "";
+
         }
     );
 
-
-    /* =========================================================
-       CONVERTER PROCESSING
-    ========================================================= */
 
     conv.start.addEventListener(
         "click",
@@ -1377,7 +1461,6 @@ document.addEventListener("DOMContentLoaded", () => {
             conv.resultsList.innerHTML = "";
 
             conv.results.hidden = false;
-
             conv.zip.hidden = true;
 
             conv.start.disabled = true;
@@ -1424,17 +1507,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="file-meta">
 
                         <h4>
-                            ${escapeHTML(
-                                file.name
-                            )}
+                            ${escapeHTML(file.name)}
                         </h4>
 
                         <span>
-                            Converting ${
-                                index + 1
-                            } / ${
-                                convFiles.length
-                            }...
+                            Converting
+                            ${index + 1}
+                            /
+                            ${convFiles.length}...
                         </span>
 
                     </div>
@@ -1524,9 +1604,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <div class="file-meta">
 
                             <h4>
-                                ${escapeHTML(
-                                    file.name
-                                )}
+                                ${escapeHTML(file.name)}
                             </h4>
 
                             <span
@@ -1551,7 +1629,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 `${successCount} of ${
                     convFiles.length
                 } image${
-                    convFiles.length !== 1 ? "s" : ""
+                    convFiles.length !== 1
+                        ? "s"
+                        : ""
                 } converted successfully.`;
 
 
@@ -1566,6 +1646,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 behavior: "smooth",
                 block: "start"
             });
+
         }
     );
 
@@ -1601,10 +1682,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         if (
-            targetFormat === "image/jpeg"
+            targetFormat ===
+            "image/jpeg"
         ) {
 
-            context.fillStyle = "#ffffff";
+            context.fillStyle =
+                "#ffffff";
 
             context.fillRect(
                 0,
@@ -1623,7 +1706,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         const quality =
-            targetFormat === "image/png"
+            targetFormat ===
+            "image/png"
                 ? undefined
                 : 0.92;
 
@@ -1667,7 +1751,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         return {
-
             blob,
 
             name:
@@ -1677,10 +1760,6 @@ document.addEventListener("DOMContentLoaded", () => {
         };
     }
 
-
-    /* =========================================================
-       CONVERTER RESET
-    ========================================================= */
 
     conv.processMore.addEventListener(
         "click",
@@ -1704,7 +1783,6 @@ document.addEventListener("DOMContentLoaded", () => {
             conv.resultsList.innerHTML = "";
 
             conv.results.hidden = true;
-
             conv.zip.hidden = true;
 
             conv.settings.hidden = true;
@@ -1726,13 +1804,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 top: 0,
                 behavior: "smooth"
             });
+
         }
     );
 
-
-    /* =========================================================
-       CONVERTER ZIP DOWNLOAD
-    ========================================================= */
 
     conv.zip.addEventListener(
         "click",
@@ -1746,7 +1821,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             if (
-                typeof JSZip === "undefined"
+                typeof JSZip ===
+                "undefined"
             ) {
 
                 showError(
@@ -1812,13 +1888,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 conv.zip.textContent =
                     originalText;
             }
+
         }
     );
 
 
-    /* =========================================================
+    /* =========================
        DOWNLOAD HELPER
-    ========================================================= */
+    ========================= */
 
     function downloadBlob(
         blob,
@@ -1833,7 +1910,6 @@ document.addEventListener("DOMContentLoaded", () => {
             document.createElement("a");
 
         anchor.href = url;
-
         anchor.download = fileName;
 
 
@@ -1846,9 +1922,12 @@ document.addEventListener("DOMContentLoaded", () => {
         anchor.remove();
 
 
-        setTimeout(() => {
-            URL.revokeObjectURL(url);
-        }, 1000);
+        setTimeout(
+            () => {
+                URL.revokeObjectURL(url);
+            },
+            1000
+        );
     }
 
 });
