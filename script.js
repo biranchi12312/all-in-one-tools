@@ -1,271 +1,1478 @@
-// --- TAB SWITCHER (Floating Nav Pill) ---
-const tabBtns = document.querySelectorAll('.tab-btn');
-const workspaces = document.querySelectorAll('.workspace');
+// =====================================================
+// SPA VIEW + BROWSER HISTORY SYSTEM
+// =====================================================
 
-tabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        tabBtns.forEach(b => b.classList.remove('active'));
-        workspaces.forEach(w => w.classList.remove('active'));
-        
-        btn.classList.add('active');
-        const targetId = btn.getAttribute('data-target') + 'Workspace';
-        document.getElementById(targetId).classList.add('active');
-    });
-});
+const VIEW_NAMES = [
+    'dashboard',
+    'compressor',
+    'converter'
+];
 
-// --- MODAL POPUPS (Privacy & Terms) ---
-const privacyModal = document.getElementById('privacyModal');
-const termsModal = document.getElementById('termsModal');
 
-document.getElementById('openPrivacy').addEventListener('click', (e) => { e.preventDefault(); privacyModal.classList.add('active'); });
-document.getElementById('closePrivacy').addEventListener('click', () => privacyModal.classList.remove('active'));
+let currentView = 'dashboard';
 
-document.getElementById('openTerms').addEventListener('click', (e) => { e.preventDefault(); termsModal.classList.add('active'); });
-document.getElementById('closeTerms').addEventListener('click', () => termsModal.classList.remove('active'));
 
-// --- UTILITY FORMATTER ---
-function formatBytes(bytes) {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024, dm = 2, sizes = ['Bytes', 'KB', 'MB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+function getViewElement(viewName) {
+
+    const viewMap = {
+        dashboard: 'dashboardView',
+        compressor: 'compressorView',
+        converter: 'converteView'
+    };
+
+    return document.getElementById(
+        viewMap[viewName]
+    );
 }
 
-// --- 1. COMPRESSOR ENGINE ---
-const compDropZone = document.getElementById('compDropZone');
-const compFileInput = document.getElementById('compFileInput');
-const compSettingsBox = document.getElementById('compSettingsBox');
-const compQualitySlider = document.getElementById('compQualitySlider');
-const compQualityVal = document.getElementById('compQualityVal');
-const compFileCount = document.getElementById('compFileCount');
-const compStartBtn = document.getElementById('compStartBtn');
-const compResultsSection = document.getElementById('compResultsSection');
-const compResultsList = document.getElementById('compResultsList');
-const compDownloadAllBox = document.getElementById('compDownloadAllBox');
-const compDownloadAllBtn = document.getElementById('compDownloadAllBtn');
-const compBackBtn = document.getElementById('compBackBtn');
+
+function renderView(viewName) {
+
+    if (!VIEW_NAMES.includes(viewName)) {
+        viewName = 'dashboard';
+    }
+
+    document
+        .querySelectorAll('.view')
+        .forEach(view => {
+
+            view.classList.remove('active');
+        });
+
+
+    const targetView =
+        getViewElement(viewName);
+
+
+    if (targetView) {
+
+        targetView.classList.add('active');
+    }
+
+
+    currentView = viewName;
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+
+function switchView(viewName) {
+
+    if (!VIEW_NAMES.includes(viewName)) {
+        return;
+    }
+
+
+    if (currentView === viewName) {
+        return;
+    }
+
+
+    if (viewName === 'compressor') {
+        resetCompressor();
+    }
+
+
+    if (viewName === 'converter') {
+        resetConverter();
+    }
+
+
+    window.history.pushState(
+        {
+            auraView: viewName
+        },
+        '',
+        window.location.href
+    );
+
+
+    renderView(viewName);
+}
+
+
+function goBackToDashboard() {
+
+    if (currentView === 'dashboard') {
+        return;
+    }
+
+
+    window.history.back();
+}
+
+
+window.addEventListener(
+    'popstate',
+    event => {
+
+        const viewName =
+            event.state &&
+            event.state.auraView
+                ? event.state.auraView
+                : 'dashboard';
+
+
+        if (viewName === 'dashboard') {
+
+            resetCompressor();
+            resetConverter();
+        }
+
+
+        renderView(viewName);
+    }
+);
+
+
+window.addEventListener(
+    'DOMContentLoaded',
+    () => {
+
+        window.history.replaceState(
+            {
+                auraView: 'dashboard'
+            },
+            '',
+            window.location.href
+        );
+
+
+        renderView('dashboard');
+    }
+);
+
+
+// =====================================================
+// COMMON UTILITIES
+// =====================================================
+
+function formatBytes(bytes) {
+
+    if (!Number.isFinite(bytes) || bytes <= 0) {
+        return '0 Bytes';
+    }
+
+    const units = [
+        'Bytes',
+        'KB',
+        'MB',
+        'GB'
+    ];
+
+
+    const index = Math.min(
+        Math.floor(
+            Math.log(bytes) /
+            Math.log(1024)
+        ),
+        units.length - 1
+    );
+
+
+    const value =
+        bytes /
+        Math.pow(1024, index);
+
+
+    return `${parseFloat(
+        value.toFixed(2)
+    )} ${units[index]}`;
+}
+
+
+function sanitizeFileName(name) {
+
+    return String(name)
+        .replace(
+            /[<>:"/\\|?*\u0000-\u001F]/g,
+            '_'
+        )
+        .trim();
+}
+
+
+function loadImage(url) {
+
+    return new Promise(
+        (resolve, reject) => {
+
+            const image =
+                new Image();
+
+
+            image.onload =
+                () => resolve(image);
+
+
+            image.onerror =
+                () => reject(
+                    new Error(
+                        'Image could not be loaded'
+                    )
+                );
+
+
+            image.src = url;
+        }
+    );
+}
+
+
+function canvasToBlob(
+    canvas,
+    type,
+    quality
+) {
+
+    return new Promise(
+        (resolve, reject) => {
+
+            canvas.toBlob(
+                blob => {
+
+                    if (blob) {
+                        resolve(blob);
+                    } else {
+                        reject(
+                            new Error(
+                                'Could not create image'
+                            )
+                        );
+                    }
+
+                },
+                type,
+                quality
+            );
+        }
+    );
+}
+
+
+// =====================================================
+// COMPRESSOR
+// =====================================================
+
+const compFileInput =
+    document.getElementById('compFileInput');
+
+const compDropZone =
+    document.getElementById('compDropZone');
+
+const compSettingsPanel =
+    document.getElementById('compSettingsPanel');
+
+const compQualitySlider =
+    document.getElementById('compQualitySlider');
+
+const compQualityVal =
+    document.getElementById('compQualityVal');
+
+const compFileCount =
+    document.getElementById('compFileCount');
+
+const compStartBtn =
+    document.getElementById('compStartBtn');
+
+const compResultsPanel =
+    document.getElementById('compResultsPanel');
+
+const compResultsList =
+    document.getElementById('compResultsList');
+
+const compZipBtn =
+    document.getElementById('compZipBtn');
+
+const compStatus =
+    document.getElementById('compStatus');
+
+const compProgressWrap =
+    document.getElementById('compProgressWrap');
+
+const compProgressText =
+    document.getElementById('compProgressText');
+
+const compProgressBar =
+    document.getElementById('compProgressBar');
+
+const compResetBtn =
+    document.getElementById('compResetBtn');
+
+
+const MAX_COMP_FILES = 100;
+
+const MAX_FILE_SIZE =
+    100 * 1024 * 1024;
+
+const MAX_TOTAL_SIZE =
+    500 * 1024 * 1024;
+
+const MAX_PIXELS =
+    60_000_000;
+
+
+const ALLOWED_IMAGE_TYPES = [
+    'image/jpeg',
+    'image/png',
+    'image/webp'
+];
+
 
 let compFiles = [];
+
 let processedCompFiles = [];
-const MAX_FILES = 100;
-const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
 
-compQualitySlider.addEventListener('input', (e) => { compQualityVal.textContent = `${e.target.value}%`; });
+let isCompressing = false;
 
-compFileInput.addEventListener('change', (e) => handleCompFiles(e.target.files));
-compDropZone.addEventListener('dragover', (e) => { e.preventDefault(); });
-compDropZone.addEventListener('drop', (e) => { e.preventDefault(); handleCompFiles(e.dataTransfer.files); });
 
-function handleCompFiles(files) {
-    const arr = Array.from(files).filter(f => f.type.startsWith('image/'));
-    if (arr.length === 0) return;
-    if (arr.some(f => f.size > MAX_FILE_SIZE)) { alert('One or more files exceed the 50MB limit.'); return; }
-    if (arr.length > MAX_FILES) { alert(`Maximum ${MAX_FILES} files allowed.`); return; }
-    
-    compFiles = arr;
-    compFileCount.textContent = `${compFiles.length} file(s) selected`;
-    compSettingsBox.style.display = 'block';
+// Quality
+
+compQualitySlider.addEventListener(
+    'input',
+    event => {
+
+        compQualityVal.textContent =
+            `${event.target.value}%`;
+    }
+);
+
+
+// File input
+
+compFileInput.addEventListener(
+    'change',
+    event => {
+
+        handleCompSelection(
+            event.target.files
+        );
+    }
+);
+
+
+// Drag and drop
+
+[
+    'dragenter',
+    'dragover'
+].forEach(eventName => {
+
+    compDropZone.addEventListener(
+        eventName,
+        event => {
+
+            event.preventDefault();
+
+            if (!isCompressing) {
+
+                compDropZone.classList.add(
+                    'drag-active'
+                );
+            }
+        }
+    );
+});
+
+
+[
+    'dragleave',
+    'drop'
+].forEach(eventName => {
+
+    compDropZone.addEventListener(
+        eventName,
+        event => {
+
+            event.preventDefault();
+
+            compDropZone.classList.remove(
+                'drag-active'
+            );
+        }
+    );
+});
+
+
+compDropZone.addEventListener(
+    'drop',
+    event => {
+
+        if (isCompressing) {
+            return;
+        }
+
+
+        handleCompSelection(
+            event.dataTransfer.files
+        );
+    }
+);
+
+
+// Selection
+
+function handleCompSelection(files) {
+
+    if (isCompressing) {
+        return;
+    }
+
+
+    const selectedFiles =
+        Array.from(files || []);
+
+
+    const imageFiles =
+        selectedFiles.filter(
+            file =>
+                ALLOWED_IMAGE_TYPES.includes(
+                    file.type
+                )
+        );
+
+
+    if (imageFiles.length === 0) {
+
+        alert(
+            'Please select JPG, PNG or WebP images.'
+        );
+
+        return;
+    }
+
+
+    if (
+        imageFiles.length >
+        MAX_COMP_FILES
+    ) {
+
+        alert(
+            `Maximum ${MAX_COMP_FILES} images allowed.`
+        );
+
+        return;
+    }
+
+
+    const oversizedFile =
+        imageFiles.find(
+            file =>
+                file.size >
+                MAX_FILE_SIZE
+        );
+
+
+    if (oversizedFile) {
+
+        alert(
+            `"${oversizedFile.name}" exceeds 100 MB.`
+        );
+
+        return;
+    }
+
+
+    const totalSize =
+        imageFiles.reduce(
+            (total, file) =>
+                total + file.size,
+            0
+        );
+
+
+    if (
+        totalSize >
+        MAX_TOTAL_SIZE
+    ) {
+
+        alert(
+            'Total batch size cannot exceed 500 MB.'
+        );
+
+        return;
+    }
+
+
+    compFiles = imageFiles;
+
+
+    compFileCount.textContent =
+        `${compFiles.length} file` +
+        `${
+            compFiles.length === 1
+                ? ''
+                : 's'
+        } loaded • ${formatBytes(totalSize)}`;
+
+
+    compDropZone.style.display =
+        'none';
+
+
+    compSettingsPanel.style.display =
+        'block';
+
+
+    compResultsPanel.style.display =
+        'none';
+
+
+    compResultsList.innerHTML =
+        '';
+
+
+    compZipBtn.style.display =
+        'none';
+
+
+    compFileInput.value =
+        '';
 }
 
-compStartBtn.addEventListener('click', async () => {
-    if (compFiles.length === 0) return;
-    document.getElementById('compDropZone').style.display = 'none';
-    compSettingsBox.style.display = 'none';
-    compResultsSection.style.display = 'block';
-    compResultsList.innerHTML = '';
-    processedCompFiles = [];
 
-    const quality = parseInt(compQualitySlider.value) / 100;
+// Compression start
 
-    for (let i = 0; i < compFiles.length; i++) {
-        const file = compFiles[i];
-        const li = document.createElement('div');
-        li.className = 'result-item';
-        li.innerHTML = `<div class="file-info"><span class="file-name">${file.name}</span><span class="file-stats">Original: ${formatBytes(file.size)} ➔ Processing...</span></div><span class="status-badge">Working</span>`;
-        compResultsList.appendChild(li);
+compStartBtn.addEventListener(
+    'click',
+    async () => {
 
-        try {
-            const blob = await processCompress(file, quality);
-            const url = URL.createObjectURL(blob);
-            processedCompFiles.push({ name: file.name, blob: blob, url: url });
-            li.innerHTML = `<div class="file-info"><span class="file-name">${file.name}</span><span class="file-stats">Original: ${formatBytes(file.size)} ➔ New: <strong style="color:var(--text-dark);">${formatBytes(blob.size)}</strong></span></div><a href="${url}" download="Compressed_${file.name}" class="download-btn">Download</a>`;
-        } catch (err) {
-            li.innerHTML = `<div class="file-info"><span class="file-name">${file.name}</span><span class="file-stats" style="color:#EF4444;">Failed</span></div>`;
+        if (
+            compFiles.length === 0 ||
+            isCompressing
+        ) {
+            return;
+        }
+
+
+        isCompressing = true;
+
+
+        processedCompFiles.forEach(
+            item => {
+
+                URL.revokeObjectURL(
+                    item.url
+                );
+            }
+        );
+
+
+        processedCompFiles = [];
+
+
+        compSettingsPanel.style.display =
+            'none';
+
+
+        compResultsPanel.style.display =
+            'block';
+
+
+        compResultsList.innerHTML =
+            '';
+
+
+        compZipBtn.style.display =
+            'none';
+
+
+        compProgressWrap.style.display =
+            'block';
+
+
+        compProgressBar.style.width =
+            '0%';
+
+
+        compStartBtn.disabled =
+            true;
+
+
+        compResetBtn.disabled =
+            true;
+
+
+        const quality =
+            Number(
+                compQualitySlider.value
+            ) / 100;
+
+
+        for (
+            let index = 0;
+            index < compFiles.length;
+            index++
+        ) {
+
+            const file =
+                compFiles[index];
+
+
+            compProgressText.textContent =
+                `Processing ${index + 1} of ` +
+                `${compFiles.length}`;
+
+
+            compStatus.textContent =
+                `Compressing ${file.name}`;
+
+
+            const row =
+                document.createElement('div');
+
+
+            row.className =
+                'result-row';
+
+
+            row.innerHTML =
+                `<div class="file-meta">
+                    <h4></h4>
+                    <span>Processing...</span>
+                </div>`;
+
+
+            row.querySelector('h4').textContent =
+                file.name;
+
+
+            compResultsList.appendChild(row);
+
+
+            try {
+
+                const result =
+                    await runCompression(
+                        file,
+                        quality
+                    );
+
+
+                const url =
+                    URL.createObjectURL(
+                        result.blob
+                    );
+
+
+                processedCompFiles.push({
+                    name: result.name,
+                    blob: result.blob,
+                    url
+                });
+
+
+                const originalSize =
+                    formatBytes(file.size);
+
+
+                const compressedSize =
+                    formatBytes(
+                        result.blob.size
+                    );
+
+
+                row.innerHTML =
+                    '';
+
+
+                const meta =
+                    document.createElement('div');
+
+
+                meta.className =
+                    'file-meta';
+
+
+                const title =
+                    document.createElement('h4');
+
+
+                title.textContent =
+                    result.name;
+
+
+                const details =
+                    document.createElement('span');
+
+
+                details.innerHTML =
+                    `${originalSize} → ` +
+                    `<strong>${compressedSize}</strong>`;
+
+
+                meta.appendChild(title);
+                meta.appendChild(details);
+
+
+                const download =
+                    document.createElement('a');
+
+
+                download.href = url;
+
+                download.download =
+                    `Compressed_${sanitizeFileName(
+                        result.name
+                    )}`;
+
+                download.className =
+                    'download-link';
+
+                download.textContent =
+                    'Download';
+
+
+                row.appendChild(meta);
+                row.appendChild(download);
+
+            } catch (error) {
+
+                row.innerHTML =
+                    '';
+
+
+                const meta =
+                    document.createElement('div');
+
+
+                meta.className =
+                    'file-meta';
+
+
+                const title =
+                    document.createElement('h4');
+
+
+                title.textContent =
+                    file.name;
+
+
+                const details =
+                    document.createElement('span');
+
+
+                details.textContent =
+                    'Failed to process';
+
+
+                details.style.color =
+                    '#EF4444';
+
+
+                meta.appendChild(title);
+                meta.appendChild(details);
+
+                row.appendChild(meta);
+            }
+
+
+            const progress =
+                Math.round(
+                    (
+                        (index + 1) /
+                        compFiles.length
+                    ) * 100
+                );
+
+
+            compProgressBar.style.width =
+                `${progress}%`;
+
+
+            await new Promise(
+                resolve =>
+                    setTimeout(resolve, 0)
+            );
+        }
+
+
+        isCompressing = false;
+
+
+        compStartBtn.disabled =
+            false;
+
+
+        compResetBtn.disabled =
+            false;
+
+
+        compProgressText.textContent =
+            `Completed ${processedCompFiles.length} of ` +
+            `${compFiles.length}`;
+
+
+        compStatus.textContent =
+            'Compression complete.';
+
+
+        if (
+            processedCompFiles.length > 0
+        ) {
+
+            compZipBtn.style.display =
+                'block';
         }
     }
-    if (processedCompFiles.length > 0) compDownloadAllBox.style.display = 'block';
-});
+);
 
-function processCompress(file, quality) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = e => {
-            const img = new Image();
-            img.src = e.target.result;
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                canvas.width = img.width;
-                canvas.height = img.height;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0);
-                canvas.toBlob(blob => {
-                    if (blob) resolve(blob); else reject(new Error('Canvas blob failed'));
-                    ctx.clearRect(0,0,canvas.width,canvas.height);
-                }, file.type, quality);
-            };
-            img.onerror = reject;
+
+// Compression engine
+
+async function runCompression(
+    file,
+    quality
+) {
+
+    const objectUrl =
+        URL.createObjectURL(file);
+
+
+    try {
+
+        const image =
+            await loadImage(objectUrl);
+
+
+        const sourceWidth =
+            image.naturalWidth ||
+            image.width;
+
+
+        const sourceHeight =
+            image.naturalHeight ||
+            image.height;
+
+
+        let targetWidth =
+            sourceWidth;
+
+        let targetHeight =
+            sourceHeight;
+
+
+        const totalPixels =
+            sourceWidth *
+            sourceHeight;
+
+
+        if (
+            totalPixels >
+            MAX_PIXELS
+        ) {
+
+            const scale =
+                Math.sqrt(
+                    MAX_PIXELS /
+                    totalPixels
+                );
+
+
+            targetWidth =
+                Math.max(
+                    1,
+                    Math.round(
+                        sourceWidth * scale
+                    )
+                );
+
+
+            targetHeight =
+                Math.max(
+                    1,
+                    Math.round(
+                        sourceHeight * scale
+                    )
+                );
+        }
+
+
+        const canvas =
+            document.createElement('canvas');
+
+
+        canvas.width =
+            targetWidth;
+
+        canvas.height =
+            targetHeight;
+
+
+        const context =
+            canvas.getContext('2d');
+
+
+        if (!context) {
+            throw new Error(
+                'Canvas unavailable'
+            );
+        }
+
+
+        context.drawImage(
+            image,
+            0,
+            0,
+            targetWidth,
+            targetHeight
+        );
+
+
+        const blob =
+            await canvasToBlob(
+                canvas,
+                file.type,
+                quality
+            );
+
+
+        context.clearRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+
+        canvas.width = 1;
+        canvas.height = 1;
+
+
+        return {
+            blob,
+            name: file.name
         };
-        reader.onerror = reject;
-    });
+
+    } finally {
+
+        URL.revokeObjectURL(
+            objectUrl
+        );
+    }
 }
 
-compBackBtn.addEventListener('click', () => {
-    processedCompFiles.forEach(item => URL.revokeObjectURL(item.url));
-    processedCompFiles = []; compFiles = []; compFileInput.value = '';
-    document.getElementById('compDropZone').style.display = 'block';
-    compSettingsBox.style.display = 'none';
-    compResultsSection.style.display = 'none';
-    compDownloadAllBox.style.display = 'none';
-});
 
-compDownloadAllBtn.addEventListener('click', () => {
-    const zip = new JSZip();
-    compDownloadAllBtn.textContent = "Packaging ZIP...";
-    compDownloadAllBtn.disabled = true;
-    processedCompFiles.forEach(item => zip.file("Compressed_" + item.name, item.blob));
-    zip.generateAsync({ type: "blob" }).then(content => {
-        const url = URL.createObjectURL(content);
-        const a = document.createElement('a'); a.href = url; a.download = "Compressed_Images.zip"; a.click();
-        URL.revokeObjectURL(url);
-        compDownloadAllBtn.textContent = "Download All (ZIP)";
-        compDownloadAllBtn.disabled = false;
-    });
-});
+// FULL COMPRESSOR RESET
+
+function resetCompressor() {
+
+    if (isCompressing) {
+        return;
+    }
 
 
-// --- 2. CONVERTER ENGINE ---
-const convDropZone = document.getElementById('convDropZone');
-const convFileInput = document.getElementById('convFileInput');
-const convSettingsBox = document.getElementById('convSettingsBox');
-const targetFormat = document.getElementById('targetFormat');
-const convFileCount = document.getElementById('convFileCount');
-const convStartBtn = document.getElementById('convStartBtn');
-const convResultsSection = document.getElementById('convResultsSection');
-const convResultsList = document.getElementById('convResultsList');
-const convDownloadAllBox = document.getElementById('convDownloadAllBox');
-const convDownloadAllBtn = document.getElementById('convDownloadAllBtn');
-const convBackBtn = document.getElementById('convBackBtn');
+    processedCompFiles.forEach(
+        item => {
+
+            URL.revokeObjectURL(
+                item.url
+            );
+        }
+    );
+
+
+    processedCompFiles = [];
+    compFiles = [];
+
+
+    compFileInput.value =
+        '';
+
+
+    compResultsList.innerHTML =
+        '';
+
+
+    compFileCount.textContent =
+        '0 files loaded';
+
+
+    compSettingsPanel.style.display =
+        'none';
+
+
+    compResultsPanel.style.display =
+        'none';
+
+
+    compDropZone.style.display =
+        'block';
+
+
+    compZipBtn.style.display =
+        'none';
+
+
+    compProgressWrap.style.display =
+        'none';
+
+
+    compProgressBar.style.width =
+        '0%';
+
+
+    compProgressText.textContent =
+        'Preparing...';
+
+
+    compStatus.textContent =
+        'Keep this tab open while your images are being processed.';
+
+
+    compQualitySlider.value =
+        80;
+
+
+    compQualityVal.textContent =
+        '80%';
+}
+
+
+// Compressor ZIP
+
+compZipBtn.addEventListener(
+    'click',
+    async () => {
+
+        if (
+            processedCompFiles.length === 0 ||
+            typeof JSZip === 'undefined'
+        ) {
+            return;
+        }
+
+
+        const zip =
+            new JSZip();
+
+
+        processedCompFiles.forEach(
+            item => {
+
+                zip.file(
+                    `Compressed_${item.name}`,
+                    item.blob
+                );
+            }
+        );
+
+
+        compZipBtn.disabled =
+            true;
+
+
+        compZipBtn.textContent =
+            'Creating ZIP...';
+
+
+        try {
+
+            const content =
+                await zip.generateAsync({
+                    type: 'blob'
+                });
+
+
+            const url =
+                URL.createObjectURL(content);
+
+
+            const link =
+                document.createElement('a');
+
+
+            link.href = url;
+
+            link.download =
+                'Compressed_Batch.zip';
+
+
+            document.body.appendChild(link);
+
+            link.click();
+
+            link.remove();
+
+
+            setTimeout(
+                () => URL.revokeObjectURL(url),
+                2000
+            );
+
+        } finally {
+
+            compZipBtn.disabled =
+                false;
+
+            compZipBtn.textContent =
+                'Download Archive (ZIP)';
+        }
+    }
+);
+
+
+// =====================================================
+// CONVERTER
+// =====================================================
+
+const convFileInput =
+    document.getElementById('convFileInput');
+
+const convSettingsPanel =
+    document.getElementById('convSettingsPanel');
+
+const convResultsPanel =
+    document.getElementById('convResultsPanel');
+
+const convResultsList =
+    document.getElementById('convResultsList');
+
+const convDropZone =
+    document.getElementById('convDropZone');
+
+const convFileCount =
+    document.getElementById('convFileCount');
+
+const convZipBtn =
+    document.getElementById('convZipBtn');
+
+const convStartBtn =
+    document.getElementById('convStartBtn');
+
+const targetFormat =
+    document.getElementById('targetFormat');
+
 
 let convFiles = [];
+
 let processedConvFiles = [];
 
-convFileInput.addEventListener('change', (e) => handleConvFiles(e.target.files));
-convDropZone.addEventListener('dragover', (e) => { e.preventDefault(); });
-convDropZone.addEventListener('drop', (e) => { e.preventDefault(); handleConvFiles(e.dataTransfer.files); });
 
-function handleConvFiles(files) {
-    const arr = Array.from(files).filter(f => f.type.startsWith('image/'));
-    if (arr.length === 0) return;
-    if (arr.some(f => f.size > MAX_FILE_SIZE)) { alert('One or more files exceed the 50MB limit.'); return; }
-    if (arr.length > MAX_FILES) { alert(`Maximum ${MAX_FILES} files allowed.`); return; }
-    
-    convFiles = arr;
-    convFileCount.textContent = `${convFiles.length} file(s) selected`;
-    convSettingsBox.style.display = 'block';
-}
+convFileInput.addEventListener(
+    'change',
+    event => {
 
-convStartBtn.addEventListener('click', async () => {
-    if (convFiles.length === 0) return;
-    document.getElementById('convDropZone').style.display = 'none';
-    convSettingsBox.style.display = 'none';
-    convResultsSection.style.display = 'block';
-    convResultsList.innerHTML = '';
-    processedConvFiles = [];
+        convFiles =
+            Array.from(
+                event.target.files || []
+            ).filter(
+                file =>
+                    ALLOWED_IMAGE_TYPES.includes(
+                        file.type
+                    )
+            );
 
-    const format = targetFormat.value;
-    const ext = format.split('/')[1] === 'jpeg' ? 'jpg' : format.split('/')[1];
 
-    for (let i = 0; i < convFiles.length; i++) {
-        const file = convFiles[i];
-        const li = document.createElement('div');
-        li.className = 'result-item';
-        li.innerHTML = `<div class="file-info"><span class="file-name">${file.name}</span><span class="file-stats">Converting to .${ext.toUpperCase()}...</span></div><span class="status-badge">Working</span>`;
-        convResultsList.appendChild(li);
+        if (convFiles.length === 0) {
+            return;
+        }
 
-        try {
-            const blob = await processConvert(file, format);
-            const url = URL.createObjectURL(blob);
-            const newName = file.name.substring(0, file.name.lastIndexOf('.')) + '.' + ext;
-            processedConvFiles.push({ name: newName, blob: blob, url: url });
-            li.innerHTML = `<div class="file-info"><span class="file-name">${newName}</span><span class="file-stats">Size: <strong style="color:var(--text-dark);">${formatBytes(blob.size)}</strong></span></div><a href="${url}" download="${newName}" class="download-btn">Download</a>`;
-        } catch (err) {
-            li.innerHTML = `<div class="file-info"><span class="file-name">${file.name}</span><span class="file-stats" style="color:#EF4444;">Failed</span></div>`;
+
+        convFileCount.textContent =
+            `${convFiles.length} files loaded`;
+
+
+        convDropZone.style.display =
+            'none';
+
+
+        convSettingsPanel.style.display =
+            'block';
+
+
+        convFileInput.value =
+            '';
+    }
+);
+
+
+convStartBtn.addEventListener(
+    'click',
+    async () => {
+
+        if (convFiles.length === 0) {
+            return;
+        }
+
+
+        convResultsList.innerHTML =
+            '';
+
+
+        convSettingsPanel.style.display =
+            'none';
+
+
+        convResultsPanel.style.display =
+            'block';
+
+
+        processedConvFiles.forEach(
+            item =>
+                URL.revokeObjectURL(
+                    item.url
+                )
+        );
+
+
+        processedConvFiles = [];
+
+
+        const format =
+            targetFormat.value;
+
+
+        const extension =
+            format === 'image/jpeg'
+                ? 'jpg'
+                : format.split('/')[1];
+
+
+        for (const file of convFiles) {
+
+            try {
+
+                const blob =
+                    await runConversion(
+                        file,
+                        format
+                    );
+
+
+                const dot =
+                    file.name.lastIndexOf('.');
+
+
+                const baseName =
+                    dot > 0
+                        ? file.name.slice(0, dot)
+                        : file.name;
+
+
+                const newName =
+                    `${baseName}.${extension}`;
+
+
+                const url =
+                    URL.createObjectURL(blob);
+
+
+                processedConvFiles.push({
+                    name: newName,
+                    blob,
+                    url
+                });
+
+
+                const row =
+                    document.createElement('div');
+
+
+                row.className =
+                    'result-row';
+
+
+                row.innerHTML =
+                    `<div class="file-meta">
+                        <h4></h4>
+                        <span>${formatBytes(blob.size)}</span>
+                    </div>`;
+
+
+                row.querySelector('h4').textContent =
+                    newName;
+
+
+                const download =
+                    document.createElement('a');
+
+
+                download.href = url;
+
+                download.download = newName;
+
+                download.className =
+                    'download-link';
+
+                download.textContent =
+                    'Download';
+
+
+                row.appendChild(download);
+
+
+                convResultsList.appendChild(row);
+
+            } catch (error) {
+
+                console.error(error);
+            }
+
+
+            await new Promise(
+                resolve =>
+                    setTimeout(resolve, 0)
+            );
+        }
+
+
+        if (
+            processedConvFiles.length > 0
+        ) {
+
+            convZipBtn.style.display =
+                'block';
         }
     }
-    if (processedConvFiles.length > 0) convDownloadAllBox.style.display = 'block';
-});
+);
 
-function processConvert(file, format) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = e => {
-            const img = new Image();
-            img.src = e.target.result;
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                canvas.width = img.width;
-                canvas.height = img.height;
-                const ctx = canvas.getContext('2d');
-                if (format === 'image/jpeg') {
-                    ctx.fillStyle = '#FFFFFF';
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                }
-                ctx.drawImage(img, 0, 0);
-                canvas.toBlob(blob => {
-                    if (blob) resolve(blob); else reject(new Error('Conversion failed'));
-                    ctx.clearRect(0,0,canvas.width,canvas.height);
-                }, format, 0.92);
-            };
-            img.onerror = reject;
-        };
-        reader.onerror = reject;
-    });
+
+async function runConversion(
+    file,
+    format
+) {
+
+    const objectUrl =
+        URL.createObjectURL(file);
+
+
+    try {
+
+        const image =
+            await loadImage(objectUrl);
+
+
+        const canvas =
+            document.createElement('canvas');
+
+
+        canvas.width =
+            image.naturalWidth ||
+            image.width;
+
+
+        canvas.height =
+            image.naturalHeight ||
+            image.height;
+
+
+        const context =
+            canvas.getContext('2d');
+
+
+        if (
+            format === 'image/jpeg'
+        ) {
+
+            context.fillStyle =
+                '#FFFFFF';
+
+
+            context.fillRect(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+        }
+
+
+        context.drawImage(
+            image,
+            0,
+            0
+        );
+
+
+        return await canvasToBlob(
+            canvas,
+            format,
+            0.92
+        );
+
+    } finally {
+
+        URL.revokeObjectURL(
+            objectUrl
+        );
+    }
 }
 
-convBackBtn.addEventListener('click', () => {
-    processedConvFiles.forEach(item => URL.revokeObjectURL(item.url));
-    processedConvFiles = []; convFiles = []; convFileInput.value = '';
-    document.getElementById('convDropZone').style.display = 'block';
-    convSettingsBox.style.display = 'none';
-    convResultsSection.style.display = 'none';
-    convDownloadAllBox.style.display = 'none';
-});
 
-convDownloadAllBtn.addEventListener('click', () => {
-    const zip = new JSZip();
-    convDownloadAllBtn.textContent = "Packaging ZIP...";
-    convDownloadAllBtn.disabled = true;
-    processedConvFiles.forEach(item => zip.file(item.name, item.blob));
-    zip.generateAsync({ type: "blob" }).then(content => {
-        const url = URL.createObjectURL(content);
-        const a = document.createElement('a'); a.href = url; a.download = "Converted_Images.zip"; a.click();
-        URL.revokeObjectURL(url);
-        convDownloadAllBtn.textContent = "Download All Converted (ZIP)";
-        convDownloadAllBtn.disabled = false;
-    });
-});
+function resetConverter() {
 
-// --- FAQ ACCORDIONS ---
-document.querySelectorAll('.faq-question').forEach(faq => {
-    faq.addEventListener('click', () => {
-        faq.classList.toggle('active');
-        const answer = faq.nextElementSibling;
-        if (faq.classList.contains('active')) {
-            answer.style.maxHeight = answer.scrollHeight + "px";
-        } else {
-            answer.style.maxHeight = null;
-        }
+    processedConvFiles.forEach(
+        item =>
+            URL.revokeObjectURL(
+                item.url
+            )
+    );
+
+
+    processedConvFiles = [];
+    convFiles = [];
+
+
+    convFileInput.value =
+        '';
+
+
+    convResultsList.innerHTML =
+        '';
+
+
+    convFileCount.textContent =
+        '0 files loaded';
+
+
+    convSettingsPanel.style.display =
+        'none';
+
+
+    convResultsPanel.style.display =
+        'none';
+
+
+    convDropZone.style.display =
+        'block';
+
+
+    convZipBtn.style.display =
+        'none';
+}
+
+
+// =====================================================
+// FAQ
+// =====================================================
+
+document
+    .querySelectorAll('.faq-question')
+    .forEach(button => {
+
+        button.addEventListener(
+            'click',
+            () => {
+
+                const answer =
+                    button.nextElementSibling;
+
+
+                const isOpen =
+                    Boolean(
+                        answer.style.maxHeight
+                    );
+
+
+                answer.style.maxHeight =
+                    isOpen
+                        ? ''
+                        : `${answer.scrollHeight}px`;
+            }
+        );
     });
-});

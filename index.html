@@ -2,177 +2,521 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PixelShift Studio | All-in-One Image Toolkit</title>
-    <meta name="description" content="Free, secure, and lightning-fast client-side image compressor, converter, and processing toolkit. 100% private processing on your device.">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>AuraStudio — Free Image Compressor & Converter</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
     <link rel="stylesheet" href="style.css">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
+
 <body>
-    <!-- Floating Header Navbar -->
+
     <header class="navbar">
-        <div class="logo">⚡ PixelShift</div>
-        <nav class="pill-tabs">
-            <button class="tab-btn active" data-target="compressor">🗜️ Compressor</button>
-            <button class="tab-btn" data-target="converter">🔄 Converter</button>
-        </nav>
+        <button
+            class="logo"
+            type="button"
+            onclick="switchView('dashboard')"
+        >
+            Aura<span>Studio</span>
+        </button>
+
+        <div class="nav-status">
+            <span class="pulse-dot"></span>
+            Secure Engine Active
+        </div>
     </header>
 
+
     <main class="container">
-        <!-- TOOL 1: COMPRESSOR WORKSPACE -->
-        <section id="compressorWorkspace" class="workspace active">
-            <div class="header">
-                <h1>Image Compressor</h1>
-                <p>Reduce file size instantly without visual quality loss.</p>
-            </div>
 
-            <div class="upload-zone" id="compDropZone">
-                <svg class="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
-                <p>Drag & drop images here (Up to 100)</p>
-                <span class="divider">OR</span>
-                <button class="btn">Browse Files</button>
-                <input type="file" id="compFileInput" multiple accept="image/jpeg, image/png, image/webp">
-            </div>
+        <!-- DASHBOARD -->
+        <div
+            id="dashboardView"
+            class="view active"
+        >
 
-            <div class="card settings-box" id="compSettingsBox">
-                <div class="slider-container">
-                    <div class="slider-header">
-                        <span>Compression Quality</span>
-                        <span id="compQualityVal" style="color: var(--brand-primary); font-weight: 700;">80%</span>
+            <section class="hero">
+
+                <span class="badge">
+                    PRO WORKSHOP
+                </span>
+
+                <h1>
+                    Smart tools.<br>
+                    <span>Zero server uploads.</span>
+                </h1>
+
+                <p>
+                    Fast image tools that process files directly on your
+                    device. Compress and convert images without uploading
+                    them to a server.
+                </p>
+
+                <div class="hero-stats">
+                    <div class="stat-pill">
+                        ⚡ Instant Processing
                     </div>
-                    <input type="range" id="compQualitySlider" min="1" max="100" value="80">
-                </div>
-                <div class="action-container">
-                    <span class="file-count" id="compFileCount">0 files selected</span>
-                    <button class="btn" id="compStartBtn">Compress Now</button>
-                </div>
-            </div>
 
-            <div class="results-container" id="compResultsSection">
-                <div class="note-banner">
-                    <strong>Note:</strong> Please do not close or refresh the tab while processing files.
-                </div>
-                <div class="card">
-                    <button class="btn btn-outline" id="compBackBtn">← Compress More Images</button>
-                    <div id="compResultsList"></div>
-                    <div class="download-all-container" id="compDownloadAllBox">
-                        <button class="btn" id="compDownloadAllBtn" style="width: 100%;">Download All (ZIP)</button>
+                    <div class="stat-pill">
+                        🔒 Private & Secure
+                    </div>
+
+                    <div class="stat-pill">
+                        ✨ Quality Control
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- TOOL 2: CONVERTER WORKSPACE -->
-        <section id="converterWorkspace" class="workspace">
-            <div class="header">
-                <h1>Format Converter</h1>
-                <p>Convert images between PNG, JPG, and WebP instantly.</p>
+            </section>
+
+
+            <div class="category-title">
+                IMAGE TOOLS
             </div>
 
-            <div class="upload-zone" id="convDropZone">
-                <svg class="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
-                <p>Drag & drop images to convert</p>
-                <span class="divider">OR</span>
-                <button class="btn">Browse Files</button>
-                <input type="file" id="convFileInput" multiple accept="image/jpeg, image/png, image/webp">
+
+            <div class="tools-grid">
+
+                <button
+                    class="tool-card"
+                    type="button"
+                    onclick="switchView('compressor')"
+                >
+                    <div class="tool-icon">
+                        🗜️
+                    </div>
+
+                    <div class="tool-info">
+                        <h3>Compress</h3>
+
+                        <p>
+                            Reduce image file sizes with adjustable
+                            compression quality directly in your browser.
+                        </p>
+                    </div>
+
+                    <span class="arrow">
+                        →
+                    </span>
+                </button>
+
+
+                <button
+                    class="tool-card"
+                    type="button"
+                    onclick="switchView('converter')"
+                >
+                    <div class="tool-icon">
+                        🔄
+                    </div>
+
+                    <div class="tool-info">
+                        <h3>Convert</h3>
+
+                        <p>
+                            Convert images between JPG, PNG and WebP
+                            formats directly on your device.
+                        </p>
+                    </div>
+
+                    <span class="arrow">
+                        →
+                    </span>
+                </button>
+
             </div>
 
-            <div class="card settings-box" id="convSettingsBox">
-                <div class="slider-container">
-                    <label class="slider-header">Select Target Format</label>
-                    <select id="targetFormat" class="format-select">
-                        <option value="image/webp">WebP (Best for Web)</option>
-                        <option value="image/jpeg">JPG / JPEG (Universal)</option>
-                        <option value="image/png">PNG (Lossless)</option>
+
+            <section class="info-section">
+
+                <h2>How it works</h2>
+
+
+                <div class="faq-item">
+
+                    <button
+                        class="faq-question"
+                        type="button"
+                    >
+                        How does image processing work?
+                        <span>+</span>
+                    </button>
+
+                    <div class="faq-answer">
+                        <p>
+                            Images are processed directly inside your
+                            browser using your device.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="faq-item">
+
+                    <button
+                        class="faq-question"
+                        type="button"
+                    >
+                        What image formats are supported?
+                        <span>+</span>
+                    </button>
+
+                    <div class="faq-answer">
+                        <p>
+                            JPG, PNG and WebP images are currently supported.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="faq-item">
+
+                    <button
+                        class="faq-question"
+                        type="button"
+                    >
+                        Can I process multiple images?
+                        <span>+</span>
+                    </button>
+
+                    <div class="faq-answer">
+                        <p>
+                            Yes. Multiple images can be processed in one
+                            sequential batch.
+                        </p>
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+        <!-- COMPRESSOR -->
+        <div
+            id="compressorView"
+            class="view"
+        >
+
+            <button
+                class="back-btn"
+                type="button"
+                onclick="goBackToDashboard()"
+            >
+                ← Back to Workshop
+            </button>
+
+
+            <div class="workspace-header">
+
+                <h2>
+                    Image Compressor
+                </h2>
+
+                <p>
+                    Compress up to 100 JPG, PNG or WebP images directly
+                    on your device.
+                </p>
+
+            </div>
+
+
+            <div
+                class="upload-box"
+                id="compDropZone"
+            >
+
+                <div class="upload-icon-pulse">
+                    📂
+                </div>
+
+                <p>
+                    Drag & drop files here, or
+                    <span>browse device</span>
+                </p>
+
+                <input
+                    type="file"
+                    id="compFileInput"
+                    multiple
+                    accept="image/jpeg,image/png,image/webp"
+                >
+
+            </div>
+
+
+            <div
+                class="settings-panel"
+                id="compSettingsPanel"
+                style="display:none;"
+            >
+
+                <div class="slider-group">
+
+                    <label>
+                        Compression Quality:
+                        <span id="compQualityVal">80%</span>
+                    </label>
+
+                    <input
+                        type="range"
+                        id="compQualitySlider"
+                        min="1"
+                        max="100"
+                        value="80"
+                    >
+
+                </div>
+
+
+                <div class="panel-action">
+
+                    <span id="compFileCount">
+                        0 files loaded
+                    </span>
+
+                    <button
+                        class="action-btn"
+                        id="compStartBtn"
+                        type="button"
+                    >
+                        Compress Images
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="results-panel"
+                id="compResultsPanel"
+                style="display:none;"
+            >
+
+                <div
+                    class="notice-box"
+                    id="compStatus"
+                >
+                    Keep this tab open while your images are being processed.
+                </div>
+
+
+                <div
+                    class="comp-progress-wrap"
+                    id="compProgressWrap"
+                    style="display:none;"
+                >
+
+                    <div class="comp-progress-text">
+
+                        <span id="compProgressText">
+                            Preparing...
+                        </span>
+
+                    </div>
+
+
+                    <div class="comp-progress-track">
+
+                        <div id="compProgressBar"></div>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="action-btn outline"
+                    id="compResetBtn"
+                    type="button"
+                    onclick="resetCompressor()"
+                >
+                    ↺ Process More Files
+                </button>
+
+
+                <div id="compResultsList"></div>
+
+
+                <button
+                    class="action-btn"
+                    id="compZipBtn"
+                    type="button"
+                    style="display:none; width:100%; margin-top:20px;"
+                >
+                    Download Archive (ZIP)
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- CONVERTER -->
+        <div
+            id="converteView"
+            class="view"
+        >
+
+            <button
+                class="back-btn"
+                type="button"
+                onclick="goBackToDashboard()"
+            >
+                ← Back to Workshop
+            </button>
+
+
+            <div class="workspace-header">
+
+                <h2>
+                    Format Converter
+                </h2>
+
+                <p>
+                    Transform JPG, PNG and WebP images directly on your device.
+                </p>
+
+            </div>
+
+
+            <div
+                class="upload-box"
+                id="convDropZone"
+            >
+
+                <div class="upload-icon-pulse">
+                    ⚡
+                </div>
+
+                <p>
+                    Drop images to convert, or
+                    <span>browse device</span>
+                </p>
+
+                <input
+                    type="file"
+                    id="convFileInput"
+                    multiple
+                    accept="image/jpeg,image/png,image/webp"
+                >
+
+            </div>
+
+
+            <div
+                class="settings-panel"
+                id="convSettingsPanel"
+                style="display:none;"
+            >
+
+                <div class="slider-group">
+
+                    <label>
+                        Target Format
+                    </label>
+
+                    <select
+                        id="targetFormat"
+                        class="styled-select"
+                    >
+                        <option value="image/webp">
+                            WebP (Optimized for Web)
+                        </option>
+
+                        <option value="image/jpeg">
+                            JPEG (Universal Standard)
+                        </option>
+
+                        <option value="image/png">
+                            PNG (High Fidelity)
+                        </option>
                     </select>
+
                 </div>
-                <div class="action-container">
-                    <span class="file-count" id="convFileCount">0 files selected</span>
-                    <button class="btn" id="convStartBtn">Convert Now</button>
+
+
+                <div class="panel-action">
+
+                    <span id="convFileCount">
+                        0 files loaded
+                    </span>
+
+                    <button
+                        class="action-btn"
+                        id="convStartBtn"
+                        type="button"
+                    >
+                        Convert Images
+                    </button>
+
                 </div>
+
             </div>
 
-            <div class="results-container" id="convResultsSection">
-                <div class="note-banner">
-                    <strong>Note:</strong> Processing securely on your device. Keep tab open.
-                </div>
-                <div class="card">
-                    <button class="btn btn-outline" id="convBackBtn">← Convert More Images</button>
-                    <div id="convResultsList"></div>
-                    <div class="download-all-container" id="convDownloadAllBox">
-                        <button class="btn" id="convDownloadAllBtn" style="width: 100%;">Download All Converted (ZIP)</button>
-                    </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- AD SPACE -->
-        <div class="ad-space"><span>Advertisement</span></div>
+            <div
+                class="results-panel"
+                id="convResultsPanel"
+                style="display:none;"
+            >
 
-        <!-- TRUST GRID -->
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">🔒</div>
-                <h3>100% Private</h3>
-                <p>Processed completely in your browser memory. Files never leave your device.</p>
+                <div class="notice-box">
+                    Keep this tab open while your images are being converted.
+                </div>
+
+
+                <button
+                    class="action-btn outline"
+                    type="button"
+                    onclick="resetConverter()"
+                >
+                    ↺ Convert More Files
+                </button>
+
+
+                <div id="convResultsList"></div>
+
+
+                <button
+                    class="action-btn"
+                    id="convZipBtn"
+                    type="button"
+                    style="display:none; width:100%; margin-top:20px;"
+                >
+                    Download Archive (ZIP)
+                </button>
+
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">⚡</div>
-                <h3>Batch Power</h3>
-                <p>Handle up to 100 images simultaneously with sequential queue processing.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">💎</div>
-                <h3>Pro Quality</h3>
-                <p>Advanced HTML5 Canvas engine maintaining crisp clarity and optimal sizing.</p>
-            </div>
+
         </div>
 
-        <!-- SEO FAQS -->
-        <div class="seo-section">
-            <h2>Frequently Asked Questions</h2>
-            <div class="faq-item">
-                <button class="faq-question">Are my photos uploaded to any server? <span>+</span></button>
-                <div class="faq-answer"><p>No! All operations run locally inside your device browser using native web APIs for complete security.</p></div>
-            </div>
-            <div class="faq-item">
-                <button class="faq-question">What is the maximum file size supported? <span>+</span></button>
-                <div class="faq-answer"><p>You can upload single images up to 50MB and process batches of up to 100 files efficiently.</p></div>
-            </div>
-        </div>
-
-        <div class="ad-space"><span>Advertisement</span></div>
     </main>
 
-    <!-- FOOTER -->
-    <footer class="main-footer">
-        <div class="footer-content">
-            <p class="copyright">&copy; 2026 PixelShift Studio. All rights reserved.</p>
-            <div class="footer-links">
-                <a href="#" id="openPrivacy">Privacy Policy</a>
-                <a href="#" id="openTerms">Terms of Use</a>
-            </div>
-            <p class="footer-note">Built for speed, engineered for absolute privacy.</p>
-        </div>
+
+    <footer class="footer">
+
+        <p>
+            &copy; 2026 AuraStudio. All rights reserved.
+        </p>
+
     </footer>
 
-    <!-- MODALS -->
-    <div class="modal-overlay" id="privacyModal">
-        <div class="modal-card">
-            <h2>Privacy Policy</h2>
-            <p>Your privacy is paramount. PixelShift processes all data locally on your device hardware. We do not store, track, view, or collect any of your uploaded imagery.</p>
-            <button class="btn" id="closePrivacy">Close</button>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="termsModal">
-        <div class="modal-card">
-            <h2>Terms of Use</h2>
-            <p>By using PixelShift, you agree to use our client-side tools lawfully. You retain full copyright and ownership of all files processed through our platform.</p>
-            <button class="btn" id="closeTerms">Close</button>
-        </div>
-    </div>
 
     <script src="script.js"></script>
+
 </body>
 </html>
