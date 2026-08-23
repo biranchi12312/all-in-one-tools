@@ -1,445 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <title>AuraStudio — Image Compressor & Converter</title>
 
-    <title>
-        AuraStudio — Free Image Compressor & Converter
-    </title>
+    <meta name="description"
+        content="Compress and convert JPG, PNG and WebP images directly in your browser. Upload up to 100 images and download optimized results.">
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
 
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"
-    ></script>
+    <link rel="stylesheet" href="style.css">
+
+    <!-- ZIP library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
-
 
 <body>
 
     <!-- HEADER -->
-
     <header class="navbar">
-
-        <button
-            class="logo"
-            type="button"
-            onclick="switchView('dashboard')"
-        >
+        <button class="logo" id="logoBtn" type="button">
             Aura<span>Studio</span>
         </button>
 
-
         <div class="nav-status">
-
             <span class="pulse-dot"></span>
-
             Secure Engine Active
-
         </div>
-
     </header>
-
 
 
     <main class="container">
 
-
         <!-- =========================
              DASHBOARD
         ========================== -->
-
-        <div
-            id="dashboardView"
-            class="view active"
-        >
+        <section id="dashboardView" class="view active">
 
             <section class="hero">
-
-                <span class="badge">
-                    PRO WORKSHOP
-                </span>
-
+                <span class="badge">PRO WORKSHOP</span>
 
                 <h1>
-                    Smart tools.<br>
-                    <span>Zero server uploads.</span>
+                    Powerful image tools.<br>
+                    <span>Simple workflow.</span>
                 </h1>
 
-
                 <p>
-                    Fast image tools that process files locally.
-                    Compress and convert images without sending
-                    them to an external processing server.
+                    Compress and convert your images quickly with a clean,
+                    professional processing workspace.
                 </p>
 
-
                 <div class="hero-stats">
-
-                    <div class="stat-pill">
-                        ⚡ Instant Processing
-                    </div>
-
-                    <div class="stat-pill">
-                        🔒 Private & Secure
-                    </div>
-
-                    <div class="stat-pill">
-                        ✨ Quality Control
-                    </div>
-
+                    <div class="stat-pill">⚡ Fast Processing</div>
+                    <div class="stat-pill">🔒 Private Workflow</div>
+                    <div class="stat-pill">📦 Batch Support</div>
                 </div>
-
             </section>
 
 
-
-            <div class="category-title">
-                IMAGE TOOLS
-            </div>
-
-
+            <div class="category-title">IMAGE TOOLS</div>
 
             <div class="tools-grid">
 
-
                 <!-- COMPRESSOR -->
-
-                <button
-                    class="tool-card"
-                    type="button"
-                    onclick="switchView('compressor')"
-                >
-
-                    <div class="tool-icon">
-                        🗜️
-                    </div>
-
+                <button class="tool-card" type="button" data-open-view="compressor">
+                    <div class="tool-icon">🗜️</div>
 
                     <div class="tool-info">
-
-                        <h3>
-                            Compress
-                        </h3>
-
+                        <h3>Compress Images</h3>
                         <p>
-                            Reduce image file sizes with adjustable
-                            compression quality.
+                            Reduce image file size with adjustable compression quality
+                            and batch processing.
                         </p>
-
                     </div>
 
-
-                    <span class="arrow">
-                        →
-                    </span>
-
+                    <span class="arrow">→</span>
                 </button>
-
 
 
                 <!-- CONVERTER -->
-
-                <button
-                    class="tool-card"
-                    type="button"
-                    onclick="switchView('converter')"
-                >
-
-                    <div class="tool-icon">
-                        🔄
-                    </div>
-
+                <button class="tool-card" type="button" data-open-view="converter">
+                    <div class="tool-icon">🔄</div>
 
                     <div class="tool-info">
-
-                        <h3>
-                            Convert
-                        </h3>
-
+                        <h3>Convert Images</h3>
                         <p>
-                            Convert images between JPG, PNG and WebP
-                            formats.
+                            Convert JPG, PNG and WebP images into another supported format.
                         </p>
-
                     </div>
 
-
-                    <span class="arrow">
-                        →
-                    </span>
-
+                    <span class="arrow">→</span>
                 </button>
-
 
             </div>
 
 
-
+            <!-- FAQ -->
             <section class="info-section">
 
-                <h2>
-                    How it works
-                </h2>
-
-
+                <h2>Frequently Asked Questions</h2>
 
                 <div class="faq-item">
-
-                    <button
-                        class="faq-question"
-                        type="button"
-                    >
-                        How does image processing work?
-
+                    <button class="faq-question" type="button">
+                        How many images can I upload?
                         <span>+</span>
                     </button>
 
-
                     <div class="faq-answer">
-
                         <p>
-                            Images are processed inside your browser
-                            using your device.
+                            You can select up to 100 images in one batch.
                         </p>
-
                     </div>
-
                 </div>
 
 
-
                 <div class="faq-item">
-
-                    <button
-                        class="faq-question"
-                        type="button"
-                    >
+                    <button class="faq-question" type="button">
                         What image formats are supported?
-
                         <span>+</span>
                     </button>
 
-
                     <div class="faq-answer">
-
                         <p>
-                            JPG, PNG and WebP images are currently supported.
+                            JPG, JPEG, PNG and WebP images are supported.
                         </p>
-
                     </div>
-
-                </div>
-
-
-
-                <div class="faq-item">
-
-                    <button
-                        class="faq-question"
-                        type="button"
-                    >
-                        Can I process multiple images?
-
-                        <span>+</span>
-                    </button>
-
-
-                    <div class="faq-answer">
-
-                        <p>
-                            Yes. You can upload and process up to
-                            100 supported images in one batch.
-                        </p>
-
-                    </div>
-
                 </div>
 
             </section>
 
-        </div>
+        </section>
 
 
 
         <!-- =========================
              COMPRESSOR
         ========================== -->
+        <section id="compressorView" class="view">
 
-        <div
-            id="compressorView"
-            class="view"
-        >
-
-
-            <button
-                class="back-btn"
-                type="button"
-                onclick="goBackToDashboard()"
-            >
+            <button class="back-btn" type="button" data-back-dashboard>
                 ← Back to Workshop
             </button>
 
 
-
             <div class="workspace-header">
-
-                <h2>
-                    Image Compressor
-                </h2>
-
-
-                <p>
-                    Upload up to 100 JPG, PNG or WebP images,
-                    review your queue and compress them in one batch.
-                </p>
-
+                <h2>Image Compressor</h2>
+                <p>Upload up to 100 images and optimize them in one batch.</p>
             </div>
 
 
+            <!-- UPLOAD AREA -->
+            <div class="upload-box" id="compDropZone">
 
-            <!-- UPLOAD BOX -->
+                <div class="upload-icon-pulse">📂</div>
 
-            <div
-                class="upload-box"
-                id="compDropZone"
-            >
-
-                <div class="upload-icon-pulse">
-                    📂
-                </div>
-
+                <h3>Upload Images</h3>
 
                 <p>
-                    Drag & drop files here, or
-                    <span>browse device</span>
+                    Drag & drop your images here or
+                    <span>browse files</span>
                 </p>
 
+                <div class="upload-limits">
+                    Up to 100 images • Max 100 MB per image
+                </div>
 
                 <input
                     type="file"
                     id="compFileInput"
                     multiple
-                    accept="image/jpeg,image/png,image/webp"
+                    accept="image/jpeg,image/jpg,image/png,image/webp"
                 >
 
             </div>
 
 
-
-            <!-- UPLOAD QUEUE + SETTINGS -->
-
-            <div
-                class="compressor-workspace"
-                id="compSettingsPanel"
-                style="display:none;"
+            <!-- FILE QUEUE -->
+            <section
+                class="queue-panel"
+                id="compQueuePanel"
+                hidden
             >
 
-
                 <div class="queue-header">
-
                     <div>
-
-                        <span class="queue-eyebrow">
-                            UPLOAD QUEUE
-                        </span>
-
-
-                        <h3>
-                            Ready to compress
-                        </h3>
-
+                        <h3>Uploaded Images</h3>
+                        <p id="compQueueSummary">0 images uploaded</p>
                     </div>
 
-
-                    <div
-                        class="queue-count-badge"
-                        id="compQueueBadge"
+                    <button
+                        type="button"
+                        class="small-reset-btn"
+                        id="compClearBtn"
                     >
-                        0 files
-                    </div>
-
+                        Clear All
+                    </button>
                 </div>
 
 
-
                 <div
-                    class="upload-summary"
-                    id="compUploadSummary"
-                >
-
-                    <div class="summary-icon">
-                        ✓
-                    </div>
-
-
-                    <div>
-
-                        <strong>
-                            Upload complete
-                        </strong>
-
-                        <span id="compSummaryText">
-                            Your files are ready for compression.
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- FILE PREVIEW QUEUE -->
-
-                <div
-                    class="file-preview-list"
-                    id="compPreviewList"
+                    class="file-queue"
+                    id="compFileQueue"
                 ></div>
 
+            </section>
 
 
-                <!-- QUALITY -->
+            <!-- COMPRESS SETTINGS -->
+            <section
+                class="settings-panel"
+                id="compSettingsPanel"
+                hidden
+            >
 
-                <div class="quality-section">
+                <div class="slider-group">
 
-                    <div class="quality-heading">
+                    <div class="setting-label-row">
+                        <label for="compQualitySlider">
+                            Compression Quality
+                        </label>
 
-                        <div>
-
-                            <span class="queue-eyebrow">
-                                COMPRESSION SETTINGS
-                            </span>
-
-                            <h3>
-                                Compression Quality
-                            </h3>
-
-                        </div>
-
-
-                        <div
-                            class="quality-value-box"
-                            id="compQualityVal"
-                        >
-                            80%
-                        </div>
-
+                        <strong id="compQualityVal">80%</strong>
                     </div>
-
 
                     <input
                         type="range"
@@ -449,21 +237,18 @@
                         value="80"
                     >
 
+                    <p class="setting-help">
+                        Lower quality usually produces smaller files.
+                    </p>
+
                 </div>
 
 
+                <div class="panel-action">
 
-                <!-- ACTION -->
-
-                <div class="compress-action-area">
-
-                    <div
-                        class="compress-file-info"
-                        id="compFileCount"
-                    >
+                    <div id="compFileCount">
                         0 files loaded
                     </div>
-
 
                     <button
                         class="action-btn"
@@ -475,197 +260,172 @@
 
                 </div>
 
-
-            </div>
-
+            </section>
 
 
-            <!-- RESULTS -->
-
-            <div
+            <!-- COMPRESS RESULTS -->
+            <section
                 class="results-panel"
                 id="compResultsPanel"
-                style="display:none;"
+                hidden
             >
 
+                <div class="results-top">
+                    <div>
+                        <h3>Compression Complete</h3>
+                        <p id="compResultSummary">
+                            Your processed files will appear below.
+                        </p>
+                    </div>
 
-                <div
-                    class="notice-box"
-                    id="compStatus"
-                >
-                    Keep this tab open while your images are being processed.
+                    <span class="complete-badge">✓ Complete</span>
                 </div>
 
 
-
-                <div
-                    class="comp-progress-wrap"
-                    id="compProgressWrap"
-                >
-
-                    <div class="comp-progress-text">
-
-                        <span id="compProgressText">
-                            Preparing...
-                        </span>
-
-                        <span id="compProgressPercent">
-                            0%
-                        </span>
-
-                    </div>
+                <div id="compResultsList"></div>
 
 
-                    <div class="comp-progress-track">
+                <div class="result-actions">
 
-                        <div
-                            id="compProgressBar"
-                        ></div>
+                    <button
+                        class="action-btn outline"
+                        id="compProcessMoreBtn"
+                        type="button"
+                    >
+                        ↺ Process More Files
+                    </button>
 
-                    </div>
+
+                    <button
+                        class="action-btn"
+                        id="compZipBtn"
+                        type="button"
+                        hidden
+                    >
+                        Download All as ZIP
+                    </button>
 
                 </div>
 
+            </section>
 
-
-                <button
-                    class="action-btn outline"
-                    id="compResetBtn"
-                    type="button"
-                    onclick="resetCompressor()"
-                >
-                    ↺ Process More Files
-                </button>
-
-
-
-                <div
-                    id="compResultsList"
-                ></div>
-
-
-
-                <button
-                    class="action-btn"
-                    id="compZipBtn"
-                    type="button"
-                    style="display:none; width:100%; margin-top:20px;"
-                >
-                    Download Archive (ZIP)
-                </button>
-
-
-            </div>
-
-        </div>
+        </section>
 
 
 
         <!-- =========================
              CONVERTER
         ========================== -->
+        <section id="converterView" class="view">
 
-        <div
-            id="converteView"
-            class="view"
-        >
-
-
-            <button
-                class="back-btn"
-                type="button"
-                onclick="goBackToDashboard()"
-            >
+            <button class="back-btn" type="button" data-back-dashboard>
                 ← Back to Workshop
             </button>
 
 
-
             <div class="workspace-header">
-
-                <h2>
-                    Format Converter
-                </h2>
-
-
-                <p>
-                    Transform JPG, PNG and WebP images into another format.
-                </p>
-
+                <h2>Format Converter</h2>
+                <p>Convert multiple images into JPG, PNG or WebP.</p>
             </div>
 
 
+            <!-- UPLOAD -->
+            <div class="upload-box" id="convDropZone">
 
-            <div
-                class="upload-box"
-                id="convDropZone"
-            >
+                <div class="upload-icon-pulse">⚡</div>
 
-                <div class="upload-icon-pulse">
-                    ⚡
-                </div>
-
+                <h3>Upload Images</h3>
 
                 <p>
-                    Drop images to convert, or
-                    <span>browse device</span>
+                    Drag & drop your images here or
+                    <span>browse files</span>
                 </p>
 
+                <div class="upload-limits">
+                    Up to 100 images • Max 100 MB per image
+                </div>
 
                 <input
                     type="file"
                     id="convFileInput"
                     multiple
-                    accept="image/jpeg,image/png,image/webp"
+                    accept="image/jpeg,image/jpg,image/png,image/webp"
                 >
 
             </div>
 
 
-
-            <div
-                class="settings-panel"
-                id="convSettingsPanel"
-                style="display:none;"
+            <!-- CONVERTER QUEUE -->
+            <section
+                class="queue-panel"
+                id="convQueuePanel"
+                hidden
             >
 
+                <div class="queue-header">
+
+                    <div>
+                        <h3>Uploaded Images</h3>
+                        <p id="convQueueSummary">0 images uploaded</p>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="small-reset-btn"
+                        id="convClearBtn"
+                    >
+                        Clear All
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="file-queue"
+                    id="convFileQueue"
+                ></div>
+
+            </section>
+
+
+            <!-- CONVERTER SETTINGS -->
+            <section
+                class="settings-panel"
+                id="convSettingsPanel"
+                hidden
+            >
 
                 <div class="slider-group">
 
-                    <label>
+                    <label for="targetFormat">
                         Target Format
                     </label>
-
 
                     <select
                         id="targetFormat"
                         class="styled-select"
                     >
-
                         <option value="image/webp">
-                            WebP (Optimized for Web)
+                            WebP — Optimized for Web
                         </option>
 
                         <option value="image/jpeg">
-                            JPEG (Universal Standard)
+                            JPG — Universal Format
                         </option>
 
                         <option value="image/png">
-                            PNG (High Fidelity)
+                            PNG — Lossless Format
                         </option>
-
                     </select>
 
                 </div>
 
 
-
                 <div class="panel-action">
 
-                    <span id="convFileCount">
+                    <div id="convFileCount">
                         0 files loaded
-                    </span>
-
+                    </div>
 
                     <button
                         class="action-btn"
@@ -677,69 +437,73 @@
 
                 </div>
 
-            </div>
+            </section>
 
 
-
-            <div
+            <!-- CONVERTER RESULTS -->
+            <section
                 class="results-panel"
                 id="convResultsPanel"
-                style="display:none;"
+                hidden
             >
 
+                <div class="results-top">
 
-                <div class="notice-box">
-                    Keep this tab open while your images are being converted.
+                    <div>
+                        <h3>Conversion Complete</h3>
+
+                        <p id="convResultSummary">
+                            Your converted files will appear below.
+                        </p>
+                    </div>
+
+                    <span class="complete-badge">
+                        ✓ Complete
+                    </span>
+
                 </div>
 
 
-
-                <button
-                    class="action-btn outline"
-                    type="button"
-                    onclick="resetConverter()"
-                >
-                    ↺ Convert More Files
-                </button>
+                <div id="convResultsList"></div>
 
 
+                <div class="result-actions">
 
-                <div
-                    id="convResultsList"
-                ></div>
+                    <button
+                        class="action-btn outline"
+                        id="convProcessMoreBtn"
+                        type="button"
+                    >
+                        ↺ Convert More Files
+                    </button>
 
 
+                    <button
+                        class="action-btn"
+                        id="convZipBtn"
+                        type="button"
+                        hidden
+                    >
+                        Download All as ZIP
+                    </button>
 
-                <button
-                    class="action-btn"
-                    id="convZipBtn"
-                    type="button"
-                    style="display:none; width:100%; margin-top:20px;"
-                >
-                    Download Archive (ZIP)
-                </button>
+                </div>
 
-            </div>
+            </section>
 
-        </div>
-
+        </section>
 
     </main>
 
 
 
+    <!-- FOOTER -->
     <footer class="footer">
-
-        <p>
-            &copy; 2026 AuraStudio. All rights reserved.
-        </p>
-
+        <p>© 2026 AuraStudio. All rights reserved.</p>
     </footer>
-
 
 
     <script src="script.js"></script>
 
 </body>
-
 </html>
