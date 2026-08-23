@@ -1,71 +1,29 @@
-// DOM Elements
-const dropZone = document.getElementById('dropZone');
-const fileInput = document.getElementById('fileInput');
-const uploadSection = document.getElementById('uploadSection');
-const settingsBox = document.getElementById('settingsBox');
-const qualitySlider = document.getElementById('qualitySlider');
-const qualityValue = document.getElementById('qualityValue');
-const fileCountText = document.getElementById('fileCountText');
-const compressBtn = document.getElementById('compressBtn');
-const resultsSection = document.getElementById('resultsSection');
-const noteBanner = document.getElementById('noteBanner');
-const resultsList = document.getElementById('resultsList');
-const downloadAllBox = document.getElementById('downloadAllBox');
-const downloadAllBtn = document.getElementById('downloadAllBtn');
-const compressMoreBtn = document.getElementById('compressMoreBtn');
+// --- TAB SWITCHER (Floating Nav Pill) ---
+const tabBtns = document.querySelectorAll('.tab-btn');
+const workspaces = document.querySelectorAll('.workspace');
 
-let selectedFiles = [];
-let processedFiles = [];
-const MAX_BATCH_SIZE = 50;
-const DAILY_LIMIT = 1000;
-let isProcessing = false;
+tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        tabBtns.forEach(b => b.classList.remove('active'));
+        workspaces.forEach(w => w.classList.remove('active'));
+        
+        btn.classList.add('active');
+        const targetId = btn.getAttribute('data-target') + 'Workspace';
+        document.getElementById(targetId).classList.add('active');
+    });
+});
 
-// History API for Back Button (SPA Feel)
-if(window.history.replaceState) { window.history.replaceState({ page: 'upload' }, ''); }
-window.addEventListener('popstate', (e) => { if (e.state && e.state.page === 'upload') resetToUploadScreen(); });
+// --- MODAL POPUPS (Privacy & Terms) ---
+const privacyModal = document.getElementById('privacyModal');
+const termsModal = document.getElementById('termsModal');
 
-function resetToUploadScreen() {
-    if (isProcessing) return;
-    processedFiles.forEach(item => URL.revokeObjectURL(item.url));
-    processedFiles = []; selectedFiles = []; fileInput.value = '';
-    uploadSection.style.display = 'block'; settingsBox.style.display = 'none';
-    resultsSection.style.display = 'none'; noteBanner.style.display = 'none'; resultsList.innerHTML = '';
-}
-compressMoreBtn.addEventListener('click', () => window.history.back());
+document.getElementById('openPrivacy').addEventListener('click', (e) => { e.preventDefault(); privacyModal.classList.add('active'); });
+document.getElementById('closePrivacy').addEventListener('click', () => privacyModal.classList.remove('active'));
 
-// Daily Limit Checker
-function checkDailyLimit(newFilesCount) {
-    const today = new Date().toISOString().split('T')[0];
-    let usageData = JSON.parse(localStorage.getItem('compressUsage')) || { date: today, count: 0 };
-    if (usageData.date !== today) usageData = { date: today, count: 0 };
-    return (usageData.count + newFilesCount <= DAILY_LIMIT);
-}
+document.getElementById('openTerms').addEventListener('click', (e) => { e.preventDefault(); termsModal.classList.add('active'); });
+document.getElementById('closeTerms').addEventListener('click', () => termsModal.classList.remove('active'));
 
-function updateDailyLimit(processedCount) {
-    const today = new Date().toISOString().split('T')[0];
-    let usageData = JSON.parse(localStorage.getItem('compressUsage')) || { date: today, count: 0 };
-    usageData.count += processedCount; localStorage.setItem('compressUsage', JSON.stringify(usageData));
-}
-
-// Drag & Drop Handling
-dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
-dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-dropZone.addEventListener('drop', (e) => { e.preventDefault(); dropZone.classList.remove('dragover'); handleFiles(e.dataTransfer.files); });
-fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
-qualitySlider.addEventListener('input', (e) => { qualityValue.textContent = `${e.target.value}%`; });
-
-function handleFiles(files) {
-    if (isProcessing) return;
-    const filesArray = Array.from(files).filter(file => file.type.startsWith('image/'));
-    if (filesArray.length === 0) return;
-    if (filesArray.length > MAX_BATCH_SIZE) { alert(`Maximum ${MAX_BATCH_SIZE} images allowed.`); return; }
-    if (!checkDailyLimit(filesArray.length)) { alert("Today's limit reached. Please come back tomorrow."); return; }
-    
-    selectedFiles = filesArray; 
-    fileCountText.textContent = `${selectedFiles.length} file(s) selected`; 
-    settingsBox.style.display = 'block';
-}
-
+// --- UTILITY FORMATTER ---
 function formatBytes(bytes) {
     if (bytes === 0) return '0 Bytes';
     const k = 1024, dm = 2, sizes = ['Bytes', 'KB', 'MB'];
@@ -73,75 +31,234 @@ function formatBytes(bytes) {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
 
-// Compression Core Engine
-compressBtn.addEventListener('click', async () => {
-    if (selectedFiles.length === 0) return;
-    window.history.pushState({ page: 'results' }, '');
-    
-    isProcessing = true; 
-    uploadSection.style.display = 'none'; 
-    resultsSection.style.display = 'block';
-    noteBanner.style.display = 'block'; 
-    downloadAllBox.style.display = 'none'; 
-    compressMoreBtn.style.display = 'none';
-    resultsList.innerHTML = '';
-    
-    const quality = parseInt(qualitySlider.value) / 100;
+// --- 1. COMPRESSOR ENGINE ---
+const compDropZone = document.getElementById('compDropZone');
+const compFileInput = document.getElementById('compFileInput');
+const compSettingsBox = document.getElementById('compSettingsBox');
+const compQualitySlider = document.getElementById('compQualitySlider');
+const compQualityVal = document.getElementById('compQualityVal');
+const compFileCount = document.getElementById('compFileCount');
+const compStartBtn = document.getElementById('compStartBtn');
+const compResultsSection = document.getElementById('compResultsSection');
+const compResultsList = document.getElementById('compResultsList');
+const compDownloadAllBox = document.getElementById('compDownloadAllBox');
+const compDownloadAllBtn = document.getElementById('compDownloadAllBtn');
+const compBackBtn = document.getElementById('compBackBtn');
 
-    for (let i = 0; i < selectedFiles.length; i++) {
-        const file = selectedFiles[i];
-        const li = document.createElement('div'); li.className = 'result-item';
-        li.innerHTML = `<div class="file-info"><span class="file-name">${file.name}</span><span class="file-stats">Original: ${formatBytes(file.size)} ➔ Processing...</span></div><span class="status-badge">Processing</span>`;
-        resultsList.appendChild(li);
-        
+let compFiles = [];
+let processedCompFiles = [];
+const MAX_FILES = 100;
+const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
+
+compQualitySlider.addEventListener('input', (e) => { compQualityVal.textContent = `${e.target.value}%`; });
+
+compFileInput.addEventListener('change', (e) => handleCompFiles(e.target.files));
+compDropZone.addEventListener('dragover', (e) => { e.preventDefault(); });
+compDropZone.addEventListener('drop', (e) => { e.preventDefault(); handleCompFiles(e.dataTransfer.files); });
+
+function handleCompFiles(files) {
+    const arr = Array.from(files).filter(f => f.type.startsWith('image/'));
+    if (arr.length === 0) return;
+    if (arr.some(f => f.size > MAX_FILE_SIZE)) { alert('One or more files exceed the 50MB limit.'); return; }
+    if (arr.length > MAX_FILES) { alert(`Maximum ${MAX_FILES} files allowed.`); return; }
+    
+    compFiles = arr;
+    compFileCount.textContent = `${compFiles.length} file(s) selected`;
+    compSettingsBox.style.display = 'block';
+}
+
+compStartBtn.addEventListener('click', async () => {
+    if (compFiles.length === 0) return;
+    document.getElementById('compDropZone').style.display = 'none';
+    compSettingsBox.style.display = 'none';
+    compResultsSection.style.display = 'block';
+    compResultsList.innerHTML = '';
+    processedCompFiles = [];
+
+    const quality = parseInt(compQualitySlider.value) / 100;
+
+    for (let i = 0; i < compFiles.length; i++) {
+        const file = compFiles[i];
+        const li = document.createElement('div');
+        li.className = 'result-item';
+        li.innerHTML = `<div class="file-info"><span class="file-name">${file.name}</span><span class="file-stats">Original: ${formatBytes(file.size)} ➔ Processing...</span></div><span class="status-badge">Working</span>`;
+        compResultsList.appendChild(li);
+
         try {
-            const compressedBlob = await compressImageProcess(file, quality);
-            const compressedSize = formatBytes(compressedBlob.size);
-            const url = URL.createObjectURL(compressedBlob);
-            processedFiles.push({ name: file.name, blob: compressedBlob, url: url });
-            
-            li.innerHTML = `<div class="file-info"><span class="file-name">${file.name}</span><span class="file-stats">Original: ${formatBytes(file.size)} ➔ New: <strong style="color:var(--text-dark);">${compressedSize}</strong></span></div><a href="${url}" download="Compressed_${file.name}" class="download-btn">Download</a>`;
-            updateDailyLimit(1);
-        } catch (error) { 
-            li.innerHTML = `<div class="file-info"><span class="file-name">${file.name}</span><span class="file-stats" style="color: #EF4444;">Failed</span></div>`; 
+            const blob = await processCompress(file, quality);
+            const url = URL.createObjectURL(blob);
+            processedCompFiles.push({ name: file.name, blob: blob, url: url });
+            li.innerHTML = `<div class="file-info"><span class="file-name">${file.name}</span><span class="file-stats">Original: ${formatBytes(file.size)} ➔ New: <strong style="color:var(--text-dark);">${formatBytes(blob.size)}</strong></span></div><a href="${url}" download="Compressed_${file.name}" class="download-btn">Download</a>`;
+        } catch (err) {
+            li.innerHTML = `<div class="file-info"><span class="file-name">${file.name}</span><span class="file-stats" style="color:#EF4444;">Failed</span></div>`;
         }
     }
-    isProcessing = false; 
-    compressMoreBtn.style.display = 'block';
-    if (processedFiles.length > 0) downloadAllBox.style.display = 'block';
+    if (processedCompFiles.length > 0) compDownloadAllBox.style.display = 'block';
 });
 
-function compressImageProcess(file, quality) {
+function processCompress(file, quality) {
     return new Promise((resolve, reject) => {
-        const reader = new FileReader(); reader.readAsDataURL(file);
-        reader.onload = event => {
-            const img = new Image(); img.src = event.target.result;
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = e => {
+            const img = new Image();
+            img.src = e.target.result;
             img.onload = () => {
-                const canvas = document.createElement('canvas'); canvas.width = img.width; canvas.height = img.height;
-                const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
                 canvas.toBlob(blob => {
-                    if (blob) resolve(blob); else reject(new Error('Canvas failed'));
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    if (blob) resolve(blob); else reject(new Error('Canvas blob failed'));
+                    ctx.clearRect(0,0,canvas.width,canvas.height);
                 }, file.type, quality);
-            }; img.onerror = reject;
-        }; reader.onerror = reject;
+            };
+            img.onerror = reject;
+        };
+        reader.onerror = reject;
     });
 }
 
-// Download All ZIP
-downloadAllBtn.addEventListener('click', () => {
-    const zip = new JSZip(); downloadAllBtn.textContent = "Packaging ZIP..."; downloadAllBtn.disabled = true;
-    processedFiles.forEach(item => { zip.file("Compressed_" + item.name, item.blob); });
-    zip.generateAsync({ type: "blob" }).then(function (content) {
-        const zipUrl = URL.createObjectURL(content); const a = document.createElement('a');
-        a.href = zipUrl; a.download = "Compressed_Images.zip"; a.click();
-        URL.revokeObjectURL(zipUrl); downloadAllBtn.textContent = "Download All (ZIP)"; downloadAllBtn.disabled = false;
+compBackBtn.addEventListener('click', () => {
+    processedCompFiles.forEach(item => URL.revokeObjectURL(item.url));
+    processedCompFiles = []; compFiles = []; compFileInput.value = '';
+    document.getElementById('compDropZone').style.display = 'block';
+    compSettingsBox.style.display = 'none';
+    compResultsSection.style.display = 'none';
+    compDownloadAllBox.style.display = 'none';
+});
+
+compDownloadAllBtn.addEventListener('click', () => {
+    const zip = new JSZip();
+    compDownloadAllBtn.textContent = "Packaging ZIP...";
+    compDownloadAllBtn.disabled = true;
+    processedCompFiles.forEach(item => zip.file("Compressed_" + item.name, item.blob));
+    zip.generateAsync({ type: "blob" }).then(content => {
+        const url = URL.createObjectURL(content);
+        const a = document.createElement('a'); a.href = url; a.download = "Compressed_Images.zip"; a.click();
+        URL.revokeObjectURL(url);
+        compDownloadAllBtn.textContent = "Download All (ZIP)";
+        compDownloadAllBtn.disabled = false;
     });
 });
 
-// SEO FAQ Accordion Logic (NEW)
-const faqs = document.querySelectorAll('.faq-question');
-faqs.forEach(faq => {
+
+// --- 2. CONVERTER ENGINE ---
+const convDropZone = document.getElementById('convDropZone');
+const convFileInput = document.getElementById('convFileInput');
+const convSettingsBox = document.getElementById('convSettingsBox');
+const targetFormat = document.getElementById('targetFormat');
+const convFileCount = document.getElementById('convFileCount');
+const convStartBtn = document.getElementById('convStartBtn');
+const convResultsSection = document.getElementById('convResultsSection');
+const convResultsList = document.getElementById('convResultsList');
+const convDownloadAllBox = document.getElementById('convDownloadAllBox');
+const convDownloadAllBtn = document.getElementById('convDownloadAllBtn');
+const convBackBtn = document.getElementById('convBackBtn');
+
+let convFiles = [];
+let processedConvFiles = [];
+
+convFileInput.addEventListener('change', (e) => handleConvFiles(e.target.files));
+convDropZone.addEventListener('dragover', (e) => { e.preventDefault(); });
+convDropZone.addEventListener('drop', (e) => { e.preventDefault(); handleConvFiles(e.dataTransfer.files); });
+
+function handleConvFiles(files) {
+    const arr = Array.from(files).filter(f => f.type.startsWith('image/'));
+    if (arr.length === 0) return;
+    if (arr.some(f => f.size > MAX_FILE_SIZE)) { alert('One or more files exceed the 50MB limit.'); return; }
+    if (arr.length > MAX_FILES) { alert(`Maximum ${MAX_FILES} files allowed.`); return; }
+    
+    convFiles = arr;
+    convFileCount.textContent = `${convFiles.length} file(s) selected`;
+    convSettingsBox.style.display = 'block';
+}
+
+convStartBtn.addEventListener('click', async () => {
+    if (convFiles.length === 0) return;
+    document.getElementById('convDropZone').style.display = 'none';
+    convSettingsBox.style.display = 'none';
+    convResultsSection.style.display = 'block';
+    convResultsList.innerHTML = '';
+    processedConvFiles = [];
+
+    const format = targetFormat.value;
+    const ext = format.split('/')[1] === 'jpeg' ? 'jpg' : format.split('/')[1];
+
+    for (let i = 0; i < convFiles.length; i++) {
+        const file = convFiles[i];
+        const li = document.createElement('div');
+        li.className = 'result-item';
+        li.innerHTML = `<div class="file-info"><span class="file-name">${file.name}</span><span class="file-stats">Converting to .${ext.toUpperCase()}...</span></div><span class="status-badge">Working</span>`;
+        convResultsList.appendChild(li);
+
+        try {
+            const blob = await processConvert(file, format);
+            const url = URL.createObjectURL(blob);
+            const newName = file.name.substring(0, file.name.lastIndexOf('.')) + '.' + ext;
+            processedConvFiles.push({ name: newName, blob: blob, url: url });
+            li.innerHTML = `<div class="file-info"><span class="file-name">${newName}</span><span class="file-stats">Size: <strong style="color:var(--text-dark);">${formatBytes(blob.size)}</strong></span></div><a href="${url}" download="${newName}" class="download-btn">Download</a>`;
+        } catch (err) {
+            li.innerHTML = `<div class="file-info"><span class="file-name">${file.name}</span><span class="file-stats" style="color:#EF4444;">Failed</span></div>`;
+        }
+    }
+    if (processedConvFiles.length > 0) convDownloadAllBox.style.display = 'block';
+});
+
+function processConvert(file, format) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = e => {
+            const img = new Image();
+            img.src = e.target.result;
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                if (format === 'image/jpeg') {
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                }
+                ctx.drawImage(img, 0, 0);
+                canvas.toBlob(blob => {
+                    if (blob) resolve(blob); else reject(new Error('Conversion failed'));
+                    ctx.clearRect(0,0,canvas.width,canvas.height);
+                }, format, 0.92);
+            };
+            img.onerror = reject;
+        };
+        reader.onerror = reject;
+    });
+}
+
+convBackBtn.addEventListener('click', () => {
+    processedConvFiles.forEach(item => URL.revokeObjectURL(item.url));
+    processedConvFiles = []; convFiles = []; convFileInput.value = '';
+    document.getElementById('convDropZone').style.display = 'block';
+    convSettingsBox.style.display = 'none';
+    convResultsSection.style.display = 'none';
+    convDownloadAllBox.style.display = 'none';
+});
+
+convDownloadAllBtn.addEventListener('click', () => {
+    const zip = new JSZip();
+    convDownloadAllBtn.textContent = "Packaging ZIP...";
+    convDownloadAllBtn.disabled = true;
+    processedConvFiles.forEach(item => zip.file(item.name, item.blob));
+    zip.generateAsync({ type: "blob" }).then(content => {
+        const url = URL.createObjectURL(content);
+        const a = document.createElement('a'); a.href = url; a.download = "Converted_Images.zip"; a.click();
+        URL.revokeObjectURL(url);
+        convDownloadAllBtn.textContent = "Download All Converted (ZIP)";
+        convDownloadAllBtn.disabled = false;
+    });
+});
+
+// --- FAQ ACCORDIONS ---
+document.querySelectorAll('.faq-question').forEach(faq => {
     faq.addEventListener('click', () => {
         faq.classList.toggle('active');
         const answer = faq.nextElementSibling;
@@ -152,5 +269,3 @@ faqs.forEach(faq => {
         }
     });
 });
-
-
