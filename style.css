@@ -2679,10 +2679,6 @@ input[type="range"]::-moz-range-thumb {
     font-weight: 800;
 }
 
-.pdf-large-warning[hidden] {
-    display: none !important;
-}
-
 .pdf-large-warning {
     display: flex;
     align-items: center;
@@ -3117,3 +3113,16 @@ body.menu-open{overflow:hidden}
 .navbar.is-dashboard .nav-status{display:none}.navbar:not(.is-dashboard) .nav-tools{display:none}
 @media (max-width:700px){.navbar:not(.is-dashboard) .nav-status{display:none}.navbar.is-dashboard .nav-tools{display:flex}}
 
+
+
+/* Processing locks */
+.upload-box.is-disabled,
+.pdf-upload-box.is-disabled {
+    opacity: .72;
+    cursor: progress;
+}
+
+.upload-box.is-disabled input,
+.pdf-upload-box.is-disabled input {
+    pointer-events: none;
+}

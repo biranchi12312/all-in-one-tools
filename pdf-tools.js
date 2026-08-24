@@ -12,9 +12,9 @@
     const MAX_TOTAL_PAGES = 500;
 
     // Soft-warning thresholds. These do not block merging; the hard limits above do.
-    const LARGE_FILE_WARNING = 80 * 1024 * 1024;
-    const LARGE_SIZE_WARNING = 200 * 1024 * 1024;
-    const LARGE_PAGE_WARNING = 400;
+    const LARGE_FILE_WARNING = 75 * 1024 * 1024;
+    const LARGE_SIZE_WARNING = 150 * 1024 * 1024;
+    const LARGE_PAGE_WARNING = 300;
 
     const el = {
         view: document.getElementById("pdfMergeView"),
@@ -86,44 +86,29 @@
     }
 
     function updateWarning() {
-        if (!el.warning) return;
-
         const { size, pages } = totals();
-        const largeFiles = files.filter(
-            item => item.file.size >= LARGE_FILE_WARNING
-        );
+        const largeFiles = files.filter(item => item.file.size >= LARGE_FILE_WARNING);
         const reasons = [];
 
         if (largeFiles.length) {
-            const largest = Math.max(
-                ...largeFiles.map(item => item.file.size)
-            );
+            const largest = Math.max(...largeFiles.map(item => item.file.size));
             reasons.push(
-                `${largeFiles.length} large file${largeFiles.length === 1 ? "" : "s"} selected — largest ${formatBytes(largest)} of the 100 MB per-file limit.`
+                `${largeFiles.length} large file${largeFiles.length === 1 ? "" : "s"} selected (largest ${formatBytes(largest)}).`
             );
         }
 
         if (size >= LARGE_SIZE_WARNING) {
-            reasons.push(
-                `Total batch size is ${formatBytes(size)} of the 250 MB limit.`
-            );
+            reasons.push(`The batch is ${formatBytes(size)}.`);
         }
 
         if (pages >= LARGE_PAGE_WARNING) {
-            reasons.push(
-                `${pages} of the 500-page limit are selected.`
-            );
+            reasons.push(`${pages} pages are queued.`);
         }
 
-        const shouldShow =
-            files.length > 0 &&
-            !warningDismissed &&
-            reasons.length > 0;
+        const shouldShow = !warningDismissed && reasons.length > 0;
+        el.warning.hidden = !shouldShow;
 
-        if (!shouldShow) {
-            el.warning.hidden = true;
-            return;
-        }
+        if (!shouldShow) return;
 
         if (el.warningTitle) {
             el.warningTitle.textContent =
@@ -134,10 +119,8 @@
 
         if (el.warningText) {
             el.warningText.textContent =
-                `${reasons.join(" ")} Keep your PDFs within the allowed limits.`;
+                "For smoother processing, please upload smaller PDF files.";
         }
-
-        el.warning.hidden = false;
     }
 
     function updateSummary() {
@@ -345,7 +328,11 @@
     function setProcessingState(active) {
         processing = active;
         el.dropZone.style.pointerEvents = active ? "none" : "";
+        el.dropZone.classList.toggle("is-disabled", active);
         el.clear.disabled = active;
+        el.outputName.disabled = active;
+        el.warningClose.disabled = active;
+        el.start.disabled = active || files.length < 2;
         updateSummary();
         renderQueue();
     }
@@ -358,6 +345,9 @@
             return;
         }
 
+        const snapshot = [...files];
+        const outputName = sanitizeFileName(el.outputName.value);
+
         setProcessingState(true);
         el.results.hidden = true;
         el.processing.hidden = false;
@@ -365,7 +355,6 @@
 
         try {
             const merged = await window.PDFLib.PDFDocument.create();
-            const snapshot = [...files];
 
             for (let index = 0; index < snapshot.length; index++) {
                 const item = snapshot[index];
@@ -383,7 +372,6 @@
 
                 const pageIndexes = source.getPageIndices();
                 const copiedPages = await merged.copyPages(source, pageIndexes);
-
                 copiedPages.forEach(page => merged.addPage(page));
 
                 setProcessingProgress(
@@ -400,21 +388,23 @@
             if (outputBlobUrl) URL.revokeObjectURL(outputBlobUrl);
             outputBlobUrl = URL.createObjectURL(blob);
 
-            const outputName = sanitizeFileName(el.outputName.value);
             el.outputName.value = outputName;
+            const total = snapshot.reduce((result, item) => {
+                result.size += item.file.size;
+                result.pages += item.pages;
+                return result;
+            }, { size: 0, pages: 0 });
 
-            const total = totals();
             setProcessingProgress(100, "PDF merge complete", "Your merged PDF is ready.");
+            await new Promise(resolve => setTimeout(resolve, 250));
 
-            setTimeout(() => {
-                el.processing.hidden = true;
-                el.resultName.textContent = outputName;
-                el.resultFiles.textContent = files.length;
-                el.resultPages.textContent = total.pages;
-                el.resultSize.textContent = formatBytes(blob.size);
-                el.results.hidden = false;
-                el.results.scrollIntoView({ behavior: "smooth", block: "start" });
-            }, 250);
+            el.processing.hidden = true;
+            el.resultName.textContent = outputName;
+            el.resultFiles.textContent = snapshot.length;
+            el.resultPages.textContent = total.pages;
+            el.resultSize.textContent = formatBytes(blob.size);
+            el.results.hidden = false;
+            el.results.scrollIntoView({ behavior: "smooth", block: "start" });
         } catch (error) {
             el.processing.hidden = true;
             alert("Unable to merge one or more selected PDFs. Please remove the problematic file and try again.");
@@ -425,6 +415,8 @@
     }
 
     function resetTool() {
+        if (processing) return;
+
         if (outputBlobUrl) {
             URL.revokeObjectURL(outputBlobUrl);
             outputBlobUrl = null;
@@ -468,12 +460,10 @@
         if (!processing) addFiles(event.dataTransfer.files);
     });
 
-    if (el.warningClose && el.warning) {
-        el.warningClose.addEventListener("click", () => {
-            warningDismissed = true;
-            el.warning.hidden = true;
-        });
-    }
+    el.warningClose.addEventListener("click", () => {
+        warningDismissed = true;
+        el.warning.hidden = true;
+    });
 
     el.clear.addEventListener("click", () => {
         resetTool();

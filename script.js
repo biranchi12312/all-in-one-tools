@@ -283,13 +283,17 @@ document.addEventListener("DOMContentLoaded", () => {
                     currentView === "converter" ||
                     currentView === "pdfMerge"
                 ) {
+                    const sameDocumentReferrer =
+                        document.referrer &&
+                        new URL(document.referrer).origin === location.origin;
 
-                    history.back();
-
+                    if (history.length > 1 && sameDocumentReferrer) {
+                        history.back();
+                    } else {
+                        switchView("dashboard");
+                    }
                 } else {
-
                     switchView("dashboard");
-
                 }
 
             }
@@ -315,13 +319,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             if (currentView !== "dashboard") {
+                const sameDocumentReferrer =
+                    document.referrer &&
+                    new URL(document.referrer).origin === location.origin;
 
-                history.back();
-
+                if (history.length > 1 && sameDocumentReferrer) {
+                    history.back();
+                } else {
+                    switchView("dashboard");
+                }
             } else {
-
                 renderView("dashboard");
-
             }
 
         }
@@ -902,9 +910,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let compFiles = [];
     let processedCompFiles = [];
+    let compProcessing = false;
 
+
+    function clearCompressorResults() {
+        revokeProcessedURLs(processedCompFiles);
+        processedCompFiles = [];
+        comp.resultsList.innerHTML = "";
+        comp.results.hidden = true;
+        comp.zip.hidden = true;
+    }
+
+    function setCompressorProcessingState(active) {
+        compProcessing = active;
+        comp.start.disabled = active || compFiles.length === 0;
+        comp.clearButton.disabled = active;
+        comp.input.disabled = active;
+        comp.quality.disabled = active;
+        comp.dropZone.classList.toggle("is-disabled", active);
+        comp.dropZone.style.pointerEvents = active ? "none" : "";
+    }
 
     function addCompressorFiles(fileList) {
+
+        if (compProcessing) return;
 
         const newFiles =
             validateFiles(
@@ -922,6 +951,10 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+
+        if (processedCompFiles.length > 0) {
+            clearCompressorResults();
+        }
 
         compFiles = [
             ...compFiles,
@@ -972,11 +1005,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     comp.clearButton.addEventListener(
         "click",
-        () => {
-
-            clearCompressorSelection();
-
-        }
+        resetCompressor
     );
 
 
@@ -1033,256 +1062,89 @@ document.addEventListener("DOMContentLoaded", () => {
         "click",
         async () => {
 
-            if (compFiles.length === 0) {
+            if (compProcessing || compFiles.length === 0) {
                 return;
             }
 
-
-            revokeProcessedURLs(
-                processedCompFiles
-            );
-
-
+            revokeProcessedURLs(processedCompFiles);
             processedCompFiles = [];
-
-
             comp.resultsList.innerHTML = "";
 
-
-            comp.start.disabled = true;
-            comp.start.textContent =
-                "Compressing...";
-
+            const snapshot = [...compFiles];
+            const quality = Number(comp.quality.value) / 100;
+            let successCount = 0;
 
             comp.results.hidden = false;
             comp.zip.hidden = true;
+            comp.start.textContent = "Compressing...";
+            setCompressorProcessingState(true);
 
+            try {
+                for (let index = 0; index < snapshot.length; index++) {
+                    const item = snapshot[index];
+                    const file = item.file;
 
-            const quality =
-                Number(comp.quality.value) / 100;
-
-
-            let successCount = 0;
-
-
-            for (
-                let index = 0;
-                index < compFiles.length;
-                index++
-            ) {
-
-                const item =
-                    compFiles[index];
-
-                const file =
-                    item.file;
-
-
-                const row =
-                    document.createElement("div");
-
-
-                row.className =
-                    "result-row";
-
-
-                row.innerHTML = `
-
-                    <div class="result-preview">
-
-                        <img
-                            src="${item.previewURL}"
-                            alt=""
-                        >
-
-                    </div>
-
-
-                    <div class="file-meta">
-
-                        <h4>
-                            ${escapeHTML(file.name)}
-                        </h4>
-
-                        <span>
-                            Compressing ${
-                                index + 1
-                            } / ${
-                                compFiles.length
-                            }...
-                        </span>
-
-                    </div>
-
-                `;
-
-
-                comp.resultsList.appendChild(row);
-
-
-                try {
-
-                    const result =
-                        await compressImage(
-                            file,
-                            quality
-                        );
-
-
-                    const url =
-                        URL.createObjectURL(
-                            result.blob
-                        );
-
-
-                    processedCompFiles.push({
-                        name: result.name,
-                        blob: result.blob,
-                        url: url
-                    });
-
-
-                    successCount++;
-
-
-                    const originalSize =
-                        formatBytes(file.size);
-
-
-                    const newSize =
-                        formatBytes(
-                            result.blob.size
-                        );
-
-
-                    const saved =
-                        file.size > 0
-                            ? Math.max(
-                                0,
-                                Math.round(
-                                    (
-                                        1 -
-                                        result.blob.size /
-                                        file.size
-                                    ) * 100
-                                )
-                            )
-                            : 0;
-
-
+                    const row = document.createElement("div");
+                    row.className = "result-row";
                     row.innerHTML = `
-
-                        <div class="result-preview">
-
-                            <img
-                                src="${item.previewURL}"
-                                alt=""
-                            >
-
-                        </div>
-
-
+                        <div class="result-preview"><img src="${item.previewURL}" alt=""></div>
                         <div class="file-meta">
-
-                            <h4>
-                                ${escapeHTML(
-                                    result.name
-                                )}
-                            </h4>
-
-                            <span>
-                                ${originalSize}
-                                →
-                                <strong>
-                                    ${newSize}
-                                </strong>
-                                • ${saved}% smaller
-                            </span>
-
+                            <h4>${escapeHTML(file.name)}</h4>
+                            <span>Compressing ${index + 1} / ${snapshot.length}...</span>
                         </div>
-
-
-                        <a
-                            href="${url}"
-                            download="${escapeHTML(
-                                result.name
-                            )}"
-                            class="download-link"
-                        >
-                            Download
-                        </a>
-
                     `;
+                    comp.resultsList.appendChild(row);
 
+                    try {
+                        const result = await compressImage(file, quality);
+                        const url = URL.createObjectURL(result.blob);
+                        processedCompFiles.push({ name: result.name, blob: result.blob, url });
+                        successCount++;
 
-                } catch (error) {
+                        const originalSize = formatBytes(file.size);
+                        const newSize = formatBytes(result.blob.size);
+                        const delta = result.blob.size - file.size;
+                        const percent = file.size > 0 ? Math.round(Math.abs(delta / file.size) * 100) : 0;
+                        const sizeText = delta < 0
+                            ? `${percent}% smaller`
+                            : delta > 0
+                                ? `${percent}% larger`
+                                : "Same size";
 
-                    console.error(error);
+                        row.innerHTML = `
+                            <div class="result-preview"><img src="${item.previewURL}" alt=""></div>
+                            <div class="file-meta">
+                                <h4>${escapeHTML(result.name)}</h4>
+                                <span>${originalSize} → <strong>${newSize}</strong> • ${sizeText}</span>
+                            </div>
+                            <a href="${url}" download="${escapeHTML(result.name)}" class="download-link">Download</a>
+                        `;
+                    } catch (error) {
+                        console.error(error);
+                        row.innerHTML = `
+                            <div class="result-preview"><img src="${item.previewURL}" alt=""></div>
+                            <div class="file-meta">
+                                <h4>${escapeHTML(file.name)}</h4>
+                                <span style="color:#ef4444;">Failed to process</span>
+                            </div>
+                        `;
+                    }
 
-
-                    row.innerHTML = `
-
-                        <div class="result-preview">
-
-                            <img
-                                src="${item.previewURL}"
-                                alt=""
-                            >
-
-                        </div>
-
-
-                        <div class="file-meta">
-
-                            <h4>
-                                ${escapeHTML(
-                                    file.name
-                                )}
-                            </h4>
-
-                            <span
-                                style="color:#ef4444;"
-                            >
-                                Failed to process
-                            </span>
-
-                        </div>
-
-                    `;
+                    await new Promise(resolve => setTimeout(resolve, 0));
                 }
 
+                comp.resultSummary.textContent =
+                    `${successCount} of ${snapshot.length} image${snapshot.length !== 1 ? "s" : ""} processed successfully.`;
+
+                if (processedCompFiles.length > 0) {
+                    comp.zip.hidden = false;
+                }
+
+                comp.results.scrollIntoView({ behavior: "smooth", block: "start" });
+            } finally {
+                comp.start.textContent = "Compress Images";
+                setCompressorProcessingState(false);
             }
-
-
-            comp.start.disabled = false;
-            comp.start.textContent =
-                "Compress Images";
-
-
-            comp.resultSummary.textContent =
-                `${successCount} of ${
-                    compFiles.length
-                } image${
-                    compFiles.length !== 1
-                        ? "s"
-                        : ""
-                } processed successfully.`;
-
-
-            if (
-                processedCompFiles.length > 0
-            ) {
-
-                comp.zip.hidden = false;
-
-            }
-
-
-            comp.results.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
-
         }
     );
 
@@ -1292,127 +1154,75 @@ document.addEventListener("DOMContentLoaded", () => {
         quality
     ) {
 
-        const bitmap =
-            await createImageBitmap(file);
+        const bitmap = await createImageBitmap(file);
 
+        try {
+            const pixels = bitmap.width * bitmap.height;
+            const MAX_PIXELS = 40000000;
+            const MAX_SOURCE_DIMENSION = 9000;
 
-        const MAX_DIMENSION = 4096;
-
-
-        let width = bitmap.width;
-        let height = bitmap.height;
-
-
-        const longestSide =
-            Math.max(width, height);
-
-
-        if (
-            longestSide > MAX_DIMENSION
-        ) {
-
-            const ratio =
-                MAX_DIMENSION /
-                longestSide;
-
-
-            width =
-                Math.round(
-                    width * ratio
+            if (
+                pixels > MAX_PIXELS ||
+                Math.max(bitmap.width, bitmap.height) > MAX_SOURCE_DIMENSION
+            ) {
+                throw new Error(
+                    "Image resolution is too large for safe browser-side compression on this device."
                 );
+            }
 
+            const MAX_DIMENSION = 4096;
+            let width = bitmap.width;
+            let height = bitmap.height;
+            const longestSide = Math.max(width, height);
 
-            height =
-                Math.round(
-                    height * ratio
+            if (longestSide > MAX_DIMENSION) {
+                const ratio = MAX_DIMENSION / longestSide;
+                width = Math.round(width * ratio);
+                height = Math.round(height * ratio);
+            }
+
+            const canvas = document.createElement("canvas");
+            canvas.width = width;
+            canvas.height = height;
+
+            const context = canvas.getContext("2d", { alpha: true });
+
+            if (!context) {
+                throw new Error("Canvas processing is unavailable in this browser.");
+            }
+
+            context.drawImage(bitmap, 0, 0, width, height);
+
+            let outputType = file.type;
+            if (file.type === "image/jpg") outputType = "image/jpeg";
+
+            const blob = await new Promise((resolve, reject) => {
+                canvas.toBlob(
+                    result => {
+                        if (result) resolve(result);
+                        else reject(new Error("Compression failed"));
+                    },
+                    outputType,
+                    outputType === "image/png" ? undefined : quality
                 );
+            });
 
+            let extension = outputType.split("/")[1];
+            if (extension === "jpeg") extension = "jpg";
+
+            return {
+                blob,
+                name: `${getBaseName(file.name)}_compressed.${extension}`
+            };
+        } finally {
+            bitmap.close();
         }
-
-
-        const canvas =
-            document.createElement("canvas");
-
-
-        canvas.width = width;
-        canvas.height = height;
-
-
-        const context =
-            canvas.getContext(
-                "2d",
-                {
-                    alpha: true
-                }
-            );
-
-
-        context.drawImage(
-            bitmap,
-            0,
-            0,
-            width,
-            height
-        );
-
-
-        let outputType = file.type;
-
-
-        if (file.type === "image/png") {
-            outputType = "image/webp";
-        }
-
-
-        const blob =
-            await new Promise(
-                (resolve, reject) => {
-
-                    canvas.toBlob(
-                        result => {
-
-                            if (result) {
-                                resolve(result);
-                            } else {
-                                reject(
-                                    new Error(
-                                        "Compression failed"
-                                    )
-                                );
-                            }
-
-                        },
-                        outputType,
-                        quality
-                    );
-
-                }
-            );
-
-
-        bitmap.close();
-
-
-        let extension =
-            outputType.split("/")[1];
-
-
-        if (extension === "jpeg") {
-            extension = "jpg";
-        }
-
-
-        return {
-            blob,
-            name:
-                `${getBaseName(
-                    file.name
-                )}_compressed.${extension}`
-        };
     }
 
 
     function resetCompressor() {
+
+        if (compProcessing) return;
 
         revokeProcessedURLs(
             processedCompFiles
@@ -1600,6 +1410,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let convSourceFormat = "auto";
     let convTargetFormat = "image/webp";
     let convJpgBackground = "#ffffff";
+    let convProcessing = false;
 
     function normalizeImageType(file) {
         if (file.type === "image/jpg") return "image/jpeg";
@@ -1608,6 +1419,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function sourceMatches(file) {
         return convSourceFormat === "auto" || normalizeImageType(file) === convSourceFormat;
+    }
+
+    function clearConverterResults() {
+        revokeProcessedURLs(processedConvFiles);
+        processedConvFiles = [];
+        conv.resultsList.innerHTML = "";
+        conv.results.hidden = true;
+        conv.zip.hidden = true;
+        conv.progress.hidden = true;
+    }
+
+    function setConverterProcessingState(active) {
+        convProcessing = active;
+        conv.start.disabled = active || convFiles.length === 0;
+        conv.clearButton.disabled = active;
+        conv.input.disabled = active;
+        conv.quality.disabled = active;
+        conv.customBackground.disabled = active;
+        conv.sourceList.querySelectorAll("button").forEach(button => button.disabled = active || button.classList.contains("is-disabled"));
+        conv.targetList.querySelectorAll("button").forEach(button => button.disabled = active || button.classList.contains("is-disabled"));
+        document.querySelectorAll(".background-option[data-bg]").forEach(button => button.disabled = active);
+        conv.dropZone.classList.toggle("is-disabled", active);
+        conv.dropZone.style.pointerEvents = active ? "none" : "";
     }
 
     function updateConverterFormatUI() {
@@ -1632,8 +1466,10 @@ document.addEventListener("DOMContentLoaded", () => {
         conv.jpgBackgroundGroup.hidden = convTargetFormat !== "image/jpeg";
 
         const sameManualFormat = convSourceFormat !== "auto" && convSourceFormat === convTargetFormat;
-        conv.start.disabled = sameManualFormat || convFiles.length === 0;
-        conv.start.textContent = sameManualFormat ? "Choose a Different Output Format" : "Convert Images";
+        if (!convProcessing) {
+            conv.start.disabled = sameManualFormat || convFiles.length === 0;
+            conv.start.textContent = sameManualFormat ? "Choose a Different Output Format" : "Convert Images";
+        }
 
         if (sameManualFormat) {
             conv.count.textContent = "Source and output formats are the same.";
@@ -1649,18 +1485,32 @@ document.addEventListener("DOMContentLoaded", () => {
         const willConvert = convFiles.length - alreadyTarget;
         conv.readySummary.textContent = `${willConvert} to convert${alreadyTarget ? ` • ${alreadyTarget} already target` : ""}`;
         conv.count.textContent = `${convFiles.length} file${convFiles.length !== 1 ? "s" : ""} loaded • ${willConvert} ready to convert`;
-        conv.start.disabled = convFiles.length === 0 || (convSourceFormat !== "auto" && convSourceFormat === convTargetFormat);
+        if (!convProcessing) {
+            conv.start.disabled = convFiles.length === 0 || (convSourceFormat !== "auto" && convSourceFormat === convTargetFormat);
+        }
     }
 
     conv.sourceList.querySelectorAll("[data-source-format]").forEach(button => {
         button.addEventListener("click", () => {
-            convSourceFormat = button.dataset.sourceFormat;
+            if (convProcessing) return;
+            const nextFormat = button.dataset.sourceFormat;
+            if (nextFormat === convSourceFormat) return;
+
+            if (convFiles.length > 0 && nextFormat !== "auto") {
+                const incompatible = convFiles.some(item => normalizeImageType(item.file) !== nextFormat);
+                if (incompatible) {
+                    clearConverterSelection();
+                }
+            }
+
+            convSourceFormat = nextFormat;
             updateConverterFormatUI();
         });
     });
 
     conv.targetList.querySelectorAll("[data-target-format]").forEach(button => {
         button.addEventListener("click", () => {
+            if (convProcessing) return;
             convTargetFormat = button.dataset.targetFormat;
             updateConverterFormatUI();
         });
@@ -1720,6 +1570,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function removeConverterFile(index) {
+        if (convProcessing) return;
         const item = convFiles[index];
         if (!item) return;
         if (item.previewURL) URL.revokeObjectURL(item.previewURL);
@@ -1730,6 +1581,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function addConverterFiles(fileList) {
+        if (convProcessing) return;
         const incoming = Array.from(fileList);
         const filtered = incoming.filter(file => {
             if (!isSupportedImage(file)) return false;
@@ -1746,10 +1598,12 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        if (processedConvFiles.length > 0) {
+            clearConverterResults();
+        }
+
         convFiles = [...convFiles, ...newFiles];
         conv.settings.hidden = false;
-        conv.results.hidden = true;
-        conv.zip.hidden = true;
         renderConverterQueue();
         updateConverterFormatUI();
         conv.input.value = "";
@@ -1761,6 +1615,7 @@ document.addEventListener("DOMContentLoaded", () => {
     conv.clearButton.addEventListener("click", clearConverterSelection);
 
     function clearConverterSelection() {
+        if (convProcessing) return;
         revokePreviewURLs(convFiles);
         revokeProcessedURLs(processedConvFiles);
         convFiles = [];
@@ -1812,7 +1667,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     conv.start.addEventListener("click", async () => {
-        if (convFiles.length === 0) return;
+        if (convProcessing || convFiles.length === 0) return;
         if (convSourceFormat !== "auto" && convSourceFormat === convTargetFormat) {
             showError("Please choose a different output format.");
             return;
@@ -1823,11 +1678,12 @@ document.addEventListener("DOMContentLoaded", () => {
         conv.resultsList.innerHTML = "";
         conv.results.hidden = false;
         conv.zip.hidden = true;
-        conv.start.disabled = true;
-        conv.clearButton.disabled = true;
-        conv.start.textContent = "Converting...";
 
-        const rows = convFiles.map(item => {
+        const snapshot = [...convFiles];
+        const targetFormatSnapshot = convTargetFormat;
+        const qualitySnapshot = Number(conv.quality.value) / 100;
+        const backgroundSnapshot = convJpgBackground;
+        const rows = snapshot.map(item => {
             const row = buildResultRow(item);
             conv.resultsList.appendChild(row);
             return row;
@@ -1836,87 +1692,106 @@ document.addEventListener("DOMContentLoaded", () => {
         let successCount = 0;
         let skippedCount = 0;
         let completed = 0;
-        setConverterProgress(0, convFiles.length, "Starting conversion");
 
-        for (let index = 0; index < convFiles.length; index++) {
-            const item = convFiles[index];
-            const file = item.file;
-            const row = rows[index];
-            const actualType = normalizeImageType(file);
-            setConverterProgress(completed, convFiles.length, "Converting images", file.name);
+        conv.start.textContent = "Converting...";
+        setConverterProcessingState(true);
+        setConverterProgress(0, snapshot.length, "Starting conversion");
 
-            if (actualType === convTargetFormat) {
-                skippedCount++;
-                completed++;
-                row.classList.add("is-skipped");
-                row.querySelector(".file-meta").innerHTML = `
-                    <h4>${escapeHTML(file.name)}</h4>
-                    <div class="result-status skipped">↷ Already ${FORMAT_NAMES[convTargetFormat]} — skipped</div>
-                    <div class="result-comparison"><span>No format change required</span></div>
-                `;
-                setConverterProgress(completed, convFiles.length, "Checking images", file.name);
-                continue;
-            }
+        try {
+            for (let index = 0; index < snapshot.length; index++) {
+                const item = snapshot[index];
+                const file = item.file;
+                const row = rows[index];
+                const actualType = normalizeImageType(file);
+                setConverterProgress(completed, snapshot.length, "Converting images", file.name);
 
-            row.querySelector(".file-meta").innerHTML = `<h4>${escapeHTML(file.name)}</h4><span>Converting ${index + 1} / ${convFiles.length}...</span>`;
+                if (actualType === targetFormatSnapshot) {
+                    skippedCount++;
+                    completed++;
+                    row.classList.add("is-skipped");
+                    row.querySelector(".file-meta").innerHTML = `
+                        <h4>${escapeHTML(file.name)}</h4>
+                        <div class="result-status skipped">↷ Already ${FORMAT_NAMES[targetFormatSnapshot]} — skipped</div>
+                        <div class="result-comparison"><span>No format change required</span></div>
+                    `;
+                    setConverterProgress(completed, snapshot.length, "Checking images", file.name);
+                    continue;
+                }
 
-            try {
-                const result = await convertImage(file, convTargetFormat, Number(conv.quality.value) / 100, convJpgBackground);
-                const url = URL.createObjectURL(result.blob);
-                processedConvFiles.push({ name: result.name, blob: result.blob, url });
-                successCount++;
-                completed++;
-                const delta = formatDelta(file.size, result.blob.size);
-                const smartGuardNote =
-                    result.smartGuardAdjusted
+                row.querySelector(".file-meta").innerHTML =
+                    `<h4>${escapeHTML(file.name)}</h4><span>Converting ${index + 1} / ${snapshot.length}...</span>`;
+
+                try {
+                    const result = await convertImage(
+                        file,
+                        targetFormatSnapshot,
+                        qualitySnapshot,
+                        backgroundSnapshot
+                    );
+                    const url = URL.createObjectURL(result.blob);
+                    processedConvFiles.push({ name: result.name, blob: result.blob, url });
+                    successCount++;
+                    completed++;
+
+                    const delta = formatDelta(file.size, result.blob.size);
+                    const smartGuardNote = result.smartGuardAdjusted
                         ? `<span class="result-smart-guard">Smart Size Guard adjusted output</span>`
                         : "";
 
-                row.querySelector(".file-meta").innerHTML = `
-                    <h4>${escapeHTML(result.name)}</h4>
-                    <div class="result-status">✓ Converted successfully</div>
-                    <div class="result-comparison">
-                        <span>Original: <strong>${formatBytes(file.size)}</strong></span>
-                        <span>→</span>
-                        <span>Output: <strong>${formatBytes(result.blob.size)}</strong></span>
-                        <span class="result-delta ${delta.className}">${delta.text}</span>
-                        ${smartGuardNote}
-                    </div>
-                `;
-                const download = document.createElement("a");
-                download.href = url;
-                download.download = result.name;
-                download.className = "download-link";
-                download.textContent = "Download";
-                row.appendChild(download);
-            } catch (error) {
-                console.error(error);
-                completed++;
-                row.classList.add("is-failed");
-                row.querySelector(".file-meta").innerHTML = `
-                    <h4>${escapeHTML(file.name)}</h4>
-                    <div class="result-status failed">Failed conversion</div>
-                    <div class="result-comparison"><span>${escapeHTML(error.message || "This image could not be converted safely.")}</span></div>
-                `;
+                    row.querySelector(".file-meta").innerHTML = `
+                        <h4>${escapeHTML(result.name)}</h4>
+                        <div class="result-status">✓ Converted successfully</div>
+                        <div class="result-comparison">
+                            <span>Original: <strong>${formatBytes(file.size)}</strong></span>
+                            <span>→</span>
+                            <span>Output: <strong>${formatBytes(result.blob.size)}</strong></span>
+                            <span class="result-delta ${delta.className}">${delta.text}</span>
+                            ${smartGuardNote}
+                        </div>
+                    `;
+
+                    const download = document.createElement("a");
+                    download.href = url;
+                    download.download = result.name;
+                    download.className = "download-link";
+                    download.textContent = "Download";
+                    row.appendChild(download);
+                } catch (error) {
+                    console.error(error);
+                    completed++;
+                    row.classList.add("is-failed");
+                    row.querySelector(".file-meta").innerHTML = `
+                        <h4>${escapeHTML(file.name)}</h4>
+                        <div class="result-status failed">Failed conversion</div>
+                        <div class="result-comparison"><span>${escapeHTML(error.message || "This image could not be converted safely.")}</span></div>
+                    `;
+                }
+
+                setConverterProgress(
+                    completed,
+                    snapshot.length,
+                    completed === snapshot.length ? "Finalizing results" : "Converting images",
+                    file.name
+                );
+                await new Promise(resolve => setTimeout(resolve, 0));
             }
-            setConverterProgress(completed, convFiles.length, completed === convFiles.length ? "Finalizing results" : "Converting images", file.name);
-            await new Promise(resolve => setTimeout(resolve, 0));
+
+            conv.progressTitle.textContent = "Conversion complete";
+            conv.progressText.textContent = `${completed} of ${snapshot.length} files processed.`;
+
+            const summaryParts = [`${successCount} converted successfully`];
+            if (skippedCount) summaryParts.push(`${skippedCount} already in target format`);
+            const failedCount = snapshot.length - successCount - skippedCount;
+            if (failedCount) summaryParts.push(`${failedCount} failed`);
+            conv.resultSummary.textContent = summaryParts.join(" • ");
+
+            if (processedConvFiles.length > 0) conv.zip.hidden = false;
+            conv.results.scrollIntoView({ behavior: "smooth", block: "start" });
+        } finally {
+            conv.start.textContent = "Convert Images";
+            setConverterProcessingState(false);
+            updateConverterFormatUI();
         }
-
-        conv.start.disabled = false;
-        conv.clearButton.disabled = false;
-        conv.start.textContent = "Convert Images";
-        conv.progressTitle.textContent = "Conversion complete";
-        conv.progressText.textContent = `${completed} of ${convFiles.length} files processed.`;
-
-        const summaryParts = [`${successCount} converted successfully`];
-        if (skippedCount) summaryParts.push(`${skippedCount} already in target format`);
-        const failedCount = convFiles.length - successCount - skippedCount;
-        if (failedCount) summaryParts.push(`${failedCount} failed`);
-        conv.resultSummary.textContent = summaryParts.join(" • ");
-
-        if (processedConvFiles.length > 0) conv.zip.hidden = false;
-        conv.results.scrollIntoView({ behavior: "smooth", block: "start" });
     });
 
     function clampQuality(value) {
