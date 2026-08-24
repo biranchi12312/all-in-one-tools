@@ -12,9 +12,9 @@
     const MAX_TOTAL_PAGES = 500;
 
     // Soft-warning thresholds. These do not block merging; the hard limits above do.
-    const LARGE_FILE_WARNING = 75 * 1024 * 1024;
-    const LARGE_SIZE_WARNING = 150 * 1024 * 1024;
-    const LARGE_PAGE_WARNING = 300;
+    const LARGE_FILE_WARNING = 80 * 1024 * 1024;
+    const LARGE_SIZE_WARNING = 200 * 1024 * 1024;
+    const LARGE_PAGE_WARNING = 400;
 
     const el = {
         view: document.getElementById("pdfMergeView"),
@@ -86,29 +86,44 @@
     }
 
     function updateWarning() {
+        if (!el.warning) return;
+
         const { size, pages } = totals();
-        const largeFiles = files.filter(item => item.file.size >= LARGE_FILE_WARNING);
+        const largeFiles = files.filter(
+            item => item.file.size >= LARGE_FILE_WARNING
+        );
         const reasons = [];
 
         if (largeFiles.length) {
-            const largest = Math.max(...largeFiles.map(item => item.file.size));
+            const largest = Math.max(
+                ...largeFiles.map(item => item.file.size)
+            );
             reasons.push(
-                `${largeFiles.length} large file${largeFiles.length === 1 ? "" : "s"} selected (largest ${formatBytes(largest)}).`
+                `${largeFiles.length} large file${largeFiles.length === 1 ? "" : "s"} selected (largest ${formatBytes(largest)} of 100 MB max per file).`
             );
         }
 
         if (size >= LARGE_SIZE_WARNING) {
-            reasons.push(`The batch is ${formatBytes(size)}.`);
+            reasons.push(
+                `Batch size is ${formatBytes(size)} of the 250 MB total limit.`
+            );
         }
 
         if (pages >= LARGE_PAGE_WARNING) {
-            reasons.push(`${pages} pages are queued.`);
+            reasons.push(
+                `${pages} of 500 pages are selected.`
+            );
         }
 
-        const shouldShow = !warningDismissed && reasons.length > 0;
-        el.warning.hidden = !shouldShow;
+        const shouldShow =
+            files.length > 0 &&
+            !warningDismissed &&
+            reasons.length > 0;
 
-        if (!shouldShow) return;
+        if (!shouldShow) {
+            el.warning.hidden = true;
+            return;
+        }
 
         if (el.warningTitle) {
             el.warningTitle.textContent =
@@ -119,8 +134,10 @@
 
         if (el.warningText) {
             el.warningText.textContent =
-                `${reasons.join(" ")} Processing can still continue, but it may take longer on this device.`;
+                `${reasons.join(" ")} Please keep your PDFs within the allowed limits.`;
         }
+
+        el.warning.hidden = false;
     }
 
     function updateSummary() {
@@ -451,10 +468,12 @@
         if (!processing) addFiles(event.dataTransfer.files);
     });
 
-    el.warningClose.addEventListener("click", () => {
-        warningDismissed = true;
-        el.warning.hidden = true;
-    });
+    if (el.warningClose && el.warning) {
+        el.warningClose.addEventListener("click", () => {
+            warningDismissed = true;
+            el.warning.hidden = true;
+        });
+    }
 
     el.clear.addEventListener("click", () => {
         resetTool();

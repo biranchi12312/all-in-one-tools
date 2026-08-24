@@ -2606,6 +2606,12 @@ input[type="range"]::-moz-range-thumb {
 .pdf-settings-panel,
 .pdf-processing-panel,
 .pdf-results-panel,
+
+/* PDF warning visibility guard: HTML hidden must always win */
+.pdf-large-warning[hidden] {
+    display: none !important;
+}
+
 .pdf-large-warning {
     border: 1px solid var(--border);
     border-radius: 28px;
