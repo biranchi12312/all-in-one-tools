@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraStudio — Free Image & PDF Tools</title>
+    <meta name="description" content="Compress and convert images, merge PDFs and manage everyday files directly in your browser with AuraStudio. Process supported files in a clean, privacy-focused workspace.">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+    </noscript>
+</head>
+
+<body>
+<!-- =========================
+         HEADER
+    ========================== -->
+
+    <header class="navbar">
+        <button class="logo" id="logoBtn" type="button">Aura<span>Studio</span></button>
+
+        <div class="nav-status">
+            <span class="pulse-dot"></span>
+            Secure Engine Active
+        </div>
+
+        <div class="nav-tools">
+            <button
+                class="menu-toggle"
+                id="menuToggle"
+                type="button"
+                aria-expanded="false"
+                aria-controls="toolsMenu"
+                aria-label="Open tools menu"
+                onclick="window.__auraToggleMenu&&window.__auraToggleMenu(event)"
+            >
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="menu-backdrop" id="menuBackdrop" aria-hidden="true"></div>
+
+    <aside class="tools-menu" id="toolsMenu" aria-hidden="true" aria-label="Tool directory">
+        <div class="tools-menu-head">
+            <div>
+                <span>TOOL DIRECTORY</span>
+                <strong>Find the right tool.</strong>
+                <p>Browse by category, then jump straight into the task you want to finish.</p>
+            </div>
+            <button type="button" class="menu-close" id="menuClose" aria-label="Close tools menu"><span aria-hidden="true"></span></button>
+        </div>
+
+        <div class="menu-accordion" id="menuAccordion">
+            <section class="menu-category">
+                <button class="menu-category-trigger" type="button" aria-expanded="false">
+                    <span class="menu-category-copy"><b>Image Tools</b><small>Compress, convert and prepare images</small></span>
+                    <span class="menu-category-meta"><em>4 tools</em><i aria-hidden="true"></i></span>
+                </button>
+                <div class="menu-category-panel">
+                    <div class="menu-category-panel-inner">
+                        <button type="button" class="menu-item menu-item-live" data-open-view="compressor"><span><b>Compress Images</b><small>Reduce file size in batches</small></span><em aria-label="Open tool">→</em></button>
+                        <button type="button" class="menu-item menu-item-live" data-open-view="converter"><span><b>Convert Images</b><small>Switch between supported formats</small></span><em aria-label="Open tool">→</em></button>
+                        <button type="button" class="menu-item preview-feature"><span><b>Resize Images</b><small>Prepare images for any layout</small></span><em aria-label="Preview tool">↗</em></button>
+                        <button type="button" class="menu-item preview-feature"><span><b>Crop &amp; Rotate</b><small>Quick framing and orientation tools</small></span><em aria-label="Preview tool">↗</em></button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="menu-category">
+                <button class="menu-category-trigger" type="button" aria-expanded="false">
+                    <span class="menu-category-copy"><b>PDF Tools</b><small>Combine, split and transform documents</small></span>
+                    <span class="menu-category-meta"><em>4 tools</em><i aria-hidden="true"></i></span>
+                </button>
+                <div class="menu-category-panel">
+                    <div class="menu-category-panel-inner">
+                        <button type="button" class="menu-item menu-item-live" data-open-view="pdfMerge"><span><b>Merge PDF</b><small>Combine multiple PDFs into one</small></span><em aria-label="Open tool">→</em></button>
+                        <button type="button" class="menu-item preview-feature"><span><b>Split PDF</b><small>Separate pages into new files</small></span><em aria-label="Preview tool">↗</em></button>
+                        <button type="button" class="menu-item preview-feature"><span><b>Compress PDF</b><small>Make large documents lighter</small></span><em aria-label="Preview tool">↗</em></button>
+                        <button type="button" class="menu-item preview-feature"><span><b>PDF to Images</b><small>Turn pages into image files</small></span><em aria-label="Preview tool">↗</em></button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="tools-menu-foot">
+            <span>More tools are already being mapped for AuraStudio.</span>
+        </div>
+    </aside>
+
+
+    <main class="container">
+
+
+        <!-- =========================
+             DASHBOARD / HOMEPAGE
+        ========================== -->
+        <section id="dashboardView" class="view active">
+            <section class="hero hero-home">
+                <div class="hero-glow"></div>
+                <span class="badge hero-enter">ALL-IN-ONE FILE WORKSPACE</span>
+                <h1 class="hero-title">Your files.<br><span>Your workflow. One place.</span></h1>
+                <p class="hero-description">One place for the file tools you need today, with more to explore next. From quick fixes to bigger tasks, AuraStudio keeps everyday work moving without the clutter.</p>
+                <div class="hero-capabilities hero-home-capabilities">
+                    <div class="capability-pill"><span class="capability-icon">✦</span>More tools. One workspace.</div>
+                    <div class="capability-pill"><span class="capability-icon">↗</span>Made for everyday files.</div>
+                    <div class="capability-pill"><span class="capability-icon">☰</span>Explore what’s next.</div>
+                </div>
+            </section>
+
+            <section class="sponsored-dock reveal" aria-label="Advertisement area">
+                <div class="sponsored-dock-top"><span class="sponsored-kicker"><i class="sponsored-dot"></i>SPONSORED</span><span class="sponsored-support">Supporting AuraStudio</span></div>
+                <div class="ad-slot ad-slot-primary" id="homeAdPrimary" aria-label="Advertisement"><div class="ad-safe-inner"><span class="ad-slot-label">ADVERTISEMENT</span></div></div>
+            </section>
+
+            <section class="tools-section home-tools-section">
+                <div class="section-top reveal"><div><span class="section-label">START HERE</span><h2>The tools people reach for first.</h2></div><p>Three high-demand tools are ready now. Open any one and start working immediately.</p></div>
+                <div class="tools-grid tools-grid-featured">
+                    <button class="tool-card reveal reveal-delay-1" type="button" data-open-view="compressor"><div class="tool-card-top"><div class="tool-icon">🗜️</div><span class="tool-number">01</span></div><div class="tool-card-bottom"><div><h3>Compress</h3><p>Make image files lighter.</p></div><span class="tool-arrow">→</span></div></button>
+                    <button class="tool-card reveal reveal-delay-2" type="button" data-open-view="converter"><div class="tool-card-top"><div class="tool-icon">↔</div><span class="tool-number">02</span></div><div class="tool-card-bottom"><div><h3>Convert</h3><p>Choose the format you need.</p></div><span class="tool-arrow">→</span></div></button>
+                    <button class="tool-card reveal reveal-delay-3" type="button" data-open-view="pdfMerge"><div class="tool-card-top"><div class="tool-icon">📄</div><span class="tool-number">03</span></div><div class="tool-card-bottom"><div><h3>Merge PDF</h3><p>Combine documents in your order.</p></div><span class="tool-arrow">→</span></div></button>
+                </div>
+            </section>
+
+            <section class="feature-discovery">
+                <div class="feature-discovery-intro reveal"><span class="section-label">EXPLORE THE WORKSPACE</span><h2>What do you want to do next?</h2><p>These are the next tools being shaped for AuraStudio. Pick what catches your eye and keep the idea on your radar.</p></div>
+                <div class="discovery-grid">
+                    <button type="button" class="discovery-card preview-feature reveal reveal-delay-1"><span class="discovery-index">01</span><span class="discovery-icon">↔</span><h3>Resize Images</h3><p>Need a specific width, height or platform-ready size?</p><span class="discovery-question">Would you use this? <b>→</b></span></button>
+                    <button type="button" class="discovery-card preview-feature reveal reveal-delay-2"><span class="discovery-index">02</span><span class="discovery-icon">✂</span><h3>Crop & Rotate</h3><p>Fix framing, orientation and unwanted edges in one workspace.</p><span class="discovery-question">Try this next <b>→</b></span></button>
+                    <button type="button" class="discovery-card preview-feature reveal reveal-delay-3"><span class="discovery-index">03</span><span class="discovery-icon">⇄</span><h3>Split PDF</h3><p>Separate selected pages when one document contains too much.</p><span class="discovery-question">Interested? <b>→</b></span></button>
+                    <button type="button" class="discovery-card preview-feature reveal reveal-delay-1"><span class="discovery-index">04</span><span class="discovery-icon">▣</span><h3>PDF to Images</h3><p>Turn document pages into image files without a complicated workflow.</p><span class="discovery-question">Use it for your files <b>→</b></span></button>
+                </div>
+                <div class="discovery-footer reveal"><span>More tools are organized inside the menu.</span><button type="button" class="discovery-menu-link" data-open-menu>Browse tool categories <b>☰</b></button></div>
+            </section>
+
+            <section class="sponsored-dock sponsored-dock-secondary reveal" aria-label="Advertisement area">
+                <div class="sponsored-dock-top"><span class="sponsored-kicker"><i class="sponsored-dot"></i>SPONSORED</span><span class="sponsored-support">Supporting free tools</span></div>
+                <div class="ad-slot ad-slot-secondary" id="homeAdSecondary" aria-label="Advertisement"><div class="ad-safe-inner"><span class="ad-slot-label">ADVERTISEMENT</span></div></div>
+            </section>
+
+            <section class="feature-intro">
+                <div class="feature-intro-left reveal"><span class="section-label">ONE CLEAN WORKFLOW</span><h2>Less friction.<br><span>More control.</span></h2></div>
+                <div class="feature-intro-right reveal reveal-delay-1"><p class="large-copy">AuraStudio keeps file tasks focused. Choose a tool, upload what you need and finish the job without jumping between cluttered pages.</p><div class="feature-points"><div class="feature-point"><span>01</span><p>Choose the tool that matches the task you want to finish.</p></div><div class="feature-point"><span>02</span><p>Adjust the settings that matter and keep the workflow simple.</p></div><div class="feature-point"><span>03</span><p>Download your completed files and move on to the next task.</p></div></div></div>
+            </section>
+
+            <section class="info-section reveal">
+                <div class="faq-heading"><span class="section-label">FAQ</span><h2>Frequently asked questions.</h2></div>
+                <div class="faq-item"><button class="faq-question" type="button">How many images can I upload?<span>+</span></button><div class="faq-answer"><p>You can process up to 100 supported images in one batch, with a 100 MB per-file limit and a 500 MB total batch safety cap.</p></div></div>
+                <div class="faq-item"><button class="faq-question" type="button">Which image formats are supported?<span>+</span></button><div class="faq-answer"><p>JPG, JPEG, PNG and WebP are supported for compress and convert. Other formats are shown in the converter and stay locked until their engine is added.</p></div></div>
+                <div class="faq-item"><button class="faq-question" type="button">How does PDF merge work?<span>+</span></button><div class="faq-answer"><p>Upload 2 to 20 PDFs, drag them into order, then merge. The batch can be up to 250 MB and 500 pages. Password-protected PDFs are not supported.</p></div></div>
+                <div class="faq-item"><button class="faq-question" type="button">Do my files leave this device?<span>+</span></button><div class="faq-answer"><p>No. Compress, convert and PDF merge all run in your browser. Files are not uploaded to a server.</p></div></div>
+                <div class="faq-item"><button class="faq-question" type="button">Can I use AuraStudio on mobile?<span>+</span></button><div class="faq-answer"><p>Yes. The interface is responsive and the tools can be used on supported mobile and desktop browsers.</p></div></div>
+            </section>
+        </section>
+
+
+
+
+
+        <!-- =========================
+             COMPRESSOR
+        ========================== -->
+
+        <section
+            id="compressorView"
+            class="view"
+        >
+
+            <button
+                class="back-btn"
+                type="button"
+                data-back-dashboard
+            >
+                ← Back to Workshop
+            </button>
+
+
+            <div class="workspace-header">
+
+                <h2>
+                    Image Compressor
+                </h2>
+
+                <p>
+                    Upload up to 100 images and optimize them in one batch.
+                </p>
+
+            </div>
+
+
+            <div
+                class="upload-box"
+                id="compDropZone"
+                role="button"
+                tabindex="0"
+                aria-label="Upload images to compress"
+            >
+
+                <div class="upload-icon-pulse">
+                    📂
+                </div>
+
+                <h3>
+                    Upload Images
+                </h3>
+
+                <p>
+                    Drag & drop your images here or
+                    <span>browse files</span>
+                </p>
+
+                <div class="upload-limits">
+                    Up to 100 images • Max 100 MB per image • JPG, PNG, WebP
+                </div>
+            </div>
+
+            <input
+                type="file"
+                id="compFileInput"
+                multiple
+                accept="image/jpeg,image/jpg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+                hidden
+            >
+
+
+
+            <section
+                class="queue-panel"
+                id="compQueuePanel"
+                hidden
+            >
+
+                <div class="queue-header">
+
+                    <div>
+
+                        <h3>
+                            Uploaded Images
+                        </h3>
+
+                        <p id="compQueueSummary">
+                            0 images uploaded
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="small-reset-btn"
+                        id="compClearBtn"
+                    >
+                        Clear All
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="file-queue"
+                    id="compFileQueue"
+                ></div>
+
+            </section>
+
+
+
+            <section
+                class="settings-panel"
+                id="compSettingsPanel"
+                hidden
+            >
+
+                <div class="slider-group">
+
+                    <div class="setting-label-row">
+
+                        <label for="compQualitySlider">
+                            Compression Quality
+                        </label>
+
+                        <strong id="compQualityVal">
+                            80%
+                        </strong>
+
+                    </div>
+
+
+                    <input
+                        type="range"
+                        id="compQualitySlider"
+                        min="1"
+                        max="100"
+                        value="80"
+                    >
+
+
+                    <p class="setting-help" id="compQualityHelp">
+                        Lower quality usually produces smaller JPEG and WebP files. PNG keeps the original file if compression would make it larger.
+                    </p>
+
+                </div>
+
+                <div class="converter-progress" id="compProgressPanel" hidden>
+                    <div class="progress-label-row"><strong id="compProgressTitle">Preparing compression</strong><span id="compProgressPercent">0%</span></div>
+                    <div class="progress-track"><div class="progress-fill" id="compProgressFill"></div></div>
+                    <p id="compProgressText">Waiting to start.</p>
+                </div>
+
+
+                <div class="panel-action">
+
+                    <div id="compFileCount">
+                        0 files loaded
+                    </div>
+
+
+                    <button
+                        class="action-btn"
+                        id="compStartBtn"
+                        type="button"
+                    >
+                        Compress Images
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <section
+                class="results-panel"
+                id="compResultsPanel"
+                hidden
+            >
+
+                <div class="results-top">
+
+                    <div>
+
+                        <h3>
+                            Compression Complete
+                        </h3>
+
+                        <p id="compResultSummary">
+                            Your processed files will appear below.
+                        </p>
+
+                    </div>
+
+
+                    <span class="complete-badge">
+                        ✓ Complete
+                    </span>
+
+                </div>
+
+
+                <div id="compResultsList"></div>
+
+
+                <div class="result-actions">
+
+                    <button
+                        class="action-btn outline"
+                        id="compProcessMoreBtn"
+                        type="button"
+                    >
+                        ↺ Process More Files
+                    </button>
+
+
+                    <button
+                        class="action-btn"
+                        id="compZipBtn"
+                        type="button"
+                        hidden
+                    >
+                        Download All as ZIP
+                    </button>
+
+                </div>
+
+            </section>
+
+        </section>
+
+
+
+        <!-- =========================
+             CONVERTER
+        ========================== -->
+        <section
+            id="converterView"
+            class="view"
+        >
+
+            <button
+                class="back-btn"
+                type="button"
+                data-back-dashboard
+            >
+                ← Back to Workshop
+            </button>
+
+            <div class="workspace-header">
+                <h2>Format Converter</h2>
+                <p>Choose the source and output format, then convert up to 100 images in one batch.</p>
+            </div>
+
+            <!-- FORMAT WORKSPACE -->
+            <section class="converter-format-panel" id="convFormatPanel">
+                <div class="converter-format-heading">
+                    <div>
+                        <span class="section-label">CONVERSION SETUP</span>
+                        <h3>Choose your formats.</h3>
+                        <p>Select what you have on the left and what you want on the right.</p>
+                    </div>
+                    <div class="format-live-summary" id="convFormatSummary">AUTO DETECT <span>→</span> WEBP</div>
+                </div>
+
+                <div class="format-columns">
+                    <div class="format-column">
+                        <div class="format-column-top">
+                            <span class="format-eyebrow">SOURCE</span>
+                            <strong>FROM</strong>
+                        </div>
+                        <div class="format-list" id="sourceFormatList" role="radiogroup" aria-label="Source image format">
+                            <button type="button" class="format-option selected" data-source-format="auto">
+                                <span class="format-option-main"><span class="format-code">AUTO</span><span><b>Auto Detect</b><small>Mixed supported formats</small></span></span>
+                                <span class="format-check">✓</span>
+                            </button>
+                            <button type="button" class="format-option" data-source-format="image/jpeg">
+                                <span class="format-option-main"><span class="format-code">JPG</span><span><b>JPEG / JPG</b><small>Universal image format</small></span></span>
+                                <span class="format-check">✓</span>
+                            </button>
+                            <button type="button" class="format-option" data-source-format="image/png">
+                                <span class="format-option-main"><span class="format-code">PNG</span><span><b>PNG</b><small>Lossless image format</small></span></span>
+                                <span class="format-check">✓</span>
+                            </button>
+                            <button type="button" class="format-option" data-source-format="image/webp">
+                                <span class="format-option-main"><span class="format-code">WEBP</span><span><b>WebP</b><small>Modern web format</small></span></span>
+                                <span class="format-check">✓</span>
+                            </button>
+                            <button type="button" class="format-option is-disabled" disabled><span class="format-option-main"><span class="format-code">AVIF</span><span><b>AVIF</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+                            <button type="button" class="format-option is-disabled" disabled><span class="format-option-main"><span class="format-code">BMP</span><span><b>BMP</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+                            <button type="button" class="format-option is-disabled" disabled><span class="format-option-main"><span class="format-code">GIF</span><span><b>GIF</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+                            <button type="button" class="format-option is-disabled" disabled><span class="format-option-main"><span class="format-code">TIFF</span><span><b>TIFF</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+                            <button type="button" class="format-option is-disabled" disabled><span class="format-option-main"><span class="format-code">ICO</span><span><b>ICO</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+                        </div>
+                    </div>
+
+                    <div class="format-flow-arrow" aria-hidden="true"><span>→</span></div>
+
+                    <div class="format-column">
+                        <div class="format-column-top">
+                            <span class="format-eyebrow">OUTPUT</span>
+                            <strong>CONVERT TO</strong>
+                        </div>
+                        <div class="format-list" id="targetFormatList" role="radiogroup" aria-label="Target image format">
+                            <button type="button" class="format-option" data-target-format="image/jpeg">
+                                <span class="format-option-main"><span class="format-code">JPG</span><span><b>JPEG / JPG</b><small>Universal image format</small></span></span>
+                                <span class="format-check">✓</span>
+                            </button>
+                            <button type="button" class="format-option" data-target-format="image/png">
+                                <span class="format-option-main"><span class="format-code">PNG</span><span><b>PNG</b><small>Lossless image format</small></span></span>
+                                <span class="format-check">✓</span>
+                            </button>
+                            <button type="button" class="format-option selected" data-target-format="image/webp">
+                                <span class="format-option-main"><span class="format-code">WEBP</span><span><b>WebP</b><small>Modern web format</small></span></span>
+                                <span class="format-check">✓</span>
+                            </button>
+                            <button type="button" class="format-option is-disabled" disabled><span class="format-option-main"><span class="format-code">AVIF</span><span><b>AVIF</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+                            <button type="button" class="format-option is-disabled" disabled><span class="format-option-main"><span class="format-code">BMP</span><span><b>BMP</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+                            <button type="button" class="format-option is-disabled" disabled><span class="format-option-main"><span class="format-code">GIF</span><span><b>GIF</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+                            <button type="button" class="format-option is-disabled" disabled><span class="format-option-main"><span class="format-code">TIFF</span><span><b>TIFF</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+                            <button type="button" class="format-option is-disabled" disabled><span class="format-option-main"><span class="format-code">ICO</span><span><b>ICO</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+                        </div>
+                    </div>
+                </div>
+                <p class="format-panel-note" id="convFormatNote">Auto Detect accepts a mixed batch of currently supported JPG, PNG and WebP images.</p>
+            </section>
+
+            <!-- UPLOAD -->
+            <div class="upload-box" id="convDropZone" role="button" tabindex="0" aria-label="Upload images to convert">
+                <div class="upload-icon-pulse">⚡</div>
+                <h3>Upload Images</h3>
+                <p>Drag & drop your images here or <span>browse files</span></p>
+                <div class="upload-limits">Up to 100 images • Max 100 MB per image • 500 MB total batch safety</div>
+            </div>
+            <input type="file" id="convFileInput" multiple accept="image/jpeg,image/jpg,image/png,image/webp,.jpg,.jpeg,.png,.webp" hidden>
+
+            <!-- CONVERTER QUEUE -->
+            <section class="queue-panel" id="convQueuePanel" hidden>
+                <div class="queue-header">
+                    <div>
+                        <h3>Uploaded Images</h3>
+                        <p id="convQueueSummary">0 images uploaded</p>
+                    </div>
+                    <button type="button" class="small-reset-btn" id="convClearBtn">Clear All</button>
+                </div>
+                <div class="file-queue" id="convFileQueue"></div>
+            </section>
+
+            <!-- CONVERSION SETTINGS -->
+            <section class="settings-panel converter-settings-panel" id="convSettingsPanel" hidden>
+                <div class="converter-settings-head">
+                    <div>
+                        <span class="section-label">OUTPUT SETTINGS</span>
+                        <h3>Fine-tune the conversion.</h3>
+                    </div>
+                    <div class="converter-ready-pill" id="convReadySummary">0 files ready</div>
+                </div>
+
+                <div class="slider-group" id="convQualityGroup">
+                    <div class="setting-label-row">
+                        <label for="convQualitySlider">Conversion Quality</label>
+                        <strong id="convQualityVal">92%</strong>
+                    </div>
+                    <input type="range" id="convQualitySlider" min="10" max="100" value="92">
+                    <p class="setting-help">Used for JPG and WebP output. Smart Size Guard prevents unnecessary larger JPG/WebP results whenever possible.</p>
+                </div>
+
+                <div class="jpg-background-group" id="convJpgBackgroundGroup" hidden>
+                    <div class="setting-label-row"><label>Transparent Areas</label><strong>JPG Background</strong></div>
+                    <div class="background-options">
+                        <button type="button" class="background-option selected" data-bg="#ffffff"><span class="bg-swatch bg-white"></span>White</button>
+                        <button type="button" class="background-option" data-bg="#000000"><span class="bg-swatch bg-black"></span>Black</button>
+                        <label class="background-option custom-background-option"><input type="color" id="convCustomBackground" value="#ffffff"><span class="bg-swatch bg-custom"></span>Custom</label>
+                    </div>
+                    <p class="setting-help">JPG does not support transparency, so transparent areas use the selected background.</p>
+                </div>
+
+                <div class="converter-progress" id="convProgressPanel" hidden>
+                    <div class="progress-label-row"><strong id="convProgressTitle">Preparing conversion</strong><span id="convProgressPercent">0%</span></div>
+                    <div class="progress-track"><div class="progress-fill" id="convProgressFill"></div></div>
+                    <p id="convProgressText">Waiting to start.</p>
+                </div>
+
+                <div class="panel-action">
+                    <div id="convFileCount">0 files loaded</div>
+                    <button class="action-btn" id="convStartBtn" type="button">Convert Images</button>
+                </div>
+            </section>
+
+            <!-- CONVERTER RESULTS -->
+            <section class="results-panel" id="convResultsPanel" hidden>
+                <div class="results-top">
+                    <div>
+                        <h3>Conversion Complete</h3>
+                        <p id="convResultSummary">Your converted files will appear below.</p>
+                    </div>
+                    <span class="complete-badge">✓ Complete</span>
+                </div>
+                <div id="convResultsList"></div>
+                <div class="result-actions">
+                    <button class="action-btn outline" id="convProcessMoreBtn" type="button">↺ Convert More Files</button>
+                    <button class="action-btn" id="convZipBtn" type="button" hidden>Download All as ZIP</button>
+                </div>
+            </section>
+        </section>
+
+        <!-- =========================
+             PDF MERGE
+        ========================== -->
+
+        <section
+            id="pdfMergeView"
+            class="view"
+        >
+
+            <button
+                class="back-btn"
+                type="button"
+                data-back-dashboard
+            >
+                ← Back to Workshop
+            </button>
+
+
+            <div class="workspace-header">
+                <span class="section-label">PDF TOOLS</span>
+                <h2>Merge PDF Files</h2>
+                <p>
+                    Combine 2 to 20 PDFs into one document. Reorder pages, then merge everything in your browser.
+                </p>
+            </div>
+
+
+            <section
+                class="pdf-upload-box"
+                id="pdfMergeDropZone"
+                role="button"
+                tabindex="0"
+                aria-label="Upload PDF files to merge"
+            >
+                <div class="pdf-upload-icon">📄</div>
+                <h3>Upload PDF Files</h3>
+                <p>
+                    Drag & drop your PDF files here or
+                    <span>browse files</span>
+                </p>
+                <div class="pdf-upload-limits">
+                    2–20 PDFs • Max 100 MB each • 250 MB total • 500 pages
+                </div>
+                <p class="pdf-upload-privacy">Files stay on this device. Nothing is uploaded to a server.</p>
+            </section>
+            <input
+                type="file"
+                id="pdfMergeFileInput"
+                multiple
+                accept="application/pdf,.pdf"
+                hidden
+            >
+
+
+            <section
+                class="pdf-queue-panel"
+                id="pdfMergeQueuePanel"
+                hidden
+            >
+                <div class="pdf-queue-header">
+                    <div>
+                        <span class="section-label">MERGE ORDER</span>
+                        <h3>Your PDF Files</h3>
+                        <p id="pdfMergeQueueSummary">0 PDFs selected</p>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="small-reset-btn"
+                        id="pdfMergeClearBtn"
+                    >
+                        Clear All
+                    </button>
+                </div>
+
+                <p class="pdf-reorder-hint" id="pdfMergeReorderHint">Drag a file, or use the arrows, to set the merge order.</p>
+
+                <div
+                    class="pdf-file-queue"
+                    id="pdfMergeFileQueue"
+                    aria-live="polite"
+                ></div>
+
+                <div class="pdf-queue-summary">
+                    <div>
+                        <span>FILES</span>
+                        <strong id="pdfMergeTotalFiles">0</strong>
+                    </div>
+                    <div>
+                        <span>TOTAL SIZE</span>
+                        <strong id="pdfMergeTotalSize">0 B</strong>
+                    </div>
+                    <div>
+                        <span>TOTAL PAGES</span>
+                        <strong id="pdfMergeTotalPages">0</strong>
+                    </div>
+                </div>
+                <p class="pdf-capacity-note" id="pdfMergeCapacity">20 file slots • 250 MB • 500 pages remaining</p>
+            </section>
+
+
+            <section
+                class="pdf-settings-panel"
+                id="pdfMergeSettingsPanel"
+                hidden
+            >
+                <div class="pdf-output-name-row">
+                    <div>
+                        <span class="section-label">OUTPUT</span>
+                        <h3>Name your merged PDF</h3>
+                        <p>Original files stay unchanged on your device.</p>
+                    </div>
+
+                    <label class="pdf-output-field">
+                        <span>OUTPUT FILE NAME</span>
+                        <input
+                            type="text"
+                            id="pdfMergeOutputName"
+                            value="merged-document.pdf"
+                            maxlength="120"
+                            autocomplete="off"
+                        >
+                    </label>
+                </div>
+
+                <div class="panel-action">
+                    <div id="pdfMergeReadyText">
+                        Add at least 2 PDFs to merge.
+                    </div>
+
+                    <button
+                        class="action-btn"
+                        id="pdfMergeStartBtn"
+                        type="button"
+                        disabled
+                    >
+                        Merge PDFs
+                    </button>
+                </div>
+            </section>
+
+
+            <section
+                class="pdf-processing-panel"
+                id="pdfMergeProcessingPanel"
+                hidden
+            >
+                <div class="pdf-processing-orb">⏳</div>
+                <span class="section-label">PROCESSING</span>
+                <h3 id="pdfMergeProgressTitle">Preparing PDF files</h3>
+                <p id="pdfMergeProgressText">Preparing your documents.</p>
+                <div class="pdf-progress-track">
+                    <div
+                        class="pdf-progress-fill"
+                        id="pdfMergeProgressFill"
+                    ></div>
+                </div>
+                <strong id="pdfMergeProgressPercent">0%</strong>
+            </section>
+
+
+            <section
+                class="pdf-results-panel"
+                id="pdfMergeResultsPanel"
+                hidden
+            >
+                <div class="pdf-success-icon">✓</div>
+                <span class="section-label">COMPLETE</span>
+                <h3>PDF Merged Successfully</h3>
+                <p id="pdfMergeResultName">Your merged PDF is ready.</p>
+
+                <div class="pdf-result-stats">
+                    <div>
+                        <span>FILES MERGED</span>
+                        <strong id="pdfMergeResultFiles">0</strong>
+                    </div>
+                    <div>
+                        <span>TOTAL PAGES</span>
+                        <strong id="pdfMergeResultPages">0</strong>
+                    </div>
+                    <div>
+                        <span>OUTPUT SIZE</span>
+                        <strong id="pdfMergeResultSize">0 B</strong>
+                    </div>
+                </div>
+
+                <div class="result-actions">
+                    <button
+                        class="action-btn outline"
+                        id="pdfMergeMoreBtn"
+                        type="button"
+                    >
+                        ↺ Merge More PDFs
+                    </button>
+
+                    <button
+                        class="action-btn outline"
+                        id="pdfMergePreviewBtn"
+                        type="button"
+                    >
+                        Open Preview
+                    </button>
+
+                    <button
+                        class="action-btn"
+                        id="pdfMergeDownloadBtn"
+                        type="button"
+                    >
+                        Download PDF
+                    </button>
+                </div>
+            </section>
+
+        </section>
+
+    </main>
+
+
+
+    <div
+        class="preview-feature-toast"
+        id="previewFeatureToast"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        hidden
+    >
+        <strong>Coming soon</strong>
+        <span>This tool is still being built for AuraStudio.</span>
+    </div>
+
+
+    <div
+        class="app-dialog"
+        id="appDialog"
+        hidden
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="appDialogTitle"
+        aria-describedby="appDialogText"
+    >
+        <button
+            type="button"
+            class="app-dialog-backdrop"
+            id="appDialogBackdrop"
+            aria-label="Close dialog"
+        ></button>
+        <div class="app-dialog-panel">
+            <div class="app-dialog-icon" id="appDialogIcon" aria-hidden="true">!</div>
+            <h3 id="appDialogTitle">Notice</h3>
+            <p id="appDialogText"></p>
+            <ul class="app-dialog-list" id="appDialogList" hidden></ul>
+            <div class="app-dialog-actions">
+                <button type="button" class="action-btn outline" id="appDialogCancel" hidden>Cancel</button>
+                <button type="button" class="action-btn" id="appDialogAction">OK</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer class="footer">
+
+        <p>
+            © 2026 AuraStudio. All rights reserved.
+        </p>
+
+    </footer>
+
+
+    <!-- Menu bootstrap (always available, even if app.js is slow) -->
+    <script>
+    (function () {
+        function setOpen(open) {
+            var menu = document.getElementById("toolsMenu");
+            var toggle = document.getElementById("menuToggle");
+            var backdrop = document.getElementById("menuBackdrop");
+            if (!menu || !toggle) return;
+            menu.classList.toggle("open", !!open);
+            toggle.classList.toggle("active", !!open);
+            if (backdrop) backdrop.classList.toggle("open", !!open);
+            document.body.classList.toggle("menu-open", !!open);
+            toggle.setAttribute("aria-expanded", String(!!open));
+            menu.setAttribute("aria-hidden", String(!open));
+            // Categories stay as user left them — no auto-open
+        }
+        window.__auraToggleMenu = function (e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            var menu = document.getElementById("toolsMenu");
+            if (!menu) return;
+            setOpen(!menu.classList.contains("open"));
+        };
+        window.__auraSetMenu = setOpen;
+        document.addEventListener("click", function (e) {
+            var t = e.target;
+            if (!t || !t.closest) return;
+            if (t.closest("#menuClose") || t.closest("#menuBackdrop")) {
+                setOpen(false);
+                return;
+            }
+            var trigger = t.closest(".menu-category-trigger");
+            if (trigger) {
+                e.preventDefault();
+                e.stopPropagation();
+                var cat = trigger.closest(".menu-category");
+                if (!cat) return;
+                var willOpen = !cat.classList.contains("open");
+                document.querySelectorAll(".menu-category").forEach(function (c) {
+                    c.classList.remove("open");
+                    var tr = c.querySelector(".menu-category-trigger");
+                    if (tr) tr.setAttribute("aria-expanded", "false");
+                });
+                if (willOpen) {
+                    cat.classList.add("open");
+                    trigger.setAttribute("aria-expanded", "true");
+                }
+            }
+        });
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") setOpen(false);
+        });
+    })();
+    </script>
+    <!-- UI + features first (local, instant). CDN libs async in background. -->
+    <script src="./js/dialog.js"></script>
+    <script src="./js/app.js"></script>
+    <script src="./js/compressor.js"></script>
+    <script src="./js/converter.js"></script>
+    <script src="./js/pdf-merge.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" async></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" async></script>
+    <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js" async></script>
+</body>
+
+</html>
