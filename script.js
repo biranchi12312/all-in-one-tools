@@ -405,6 +405,42 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     /* =========================================================
+       PREVIEW / COMING-SOON TOOLS
+    ========================================================= */
+
+    const previewFeatureToast =
+        document.getElementById("previewFeatureToast");
+
+    let previewFeatureToastTimer;
+
+    function showPreviewFeatureNotice() {
+        if (!previewFeatureToast) return;
+
+        clearTimeout(previewFeatureToastTimer);
+        previewFeatureToast.hidden = false;
+        previewFeatureToast.classList.remove("is-visible");
+
+        requestAnimationFrame(() => {
+            previewFeatureToast.classList.add("is-visible");
+        });
+
+        previewFeatureToastTimer = setTimeout(() => {
+            previewFeatureToast.classList.remove("is-visible");
+            setTimeout(() => {
+                if (!previewFeatureToast.classList.contains("is-visible")) {
+                    previewFeatureToast.hidden = true;
+                }
+            }, 220);
+        }, 2600);
+    }
+
+    document.querySelectorAll(".preview-feature").forEach(button => {
+        button.addEventListener("click", () => {
+            showPreviewFeatureNotice();
+        });
+    });
+
+    /* =========================================================
        SCROLL ANIMATIONS
     ========================================================= */
 

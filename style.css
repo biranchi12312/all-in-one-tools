@@ -3166,3 +3166,55 @@ body.menu-open{overflow:hidden}
 .pdf-upload-box.is-disabled input {
     pointer-events: none;
 }
+
+
+/* Preview feature feedback */
+.preview-feature-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    z-index: 10050;
+    width: min(calc(100vw - 32px), 390px);
+    padding: 14px 18px;
+    border: 1px solid rgba(99, 102, 241, .45);
+    border-radius: 16px;
+    background: rgba(17, 17, 22, .96);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, .38);
+    color: var(--text-main);
+    text-align: center;
+    transform: translate(-50%, 14px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .22s ease, transform .22s ease;
+}
+
+.preview-feature-toast[hidden] {
+    display: none;
+}
+
+.preview-feature-toast.is-visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+.preview-feature-toast strong,
+.preview-feature-toast span {
+    display: block;
+}
+
+.preview-feature-toast strong {
+    font-size: 13px;
+}
+
+.preview-feature-toast span {
+    margin-top: 4px;
+    color: var(--text-soft);
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+@media (max-width: 700px) {
+    .preview-feature-toast {
+        bottom: 16px;
+    }
+}
