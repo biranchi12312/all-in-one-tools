@@ -194,15 +194,34 @@
     });
 
     let revealObserver;
+    let revealSafetyTimer = null;
+
+    function forceRevealVisible() {
+        document.querySelectorAll(".reveal").forEach(element => {
+            element.classList.add("visible");
+        });
+    }
 
     function initScrollAnimations() {
         if (revealObserver) revealObserver.disconnect();
-        const revealElements = document.querySelectorAll(".reveal");
+        if (revealSafetyTimer) {
+            clearTimeout(revealSafetyTimer);
+            revealSafetyTimer = null;
+        }
 
-        if (!("IntersectionObserver" in window)) {
-            revealElements.forEach(element => element.classList.add("visible"));
+        const revealElements = document.querySelectorAll(".reveal");
+        if (!revealElements.length) return;
+
+        const reduceMotion =
+            window.matchMedia &&
+            window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        if (reduceMotion || !("IntersectionObserver" in window)) {
+            forceRevealVisible();
             return;
         }
+
+        document.documentElement.classList.add("js-anim");
 
         revealObserver = new IntersectionObserver(
             entries => {
@@ -213,19 +232,40 @@
                     }
                 });
             },
-            { threshold: 0.12, rootMargin: "0px 0px -60px 0px" }
+            { threshold: 0.08, rootMargin: "0px 0px -12% 0px" }
         );
 
         revealElements.forEach(element => {
-            if (element.getBoundingClientRect().top < window.innerHeight) {
-                setTimeout(() => element.classList.add("visible"), 100);
+            const rect = element.getBoundingClientRect();
+            const inView = rect.top < window.innerHeight * 0.95 && rect.bottom > 0;
+            if (inView) {
+                element.classList.add("visible");
             } else {
                 revealObserver.observe(element);
             }
         });
+
+        // Safety net: never leave near-viewport sections blank on mobile
+        revealSafetyTimer = setTimeout(() => {
+            document.querySelectorAll(".reveal:not(.visible)").forEach(element => {
+                if (element.getBoundingClientRect().top < window.innerHeight * 1.35) {
+                    element.classList.add("visible");
+                }
+            });
+        }, 1200);
     }
 
     initScrollAnimations();
+
+    window.addEventListener("load", () => {
+        setTimeout(() => {
+            document.querySelectorAll(".reveal:not(.visible)").forEach(element => {
+                if (element.getBoundingClientRect().top < window.innerHeight * 1.5) {
+                    element.classList.add("visible");
+                }
+            });
+        }, 1800);
+    });
 
     document.querySelectorAll(".faq-question").forEach(button => {
         button.addEventListener("click", () => {

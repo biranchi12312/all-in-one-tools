@@ -842,6 +842,14 @@
     <script src="js/compressor.js"></script>
     <script src="js/converter.js"></script>
     <script src="js/pdf-merge.js"></script>
+    <script>
+        // Last-resort: never leave home sections invisible if animation JS stalls
+        setTimeout(function () {
+            document.querySelectorAll(".reveal:not(.visible)").forEach(function (el) {
+                el.classList.add("visible");
+            });
+        }, 2500);
+    </script>
 </body>
 
 </html>

@@ -185,39 +185,59 @@ button {
    SCROLL REVEAL
 ========================= */
 
+/* Visible by default so content never stays blank if JS is slow/blocked.
+   Animation mode (html.js-anim) hides until .visible is applied. */
 .reveal {
+    opacity: 1;
+    transform: none;
+}
+
+html.js-anim .reveal:not(.visible) {
     opacity: 0;
-
     transform: translateY(34px);
-
     transition:
         opacity 0.8s ease,
         transform 0.8s cubic-bezier(.22, .61, .36, 1);
 }
 
-.reveal.reveal-left {
+html.js-anim .reveal.reveal-left:not(.visible) {
     transform: translateX(-40px);
 }
 
-.reveal.reveal-right {
+html.js-anim .reveal.reveal-right:not(.visible) {
     transform: translateX(40px);
 }
 
+html.js-anim .reveal.visible,
 .reveal.visible {
     opacity: 1;
     transform: translate(0, 0);
+    transition:
+        opacity 0.8s ease,
+        transform 0.8s cubic-bezier(.22, .61, .36, 1);
 }
 
-.reveal-delay-1 {
+html.js-anim .reveal-delay-1:not(.visible) {
     transition-delay: 0.1s;
 }
 
-.reveal-delay-2 {
+html.js-anim .reveal-delay-2:not(.visible) {
     transition-delay: 0.2s;
 }
 
-.reveal-delay-3 {
+html.js-anim .reveal-delay-3:not(.visible) {
     transition-delay: 0.3s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal,
+    html.js-anim .reveal:not(.visible),
+    html.js-anim .reveal.visible,
+    .reveal.visible {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
 }
 
 
