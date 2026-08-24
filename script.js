@@ -329,54 +329,61 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       GLOBAL TOOLS MENU — GLASS SHEET
+       GLOBAL TOOLS MENU
     ========================================================= */
 
     const menuToggle = document.getElementById("menuToggle");
     const toolsMenu = document.getElementById("toolsMenu");
     const menuClose = document.getElementById("menuClose");
-    const toolsMenuBackdrop = document.getElementById("toolsMenuBackdrop");
+    const menuBackdrop = document.getElementById("menuBackdrop");
+    const menuCategories = document.querySelectorAll(".menu-category");
 
     function setToolsMenu(open) {
+
         if (!menuToggle || !toolsMenu) return;
 
-        const shouldOpen = Boolean(open);
+        toolsMenu.classList.toggle("open", open);
+        menuToggle.classList.toggle("active", open);
+        menuBackdrop?.classList.toggle("open", open);
+        document.body.classList.toggle("menu-open", open);
 
-        toolsMenu.classList.toggle("open", shouldOpen);
-        menuToggle.classList.toggle("active", shouldOpen);
-        document.body.classList.toggle("menu-open", shouldOpen);
-
-        menuToggle.setAttribute("aria-expanded", String(shouldOpen));
-        toolsMenu.setAttribute("aria-hidden", String(!shouldOpen));
-
-        if (toolsMenuBackdrop) {
-            toolsMenuBackdrop.classList.toggle("open", shouldOpen);
-            toolsMenuBackdrop.setAttribute("aria-hidden", String(!shouldOpen));
-        }
-    }
-
-    function toggleToolsMenu() {
-        if (!toolsMenu) return;
-        setToolsMenu(!toolsMenu.classList.contains("open"));
+        menuToggle.setAttribute("aria-expanded", String(open));
+        toolsMenu.setAttribute("aria-hidden", String(!open));
+        menuBackdrop?.setAttribute("aria-hidden", String(!open));
     }
 
     menuToggle?.addEventListener("click", event => {
         event.preventDefault();
         event.stopPropagation();
-        toggleToolsMenu();
+        setToolsMenu(!toolsMenu.classList.contains("open"));
     });
 
-    menuClose?.addEventListener("click", event => {
-        event.preventDefault();
-        setToolsMenu(false);
-    });
-
-    toolsMenuBackdrop?.addEventListener("click", () => setToolsMenu(false));
+    menuClose?.addEventListener("click", () => setToolsMenu(false));
+    menuBackdrop?.addEventListener("click", () => setToolsMenu(false));
 
     document.querySelectorAll("[data-open-menu]").forEach(button => {
-        button.addEventListener("click", event => {
-            event.preventDefault();
-            setToolsMenu(true);
+        button.addEventListener("click", () => setToolsMenu(true));
+    });
+
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape") setToolsMenu(false);
+    });
+
+    menuCategories.forEach(category => {
+        const trigger = category.querySelector(".menu-category-trigger");
+
+        trigger?.addEventListener("click", () => {
+            const willOpen = !category.classList.contains("open");
+
+            menuCategories.forEach(otherCategory => {
+                otherCategory.classList.remove("open");
+                otherCategory.querySelector(".menu-category-trigger")?.setAttribute("aria-expanded", "false");
+            });
+
+            if (willOpen) {
+                category.classList.add("open");
+                trigger.setAttribute("aria-expanded", "true");
+            }
         });
     });
 
@@ -384,13 +391,89 @@ document.addEventListener("DOMContentLoaded", () => {
         button.addEventListener("click", () => setToolsMenu(false));
     });
 
-    document.addEventListener("keydown", event => {
-        if (event.key === "Escape" && toolsMenu?.classList.contains("open")) {
-            setToolsMenu(false);
-        }
-    });
+    /* =========================================================
+       SCROLL ANIMATIONS
+    ========================================================= */
 
-    window.addEventListener("pageshow", () => setToolsMenu(false));
+    let revealObserver;
+
+
+    function initScrollAnimations() {
+
+        if (revealObserver) {
+            revealObserver.disconnect();
+        }
+
+
+        const revealElements =
+            document.querySelectorAll(".reveal");
+
+
+        if (!("IntersectionObserver" in window)) {
+
+            revealElements.forEach(element => {
+                element.classList.add("visible");
+            });
+
+            return;
+        }
+
+
+        revealObserver =
+            new IntersectionObserver(
+                entries => {
+
+                    entries.forEach(entry => {
+
+                        if (entry.isIntersecting) {
+
+                            entry.target.classList.add(
+                                "visible"
+                            );
+
+                            revealObserver.unobserve(
+                                entry.target
+                            );
+
+                        }
+
+                    });
+
+                },
+                {
+                    threshold: 0.12,
+                    rootMargin: "0px 0px -60px 0px"
+                }
+            );
+
+
+        revealElements.forEach(element => {
+
+            if (
+                element.getBoundingClientRect().top <
+                window.innerHeight
+            ) {
+
+                setTimeout(
+                    () => {
+                        element.classList.add("visible");
+                    },
+                    100
+                );
+
+            } else {
+
+                revealObserver.observe(element);
+
+            }
+
+        });
+
+    }
+
+
+    initScrollAnimations();
+
 
     /* =========================================================
        FAQ
