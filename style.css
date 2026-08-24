@@ -3208,3 +3208,51 @@ body.menu-open{overflow:hidden;}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
     .glass-navbar,.navbar,.tools-menu,.tool-card,.discovery-card,.settings-panel,.queue-panel,.results-panel,.pdf-merge-card,.pdf-settings-panel,.pdf-results-panel,.pdf-processing-panel,.feature-discovery,.feature-point,.faq-item,.sponsored-dock{background:rgba(18,20,29,.96)!important;}
 }
+
+
+/* =========================
+   MENU INTERACTION HARDENING
+   ========================= */
+.tools-menu-backdrop{
+    z-index:10000 !important;
+    pointer-events:none;
+}
+.tools-menu-backdrop.open{
+    pointer-events:auto;
+}
+.tools-menu{
+    display:block !important;
+    z-index:10001 !important;
+    pointer-events:none;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior:contain;
+    will-change:transform,opacity;
+}
+.tools-menu.open{
+    pointer-events:auto;
+}
+.navbar,
+.glass-navbar{
+    z-index:10002;
+}
+.nav-tools,
+.menu-toggle{
+    position:relative;
+    z-index:10003;
+}
+body.menu-open{
+    overflow:hidden !important;
+    touch-action:none;
+}
+.tools-menu.open{
+    touch-action:pan-y;
+}
+@media (max-width:700px){
+    .tools-menu{
+        top:auto !important;
+        bottom:max(12px, env(safe-area-inset-bottom)) !important;
+        left:12px !important;
+        right:12px !important;
+        width:auto !important;
+    }
+}

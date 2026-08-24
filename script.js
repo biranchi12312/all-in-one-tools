@@ -339,31 +339,58 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function setToolsMenu(open) {
         if (!menuToggle || !toolsMenu) return;
-        toolsMenu.classList.toggle("open", open);
-        menuToggle.classList.toggle("active", open);
-        document.body.classList.toggle("menu-open", open);
-        menuToggle.setAttribute("aria-expanded", String(open));
-        toolsMenu.setAttribute("aria-hidden", String(!open));
-        toolsMenuBackdrop?.classList.toggle("open", open);
-        toolsMenuBackdrop?.setAttribute("aria-hidden", String(!open));
+
+        const shouldOpen = Boolean(open);
+
+        toolsMenu.classList.toggle("open", shouldOpen);
+        menuToggle.classList.toggle("active", shouldOpen);
+        document.body.classList.toggle("menu-open", shouldOpen);
+
+        menuToggle.setAttribute("aria-expanded", String(shouldOpen));
+        toolsMenu.setAttribute("aria-hidden", String(!shouldOpen));
+
+        if (toolsMenuBackdrop) {
+            toolsMenuBackdrop.classList.toggle("open", shouldOpen);
+            toolsMenuBackdrop.setAttribute("aria-hidden", String(!shouldOpen));
+        }
+    }
+
+    function toggleToolsMenu() {
+        if (!toolsMenu) return;
+        setToolsMenu(!toolsMenu.classList.contains("open"));
     }
 
     menuToggle?.addEventListener("click", event => {
+        event.preventDefault();
         event.stopPropagation();
-        setToolsMenu(!toolsMenu.classList.contains("open"));
+        toggleToolsMenu();
     });
 
-    menuClose?.addEventListener("click", () => setToolsMenu(false));
+    menuClose?.addEventListener("click", event => {
+        event.preventDefault();
+        setToolsMenu(false);
+    });
+
     toolsMenuBackdrop?.addEventListener("click", () => setToolsMenu(false));
-    document.querySelectorAll("[data-open-menu]").forEach(button => button.addEventListener("click", () => setToolsMenu(true)));
+
+    document.querySelectorAll("[data-open-menu]").forEach(button => {
+        button.addEventListener("click", event => {
+            event.preventDefault();
+            setToolsMenu(true);
+        });
+    });
 
     toolsMenu?.querySelectorAll("[data-open-view]").forEach(button => {
         button.addEventListener("click", () => setToolsMenu(false));
     });
 
     document.addEventListener("keydown", event => {
-        if (event.key === "Escape" && toolsMenu?.classList.contains("open")) setToolsMenu(false);
+        if (event.key === "Escape" && toolsMenu?.classList.contains("open")) {
+            setToolsMenu(false);
+        }
     });
+
+    window.addEventListener("pageshow", () => setToolsMenu(false));
 
     /* =========================================================
        FAQ
