@@ -99,19 +99,19 @@
                 ...largeFiles.map(item => item.file.size)
             );
             reasons.push(
-                `${largeFiles.length} large file${largeFiles.length === 1 ? "" : "s"} selected (largest ${formatBytes(largest)} of 100 MB max per file).`
+                `${largeFiles.length} large file${largeFiles.length === 1 ? "" : "s"} selected — largest ${formatBytes(largest)} of the 100 MB per-file limit.`
             );
         }
 
         if (size >= LARGE_SIZE_WARNING) {
             reasons.push(
-                `Batch size is ${formatBytes(size)} of the 250 MB total limit.`
+                `Total batch size is ${formatBytes(size)} of the 250 MB limit.`
             );
         }
 
         if (pages >= LARGE_PAGE_WARNING) {
             reasons.push(
-                `${pages} of 500 pages are selected.`
+                `${pages} of the 500-page limit are selected.`
             );
         }
 
@@ -134,7 +134,7 @@
 
         if (el.warningText) {
             el.warningText.textContent =
-                `${reasons.join(" ")} Please keep your PDFs within the allowed limits.`;
+                `${reasons.join(" ")} Keep your PDFs within the allowed limits.`;
         }
 
         el.warning.hidden = false;
