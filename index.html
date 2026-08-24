@@ -846,20 +846,13 @@
             var toggle = document.getElementById("menuToggle");
             var backdrop = document.getElementById("menuBackdrop");
             if (!menu || !toggle) return;
-            menu.classList.toggle("open", open);
-            toggle.classList.toggle("active", open);
-            if (backdrop) backdrop.classList.toggle("open", open);
-            document.body.classList.toggle("menu-open", open);
-            toggle.setAttribute("aria-expanded", String(open));
+            menu.classList.toggle("open", !!open);
+            toggle.classList.toggle("active", !!open);
+            if (backdrop) backdrop.classList.toggle("open", !!open);
+            document.body.classList.toggle("menu-open", !!open);
+            toggle.setAttribute("aria-expanded", String(!!open));
             menu.setAttribute("aria-hidden", String(!open));
-            if (open) {
-                var cats = menu.querySelectorAll(".menu-category");
-                cats.forEach(function (c, i) {
-                    c.classList.toggle("open", i === 0);
-                    var tr = c.querySelector(".menu-category-trigger");
-                    if (tr) tr.setAttribute("aria-expanded", String(i === 0));
-                });
-            }
+            // Categories stay as user left them — no auto-open
         }
         window.__auraToggleMenu = function (e) {
             if (e) { e.preventDefault(); e.stopPropagation(); }

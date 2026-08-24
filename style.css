@@ -164,7 +164,7 @@ button {
 
 .view.active {
     display: block;
-    animation: viewEnter 0.4s cubic-bezier(.22,.61,.36,1) both;
+    animation: viewEnter 0.28s cubic-bezier(.22,.61,.36,1) both;
 }
 
 @keyframes viewEnter {
@@ -184,7 +184,7 @@ button {
    SCROLL REVEAL
 ========================= */
 
-/* Always visible by default. Off-screen sections get .is-pending for scroll-in. */
+/* Below-fold soft entrance only (~0.25s). Above-fold stays visible. */
 .reveal {
     opacity: 1;
     transform: none;
@@ -192,31 +192,31 @@ button {
 
 .reveal.is-pending:not(.visible) {
     opacity: 0;
-    transform: translateY(22px);
+    transform: translateY(14px);
     transition:
-        opacity 0.6s cubic-bezier(.22, .61, .36, 1),
-        transform 0.6s cubic-bezier(.22, .61, .36, 1);
+        opacity 0.28s cubic-bezier(.22, .61, .36, 1),
+        transform 0.28s cubic-bezier(.22, .61, .36, 1);
 }
 
 .reveal.is-pending.reveal-left:not(.visible) {
-    transform: translateX(-22px);
+    transform: translateX(-12px);
 }
 
 .reveal.is-pending.reveal-right:not(.visible) {
-    transform: translateX(22px);
+    transform: translateX(12px);
 }
 
 .reveal.is-pending.visible {
     opacity: 1;
     transform: none;
     transition:
-        opacity 0.6s cubic-bezier(.22, .61, .36, 1),
-        transform 0.6s cubic-bezier(.22, .61, .36, 1);
+        opacity 0.28s cubic-bezier(.22, .61, .36, 1),
+        transform 0.28s cubic-bezier(.22, .61, .36, 1);
 }
 
-.reveal-delay-1.is-pending:not(.visible) { transition-delay: 0.08s; }
-.reveal-delay-2.is-pending:not(.visible) { transition-delay: 0.16s; }
-.reveal-delay-3.is-pending:not(.visible) { transition-delay: 0.24s; }
+.reveal-delay-1.is-pending:not(.visible) { transition-delay: 0.04s; }
+.reveal-delay-2.is-pending:not(.visible) { transition-delay: 0.08s; }
+.reveal-delay-3.is-pending:not(.visible) { transition-delay: 0.12s; }
 
 @media (prefers-reduced-motion: reduce) {
     .reveal.is-pending:not(.visible),
@@ -304,7 +304,7 @@ button {
     font-weight: 700;
     letter-spacing: 1.6px;
 
-    animation: badgeEnter 0.55s cubic-bezier(.22,.61,.36,1) both;
+    animation: badgeEnter 0.45s cubic-bezier(.22,.61,.36,1) both;
 }
 
 @keyframes badgeEnter {
@@ -330,7 +330,7 @@ button {
     font-weight: 400;
     line-height: 0.98;
 
-    animation: titleEnter 0.65s 0.06s cubic-bezier(.22,.61,.36,1) both;
+    animation: titleEnter 0.5s 0.04s cubic-bezier(.22,.61,.36,1) both;
 }
 
 .hero-title span {
@@ -362,7 +362,7 @@ button {
     font-size: clamp(16px, 1.45vw, 19px);
     line-height: 1.75;
 
-    animation: descriptionEnter 0.6s 0.12s cubic-bezier(.22,.61,.36,1) both;
+    animation: descriptionEnter 0.45s 0.08s cubic-bezier(.22,.61,.36,1) both;
 }
 
 @keyframes descriptionEnter {
@@ -1336,7 +1336,7 @@ button {
 
     font-size: 48px;
 
-    animation: bounce 2s infinite;
+    animation: bounce 2.8s ease-in-out infinite;
 }
 
 @keyframes bounce {
@@ -2637,7 +2637,7 @@ input[type="range"]::-moz-range-thumb {
 .pdf-upload-icon {
     margin-bottom: 17px;
     font-size: 48px;
-    animation: bounce 2s infinite;
+    animation: bounce 2.8s ease-in-out infinite;
 }
 
 .pdf-upload-box h3 {
