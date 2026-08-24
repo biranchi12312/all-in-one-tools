@@ -11,11 +11,18 @@
     const MAX_TOTAL_SIZE = 250 * 1024 * 1024;
     const MAX_TOTAL_PAGES = 500;
 
+    // Soft-warning thresholds. These do not block merging; the hard limits above do.
+    const LARGE_FILE_WARNING = 75 * 1024 * 1024;
+    const LARGE_SIZE_WARNING = 150 * 1024 * 1024;
+    const LARGE_PAGE_WARNING = 300;
+
     const el = {
         view: document.getElementById("pdfMergeView"),
         dropZone: document.getElementById("pdfMergeDropZone"),
         input: document.getElementById("pdfMergeFileInput"),
         warning: document.getElementById("pdfLargeWarning"),
+        warningTitle: document.getElementById("pdfLargeWarningTitle"),
+        warningText: document.getElementById("pdfLargeWarningText"),
         warningClose: document.getElementById("pdfLargeWarningClose"),
         queuePanel: document.getElementById("pdfMergeQueuePanel"),
         queue: document.getElementById("pdfMergeFileQueue"),
@@ -79,11 +86,40 @@
     }
 
     function updateWarning() {
-        // The upload limits below already reject files/batches that exceed
-        // the real processing limits. Do not show a separate "large files"
-        // warning for valid PDFs or high page counts.
-        if (el.warning) {
-            el.warning.hidden = true;
+        const { size, pages } = totals();
+        const largeFiles = files.filter(item => item.file.size >= LARGE_FILE_WARNING);
+        const reasons = [];
+
+        if (largeFiles.length) {
+            const largest = Math.max(...largeFiles.map(item => item.file.size));
+            reasons.push(
+                `${largeFiles.length} large file${largeFiles.length === 1 ? "" : "s"} selected (largest ${formatBytes(largest)}).`
+            );
+        }
+
+        if (size >= LARGE_SIZE_WARNING) {
+            reasons.push(`The batch is ${formatBytes(size)}.`);
+        }
+
+        if (pages >= LARGE_PAGE_WARNING) {
+            reasons.push(`${pages} pages are queued.`);
+        }
+
+        const shouldShow = !warningDismissed && reasons.length > 0;
+        el.warning.hidden = !shouldShow;
+
+        if (!shouldShow) return;
+
+        if (el.warningTitle) {
+            el.warningTitle.textContent =
+                largeFiles.length > 0
+                    ? "Large PDF Files Detected"
+                    : "Large PDF Batch Detected";
+        }
+
+        if (el.warningText) {
+            el.warningText.textContent =
+                `${reasons.join(" ")} Processing can still continue, but it may take longer on this device.`;
         }
     }
 
@@ -415,12 +451,10 @@
         if (!processing) addFiles(event.dataTransfer.files);
     });
 
-    if (el.warningClose) {
-        el.warningClose.addEventListener("click", () => {
-            warningDismissed = true;
-            if (el.warning) el.warning.hidden = true;
-        });
-    }
+    el.warningClose.addEventListener("click", () => {
+        warningDismissed = true;
+        el.warning.hidden = true;
+    });
 
     el.clear.addEventListener("click", () => {
         resetTool();

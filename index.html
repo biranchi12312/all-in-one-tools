@@ -48,75 +48,22 @@
     ========================== -->
 
     <header class="navbar">
-        <button class="logo" id="logoBtn" type="button">Aura<span>Studio</span></button>
+
+        <button
+            class="logo"
+            id="logoBtn"
+            type="button"
+        >
+            Aura<span>Studio</span>
+        </button>
+
 
         <div class="nav-status">
             <span class="pulse-dot"></span>
             Secure Engine Active
         </div>
 
-        <div class="nav-tools">
-            <button
-                class="menu-toggle"
-                id="menuToggle"
-                type="button"
-                aria-expanded="false"
-                aria-controls="toolsMenu"
-                aria-label="Open tools menu"
-            >
-                <span></span><span></span><span></span>
-            </button>
-        </div>
     </header>
-
-    <div class="menu-backdrop" id="menuBackdrop" aria-hidden="true"></div>
-
-    <aside class="tools-menu" id="toolsMenu" aria-hidden="true" aria-label="Tool directory">
-        <div class="tools-menu-head">
-            <div>
-                <span>TOOL DIRECTORY</span>
-                <strong>Find the right tool.</strong>
-                <p>Browse by category, then jump straight into the task you want to finish.</p>
-            </div>
-            <button type="button" class="menu-close" id="menuClose" aria-label="Close tools menu"><span aria-hidden="true"></span></button>
-        </div>
-
-        <div class="menu-accordion" id="menuAccordion">
-            <section class="menu-category">
-                <button class="menu-category-trigger" type="button" aria-expanded="false">
-                    <span class="menu-category-copy"><b>Image Tools</b><small>Compress, convert and prepare images</small></span>
-                    <span class="menu-category-meta"><em>4 tools</em><i aria-hidden="true"></i></span>
-                </button>
-                <div class="menu-category-panel">
-                    <div class="menu-category-panel-inner">
-                        <button type="button" class="menu-item menu-item-live" data-open-view="compressor"><span><b>Compress Images</b><small>Reduce file size in batches</small></span><em aria-label="Open tool">→</em></button>
-                        <button type="button" class="menu-item menu-item-live" data-open-view="converter"><span><b>Convert Images</b><small>Switch between supported formats</small></span><em aria-label="Open tool">→</em></button>
-                        <button type="button" class="menu-item preview-feature"><span><b>Resize Images</b><small>Prepare images for any layout</small></span><em aria-label="Preview tool">↗</em></button>
-                        <button type="button" class="menu-item preview-feature"><span><b>Crop &amp; Rotate</b><small>Quick framing and orientation tools</small></span><em aria-label="Preview tool">↗</em></button>
-                    </div>
-                </div>
-            </section>
-
-            <section class="menu-category">
-                <button class="menu-category-trigger" type="button" aria-expanded="false">
-                    <span class="menu-category-copy"><b>PDF Tools</b><small>Combine, split and transform documents</small></span>
-                    <span class="menu-category-meta"><em>4 tools</em><i aria-hidden="true"></i></span>
-                </button>
-                <div class="menu-category-panel">
-                    <div class="menu-category-panel-inner">
-                        <button type="button" class="menu-item menu-item-live" data-open-view="pdfMerge"><span><b>Merge PDF</b><small>Combine multiple PDFs into one</small></span><em aria-label="Open tool">→</em></button>
-                        <button type="button" class="menu-item preview-feature"><span><b>Split PDF</b><small>Separate pages into new files</small></span><em aria-label="Preview tool">↗</em></button>
-                        <button type="button" class="menu-item preview-feature"><span><b>Compress PDF</b><small>Make large documents lighter</small></span><em aria-label="Preview tool">↗</em></button>
-                        <button type="button" class="menu-item preview-feature"><span><b>PDF to Images</b><small>Turn pages into image files</small></span><em aria-label="Preview tool">↗</em></button>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <div class="tools-menu-foot">
-            <span>More tools are already being mapped for AuraStudio.</span>
-        </div>
-    </aside>
 
 
     <main class="container">
@@ -125,64 +72,628 @@
         <!-- =========================
              DASHBOARD / HOMEPAGE
         ========================== -->
-        <section id="dashboardView" class="view active">
-            <section class="hero hero-home">
+
+        <section
+            id="dashboardView"
+            class="view active"
+        >
+
+
+            <!-- HERO -->
+
+            <section class="hero">
+
                 <div class="hero-glow"></div>
-                <span class="badge hero-enter">ALL-IN-ONE FILE WORKSPACE</span>
-                <h1 class="hero-title">Your files.<br><span>Your workflow. One place.</span></h1>
-                <p class="hero-description">One place for the file tools you need today, with more to explore next. From quick fixes to bigger tasks, AuraStudio keeps everyday work moving without the clutter.</p>
-                <div class="hero-capabilities hero-home-capabilities">
-                    <div class="capability-pill"><span class="capability-icon">✦</span>More tools. One workspace.</div>
-                    <div class="capability-pill"><span class="capability-icon">↗</span>Made for everyday files.</div>
-                    <div class="capability-pill"><span class="capability-icon">☰</span>Explore what’s next.</div>
+
+
+                <span class="badge hero-enter">
+                    IMAGE WORKSPACE
+                </span>
+
+
+                <h1 class="hero-title">
+                    Powerful image tools.<br>
+                    <span>Built for a faster workflow.</span>
+                </h1>
+
+
+                <p class="hero-description">
+                    Compress large images, convert formats and process multiple
+                    files from one clean workspace — directly in your browser.
+                </p>
+
+
+                <div class="hero-actions">
+
+                    <button
+                        class="hero-primary-btn"
+                        type="button"
+                        data-open-view="compressor"
+                    >
+                        Compress Images
+                        <span>→</span>
+                    </button>
+
+
+                    <button
+                        class="hero-secondary-btn"
+                        type="button"
+                        data-open-view="converter"
+                    >
+                        Convert Images
+                    </button>
+
                 </div>
-            </section>
 
-            <section class="sponsored-dock reveal" aria-label="Advertisement area">
-                <div class="sponsored-dock-top"><span class="sponsored-kicker"><i class="sponsored-dot"></i>SPONSORED</span><span class="sponsored-support">Supporting AuraStudio</span></div>
-                <div class="ad-slot ad-slot-primary" id="homeAdPrimary" aria-label="Advertisement"><div class="ad-safe-inner"><span class="ad-slot-label">ADVERTISEMENT</span></div></div>
-            </section>
 
-            <section class="tools-section home-tools-section">
-                <div class="section-top reveal"><div><span class="section-label">START HERE</span><h2>The tools people reach for first.</h2></div><p>Three high-demand tools are ready now. Open any one and start working immediately.</p></div>
-                <div class="tools-grid tools-grid-featured">
-                    <button class="tool-card reveal reveal-delay-1" type="button" data-open-view="compressor"><div class="tool-card-top"><div class="tool-icon">🗜️</div><span class="tool-number">01</span></div><div class="tool-card-bottom"><div><h3>Compress</h3><p>Make image files lighter.</p></div><span class="tool-arrow">→</span></div></button>
-                    <button class="tool-card reveal reveal-delay-2" type="button" data-open-view="converter"><div class="tool-card-top"><div class="tool-icon">↔</div><span class="tool-number">02</span></div><div class="tool-card-bottom"><div><h3>Convert</h3><p>Choose the format you need.</p></div><span class="tool-arrow">→</span></div></button>
-                    <button class="tool-card reveal reveal-delay-3" type="button" data-open-view="pdfMerge"><div class="tool-card-top"><div class="tool-icon">📄</div><span class="tool-number">03</span></div><div class="tool-card-bottom"><div><h3>Merge PDF</h3><p>Combine documents in your order.</p></div><span class="tool-arrow">→</span></div></button>
+                <div class="hero-capabilities">
+
+                    <div class="capability-pill">
+                        <span class="capability-icon">100</span>
+                        Images per batch
+                    </div>
+
+                    <div class="capability-pill">
+                        <span class="capability-icon">100 MB</span>
+                        Per image
+                    </div>
+
+                    <div class="capability-pill">
+                        <span class="capability-icon">✓</span>
+                        Browser processing
+                    </div>
+
                 </div>
+
             </section>
 
-            <section class="feature-discovery">
-                <div class="feature-discovery-intro reveal"><span class="section-label">EXPLORE THE WORKSPACE</span><h2>What do you want to do next?</h2><p>These are the next tools being shaped for AuraStudio. Pick what catches your eye and keep the idea on your radar.</p></div>
-                <div class="discovery-grid">
-                    <button type="button" class="discovery-card preview-feature reveal reveal-delay-1"><span class="discovery-index">01</span><span class="discovery-icon">↔</span><h3>Resize Images</h3><p>Need a specific width, height or platform-ready size?</p><span class="discovery-question">Would you use this? <b>→</b></span></button>
-                    <button type="button" class="discovery-card preview-feature reveal reveal-delay-2"><span class="discovery-index">02</span><span class="discovery-icon">✂</span><h3>Crop & Rotate</h3><p>Fix framing, orientation and unwanted edges in one workspace.</p><span class="discovery-question">Try this next <b>→</b></span></button>
-                    <button type="button" class="discovery-card preview-feature reveal reveal-delay-3"><span class="discovery-index">03</span><span class="discovery-icon">⇄</span><h3>Split PDF</h3><p>Separate selected pages when one document contains too much.</p><span class="discovery-question">Interested? <b>→</b></span></button>
-                    <button type="button" class="discovery-card preview-feature reveal reveal-delay-1"><span class="discovery-index">04</span><span class="discovery-icon">▣</span><h3>PDF to Images</h3><p>Turn document pages into image files without a complicated workflow.</p><span class="discovery-question">Use it for your files <b>→</b></span></button>
+
+
+            <!-- TOOLS -->
+
+            <section class="tools-section">
+
+                <div class="section-top reveal">
+
+                    <div>
+                        <span class="section-label">
+                            IMAGE TOOLS
+                        </span>
+
+                        <h2>
+                            Start with the tool you need.
+                        </h2>
+                    </div>
+
+
+                    <p>
+                        Three focused tools. One streamlined workspace.
+                    </p>
+
                 </div>
-                <div class="discovery-footer reveal"><span>More tools are organized inside the menu.</span><button type="button" class="discovery-menu-link" data-open-menu>Browse tool categories <b>☰</b></button></div>
+
+
+                <div class="tools-grid">
+
+
+                    <!-- COMPRESSOR -->
+
+                    <button
+                        class="tool-card reveal reveal-delay-1"
+                        type="button"
+                        data-open-view="compressor"
+                    >
+
+                        <div class="tool-card-top">
+
+                            <div class="tool-icon">
+                                🗜️
+                            </div>
+
+                            <span class="tool-number">
+                                01
+                            </span>
+
+                        </div>
+
+
+                        <div class="tool-card-bottom">
+
+                            <h3>
+                                Compress
+                            </h3>
+
+                            <span class="tool-arrow">
+                                →
+                            </span>
+
+                        </div>
+
+                    </button>
+
+
+
+                    <!-- CONVERTER -->
+
+                    <button
+                        class="tool-card reveal reveal-delay-2"
+                        type="button"
+                        data-open-view="converter"
+                    >
+
+                        <div class="tool-card-top">
+
+                            <div class="tool-icon">
+                                ↔
+                            </div>
+
+                            <span class="tool-number">
+                                02
+                            </span>
+
+                        </div>
+
+
+                        <div class="tool-card-bottom">
+
+                            <h3>
+                                Convert
+                            </h3>
+
+                            <span class="tool-arrow">
+                                →
+                            </span>
+
+                        </div>
+
+                    </button>
+
+
+                    <!-- PDF MERGE -->
+
+                    <button
+                        class="tool-card reveal reveal-delay-3"
+                        type="button"
+                        data-open-view="pdfMerge"
+                    >
+
+                        <div class="tool-card-top">
+
+                            <div class="tool-icon">
+                                📄
+                            </div>
+
+                            <span class="tool-number">
+                                03
+                            </span>
+
+                        </div>
+
+
+                        <div class="tool-card-bottom">
+
+                            <h3>
+                                Merge PDF
+                            </h3>
+
+                            <span class="tool-arrow">
+                                →
+                            </span>
+
+                        </div>
+
+                    </button>
+
+                </div>
+
             </section>
 
-            <section class="sponsored-dock sponsored-dock-secondary reveal" aria-label="Advertisement area">
-                <div class="sponsored-dock-top"><span class="sponsored-kicker"><i class="sponsored-dot"></i>SPONSORED</span><span class="sponsored-support">Supporting free tools</span></div>
-                <div class="ad-slot ad-slot-secondary" id="homeAdSecondary" aria-label="Advertisement"><div class="ad-safe-inner"><span class="ad-slot-label">ADVERTISEMENT</span></div></div>
-            </section>
+
+
+            <!-- INTRO / FEATURE SPLIT -->
 
             <section class="feature-intro">
-                <div class="feature-intro-left reveal"><span class="section-label">ONE CLEAN WORKFLOW</span><h2>Less friction.<br><span>More control.</span></h2></div>
-                <div class="feature-intro-right reveal reveal-delay-1"><p class="large-copy">AuraStudio keeps file tasks focused. Choose a tool, upload what you need and finish the job without jumping between cluttered pages.</p><div class="feature-points"><div class="feature-point"><span>01</span><p>Choose the tool that matches the task you want to finish.</p></div><div class="feature-point"><span>02</span><p>Adjust the settings that matter and keep the workflow simple.</p></div><div class="feature-point"><span>03</span><p>Download your completed files and move on to the next task.</p></div></div></div>
+
+                <div class="feature-intro-left reveal">
+
+                    <span class="section-label">
+                        MADE FOR THE WORKFLOW
+                    </span>
+
+                    <h2>
+                        Less friction.<br>
+                        <span>More control.</span>
+                    </h2>
+
+                </div>
+
+
+                <div class="feature-intro-right reveal reveal-delay-1">
+
+                    <p class="large-copy">
+                        AuraStudio keeps the workflow focused. Select your files,
+                        choose your settings and process everything from one place.
+                    </p>
+
+
+                    <div class="feature-points">
+
+                        <div class="feature-point">
+                            <span>01</span>
+
+                            <p>
+                                Upload individual images or build a batch of up to
+                                100 files.
+                            </p>
+                        </div>
+
+
+                        <div class="feature-point">
+                            <span>02</span>
+
+                            <p>
+                                Adjust compression quality or select the format
+                                you need.
+                            </p>
+                        </div>
+
+
+                        <div class="feature-point">
+                            <span>03</span>
+
+                            <p>
+                                Download files individually or collect completed
+                                results in one ZIP.
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+
             </section>
+
+
+
+            <!-- HOW IT WORKS -->
+
+            <section class="workflow-section">
+
+                <div class="workflow-heading reveal">
+
+                    <span class="section-label">
+                        SIMPLE WORKFLOW
+                    </span>
+
+                    <h2>
+                        From upload to download.
+                    </h2>
+
+                </div>
+
+
+                <div class="workflow-grid">
+
+
+                    <article class="workflow-card reveal reveal-delay-1">
+
+                        <div class="workflow-number">
+                            01
+                        </div>
+
+                        <div class="workflow-line"></div>
+
+                        <h3>
+                            Upload
+                        </h3>
+
+                        <p>
+                            Select JPG, PNG or WebP images from your device.
+                        </p>
+
+                    </article>
+
+
+                    <article class="workflow-card reveal reveal-delay-2">
+
+                        <div class="workflow-number">
+                            02
+                        </div>
+
+                        <div class="workflow-line"></div>
+
+                        <h3>
+                            Process
+                        </h3>
+
+                        <p>
+                            Choose compression quality or convert into another format.
+                        </p>
+
+                    </article>
+
+
+                    <article class="workflow-card reveal reveal-delay-3">
+
+                        <div class="workflow-number">
+                            03
+                        </div>
+
+                        <div class="workflow-line"></div>
+
+                        <h3>
+                            Download
+                        </h3>
+
+                        <p>
+                            Save individual results or download completed files together.
+                        </p>
+
+                    </article>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- PERFORMANCE STRIP -->
+
+            <section class="performance-section reveal">
+
+                <div class="performance-content">
+
+                    <span class="section-label">
+                        BUILT FOR BATCH WORK
+                    </span>
+
+                    <h2>
+                        Handle more files without a complicated workflow.
+                    </h2>
+
+                </div>
+
+
+                <div class="performance-stats">
+
+                    <div class="performance-stat">
+                        <strong>100</strong>
+                        <span>Images in one batch</span>
+                    </div>
+
+
+                    <div class="performance-stat">
+                        <strong>100 MB</strong>
+                        <span>Maximum per image</span>
+                    </div>
+
+
+                    <div class="performance-stat">
+                        <strong>JPG · PNG · WebP</strong>
+                        <span>Supported image formats</span>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- PRIVACY / BROWSER PROCESSING -->
+
+            <section class="privacy-section">
+
+                <div class="privacy-panel reveal">
+
+                    <div class="privacy-icon">
+                        ◉
+                    </div>
+
+
+                    <div class="privacy-content">
+
+                        <span class="section-label">
+                            PRIVATE WORKFLOW
+                        </span>
+
+                        <h2>
+                            Process images from your browser workspace.
+                        </h2>
+
+                        <p>
+                            AuraStudio is designed around a direct browser workflow,
+                            so you can select, process and download your images
+                            without navigating through multiple pages.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- FAQ -->
 
             <section class="info-section reveal">
-                <div class="faq-heading"><span class="section-label">FAQ</span><h2>Frequently asked questions.</h2></div>
-                <div class="faq-item"><button class="faq-question" type="button">How many images can I upload?<span>+</span></button><div class="faq-answer"><p>You can process up to 100 supported images in one batch.</p></div></div>
-                <div class="faq-item"><button class="faq-question" type="button">What is the maximum image size?<span>+</span></button><div class="faq-answer"><p>Each individual image can be up to 100 MB, subject to your device and browser being able to process the batch.</p></div></div>
-                <div class="faq-item"><button class="faq-question" type="button">Which image formats are supported?<span>+</span></button><div class="faq-answer"><p>JPG, JPEG, PNG and WebP are currently supported. Additional formats are visible in the converter and marked unsupported until their processing engine is added.</p></div></div>
-                <div class="faq-item"><button class="faq-question" type="button">Can I use AuraStudio on mobile?<span>+</span></button><div class="faq-answer"><p>Yes. The interface is responsive and the tools can be used on supported mobile and desktop browsers.</p></div></div>
+
+                <div class="faq-heading">
+
+                    <span class="section-label">
+                        FAQ
+                    </span>
+
+                    <h2>
+                        Frequently asked questions.
+                    </h2>
+
+                </div>
+
+
+                <div class="faq-item">
+
+                    <button
+                        class="faq-question"
+                        type="button"
+                    >
+                        How many images can I upload?
+
+                        <span>
+                            +
+                        </span>
+                    </button>
+
+
+                    <div class="faq-answer">
+
+                        <p>
+                            You can process up to 100 supported images in one batch.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="faq-item">
+
+                    <button
+                        class="faq-question"
+                        type="button"
+                    >
+                        What is the maximum image size?
+
+                        <span>
+                            +
+                        </span>
+                    </button>
+
+
+                    <div class="faq-answer">
+
+                        <p>
+                            Each individual image can be up to 100 MB, subject to
+                            your device and browser being able to process the batch.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="faq-item">
+
+                    <button
+                        class="faq-question"
+                        type="button"
+                    >
+                        Which image formats are supported?
+
+                        <span>
+                            +
+                        </span>
+                    </button>
+
+
+                    <div class="faq-answer">
+
+                        <p>
+                            JPG, JPEG, PNG and WebP are currently supported. Additional formats are visible in the converter and marked unsupported until their processing engine is added.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="faq-item">
+
+                    <button
+                        class="faq-question"
+                        type="button"
+                    >
+                        Can I use AuraStudio on mobile?
+
+                        <span>
+                            +
+                        </span>
+                    </button>
+
+
+                    <div class="faq-answer">
+
+                        <p>
+                            Yes. The interface is responsive and the tools can be
+                            used on supported mobile and desktop browsers.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="faq-item">
+
+                    <button
+                        class="faq-question"
+                        type="button"
+                    >
+                        Can I download all completed files together?
+
+                        <span>
+                            +
+                        </span>
+                    </button>
+
+
+                    <div class="faq-answer">
+
+                        <p>
+                            Yes. After successful processing, completed files can
+                            also be collected and downloaded as a ZIP archive.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="faq-item">
+
+                    <button
+                        class="faq-question"
+                        type="button"
+                    >
+                        Does compression affect image quality?
+
+                        <span>
+                            +
+                        </span>
+                    </button>
+
+
+                    <div class="faq-answer">
+
+                        <p>
+                            Compression uses the selected quality level, so lower
+                            quality settings generally create smaller files but can
+                            reduce visual detail.
+                        </p>
+
+                    </div>
+
+                </div>
+
             </section>
+
+
         </section>
-
-
 
 
 
@@ -638,8 +1149,8 @@
                 <div class="pdf-warning-copy">
                     <span class="pdf-warning-icon">⚠</span>
                     <div>
-                        <h3>Large PDF Files Detected</h3>
-                        <p>For smoother processing, please upload smaller PDF files.</p>
+                        <h3 id="pdfLargeWarningTitle">Large PDF Files Detected</h3>
+                        <p id="pdfLargeWarningText">This batch may take longer to process on your device.</p>
                     </div>
                 </div>
                 <button
