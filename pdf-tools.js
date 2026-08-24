@@ -24,6 +24,8 @@
         warningTitle: document.getElementById("pdfLargeWarningTitle"),
         warningText: document.getElementById("pdfLargeWarningText"),
         warningClose: document.getElementById("pdfLargeWarningClose"),
+        warningBackdrop: document.getElementById("pdfLargeWarningBackdrop"),
+        warningDismiss: document.getElementById("pdfLargeWarningDismiss"),
         queuePanel: document.getElementById("pdfMergeQueuePanel"),
         queue: document.getElementById("pdfMergeFileQueue"),
         queueSummary: document.getElementById("pdfMergeQueueSummary"),
@@ -83,6 +85,11 @@
             result.pages += item.pages;
             return result;
         }, { size: 0, pages: 0 });
+    }
+
+    function dismissWarning() {
+        warningDismissed = true;
+        el.warning.hidden = true;
     }
 
     function updateWarning() {
@@ -460,9 +467,14 @@
         if (!processing) addFiles(event.dataTransfer.files);
     });
 
-    el.warningClose.addEventListener("click", () => {
-        warningDismissed = true;
-        el.warning.hidden = true;
+    el.warningClose.addEventListener("click", dismissWarning);
+    el.warningDismiss.addEventListener("click", dismissWarning);
+    el.warningBackdrop.addEventListener("click", dismissWarning);
+
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape" && !el.warning.hidden) {
+            dismissWarning();
+        }
     });
 
     el.clear.addEventListener("click", () => {

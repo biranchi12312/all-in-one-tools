@@ -630,25 +630,42 @@
             </section>
 
 
-            <section
-                class="pdf-large-warning"
+            <div
+                class="pdf-warning-modal"
                 id="pdfLargeWarning"
                 hidden
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="pdfLargeWarningTitle"
+                aria-describedby="pdfLargeWarningText"
             >
-                <div class="pdf-warning-copy">
-                    <span class="pdf-warning-icon">⚠</span>
-                    <div>
-                        <h3 id="pdfLargeWarningTitle">Large PDF Files Detected</h3>
-                        <p id="pdfLargeWarningText">For smoother processing, please upload smaller PDF files.</p>
-                    </div>
-                </div>
                 <button
                     type="button"
-                    class="pdf-warning-close"
-                    id="pdfLargeWarningClose"
+                    class="pdf-warning-backdrop"
+                    id="pdfLargeWarningBackdrop"
                     aria-label="Close warning"
-                >✕</button>
-            </section>
+                ></button>
+
+                <div class="pdf-warning-dialog" role="document">
+                    <button
+                        type="button"
+                        class="pdf-warning-close"
+                        id="pdfLargeWarningClose"
+                        aria-label="Close warning"
+                    >✕</button>
+
+                    <div class="pdf-warning-icon" aria-hidden="true">⚠</div>
+                    <span class="section-label">PDF NOTICE</span>
+                    <h3 id="pdfLargeWarningTitle">Large PDF Files Detected</h3>
+                    <p id="pdfLargeWarningText">For smoother processing, please upload smaller PDF files.</p>
+
+                    <button
+                        type="button"
+                        class="pdf-warning-dismiss-btn"
+                        id="pdfLargeWarningDismiss"
+                    >Got it</button>
+                </div>
+            </div>
 
 
             <section
