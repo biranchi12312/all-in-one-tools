@@ -11,9 +11,6 @@
     const MAX_TOTAL_SIZE = 250 * 1024 * 1024;
     const MAX_TOTAL_PAGES = 500;
 
-    const LARGE_SIZE_WARNING = 150 * 1024 * 1024;
-    const LARGE_PAGE_WARNING = 300;
-
     const el = {
         view: document.getElementById("pdfMergeView"),
         dropZone: document.getElementById("pdfMergeDropZone"),
@@ -82,12 +79,12 @@
     }
 
     function updateWarning() {
-        const { size, pages } = totals();
-        const shouldShow =
-            !warningDismissed &&
-            (size >= LARGE_SIZE_WARNING || pages >= LARGE_PAGE_WARNING);
-
-        el.warning.hidden = !shouldShow;
+        // The upload limits below already reject files/batches that exceed
+        // the real processing limits. Do not show a separate "large files"
+        // warning for valid PDFs or high page counts.
+        if (el.warning) {
+            el.warning.hidden = true;
+        }
     }
 
     function updateSummary() {
@@ -418,10 +415,12 @@
         if (!processing) addFiles(event.dataTransfer.files);
     });
 
-    el.warningClose.addEventListener("click", () => {
-        warningDismissed = true;
-        el.warning.hidden = true;
-    });
+    if (el.warningClose) {
+        el.warningClose.addEventListener("click", () => {
+            warningDismissed = true;
+            if (el.warning) el.warning.hidden = true;
+        });
+    }
 
     el.clear.addEventListener("click", () => {
         resetTool();
