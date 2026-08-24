@@ -130,11 +130,6 @@ document.addEventListener("DOMContentLoaded", () => {
             views[viewName].classList.add("active");
         }
 
-        document.querySelector(".navbar")?.classList.toggle(
-            "is-dashboard",
-            viewName === "dashboard"
-        );
-
 
         window.scrollTo({
             top: 0,
@@ -327,74 +322,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     );
 
-
-    /* =========================================================
-       GLOBAL TOOLS MENU
-    ========================================================= */
-
-    const menuToggle = document.getElementById("menuToggle");
-    const toolsMenu = document.getElementById("toolsMenu");
-    const menuClose = document.getElementById("menuClose");
-    const menuBackdrop = document.getElementById("menuBackdrop");
-    const menuCategories = document.querySelectorAll(".menu-category");
-
-    function setToolsMenu(open) {
-
-        if (!menuToggle || !toolsMenu) return;
-
-        toolsMenu.classList.toggle("open", open);
-        menuToggle.classList.toggle("active", open);
-        menuBackdrop?.classList.toggle("open", open);
-        document.body.classList.toggle("menu-open", open);
-
-        menuToggle.setAttribute("aria-expanded", String(open));
-        toolsMenu.setAttribute("aria-hidden", String(!open));
-        menuBackdrop?.setAttribute("aria-hidden", String(!open));
-    }
-
-    menuToggle?.addEventListener("click", event => {
-        event.preventDefault();
-        event.stopPropagation();
-        setToolsMenu(!toolsMenu.classList.contains("open"));
-    });
-
-    menuClose?.addEventListener("click", () => setToolsMenu(false));
-    menuBackdrop?.addEventListener("click", () => setToolsMenu(false));
-
-    document.querySelectorAll("[data-open-menu]").forEach(button => {
-        button.addEventListener("click", () => setToolsMenu(true));
-    });
-
-    document.addEventListener("keydown", event => {
-        if (event.key === "Escape") setToolsMenu(false);
-    });
-
-    menuCategories.forEach(category => {
-        const trigger = category.querySelector(".menu-category-trigger");
-
-        trigger?.addEventListener("click", event => {
-            event.preventDefault();
-            event.stopPropagation();
-
-            const willOpen = !category.classList.contains("open");
-
-            menuCategories.forEach(otherCategory => {
-                otherCategory.classList.remove("open");
-                otherCategory
-                    .querySelector(".menu-category-trigger")
-                    ?.setAttribute("aria-expanded", "false");
-            });
-
-            if (willOpen) {
-                category.classList.add("open");
-                trigger.setAttribute("aria-expanded", "true");
-            }
-        });
-    });
-
-    toolsMenu?.querySelectorAll("[data-open-view]").forEach(button => {
-        button.addEventListener("click", () => setToolsMenu(false));
-    });
 
     /* =========================================================
        SCROLL ANIMATIONS
