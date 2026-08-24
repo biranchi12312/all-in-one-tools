@@ -2709,11 +2709,6 @@ input[type="range"]::-moz-range-thumb {
     margin: 0;
     color: var(--text-soft);
     font-size: 13px;
-    line-height: 1.5;
-}
-
-.pdf-large-warning[hidden] {
-    display: none !important;
 }
 
 .pdf-warning-close {
