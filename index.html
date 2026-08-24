@@ -3,47 +3,20 @@
 
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuraStudio — Free Image & PDF Tools</title>
-
-    <meta
-        name="description"
-        content="Compress and convert images, merge PDFs and manage everyday files directly in your browser with AuraStudio. Process supported files in a clean, privacy-focused workspace."
-    >
-
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
-
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
-
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
-
+    <meta name="description" content="Compress and convert images, merge PDFs and manage everyday files directly in your browser with AuraStudio. Process supported files in a clean, privacy-focused workspace.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
 </head>
 
-
 <body>
-
-    <!-- =========================
+<!-- =========================
          HEADER
     ========================== -->
 
@@ -175,9 +148,10 @@
 
             <section class="info-section reveal">
                 <div class="faq-heading"><span class="section-label">FAQ</span><h2>Frequently asked questions.</h2></div>
-                <div class="faq-item"><button class="faq-question" type="button">How many images can I upload?<span>+</span></button><div class="faq-answer"><p>You can process up to 100 supported images in one batch.</p></div></div>
-                <div class="faq-item"><button class="faq-question" type="button">What is the maximum image size?<span>+</span></button><div class="faq-answer"><p>Each individual image can be up to 100 MB, subject to your device and browser being able to process the batch.</p></div></div>
-                <div class="faq-item"><button class="faq-question" type="button">Which image formats are supported?<span>+</span></button><div class="faq-answer"><p>JPG, JPEG, PNG and WebP are currently supported. Additional formats are visible in the converter and marked unsupported until their processing engine is added.</p></div></div>
+                <div class="faq-item"><button class="faq-question" type="button">How many images can I upload?<span>+</span></button><div class="faq-answer"><p>You can process up to 100 supported images in one batch, with a 100 MB per-file limit and a 500 MB total batch safety cap.</p></div></div>
+                <div class="faq-item"><button class="faq-question" type="button">Which image formats are supported?<span>+</span></button><div class="faq-answer"><p>JPG, JPEG, PNG and WebP are supported for compress and convert. Other formats are shown in the converter and stay locked until their engine is added.</p></div></div>
+                <div class="faq-item"><button class="faq-question" type="button">How does PDF merge work?<span>+</span></button><div class="faq-answer"><p>Upload 2 to 20 PDFs, drag them into order, then merge. The batch can be up to 250 MB and 500 pages. Password-protected PDFs are not supported.</p></div></div>
+                <div class="faq-item"><button class="faq-question" type="button">Do my files leave this device?<span>+</span></button><div class="faq-answer"><p>No. Compress, convert and PDF merge all run in your browser. Files are not uploaded to a server.</p></div></div>
                 <div class="faq-item"><button class="faq-question" type="button">Can I use AuraStudio on mobile?<span>+</span></button><div class="faq-answer"><p>Yes. The interface is responsive and the tools can be used on supported mobile and desktop browsers.</p></div></div>
             </section>
         </section>
@@ -220,6 +194,9 @@
             <div
                 class="upload-box"
                 id="compDropZone"
+                role="button"
+                tabindex="0"
+                aria-label="Upload images to compress"
             >
 
                 <div class="upload-icon-pulse">
@@ -236,17 +213,17 @@
                 </p>
 
                 <div class="upload-limits">
-                    Up to 100 images • Max 100 MB per image
+                    Up to 100 images • Max 100 MB per image • JPG, PNG, WebP
                 </div>
-
-                <input
-                    type="file"
-                    id="compFileInput"
-                    multiple
-                    accept="image/jpeg,image/jpg,image/png,image/webp"
-                >
-
             </div>
+
+            <input
+                type="file"
+                id="compFileInput"
+                multiple
+                accept="image/jpeg,image/jpg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+                hidden
+            >
 
 
 
@@ -321,10 +298,16 @@
                     >
 
 
-                    <p class="setting-help">
-                        Lower quality usually produces smaller files.
+                    <p class="setting-help" id="compQualityHelp">
+                        Lower quality usually produces smaller JPEG and WebP files. PNG keeps the original file if compression would make it larger.
                     </p>
 
+                </div>
+
+                <div class="converter-progress" id="compProgressPanel" hidden>
+                    <div class="progress-label-row"><strong id="compProgressTitle">Preparing compression</strong><span id="compProgressPercent">0%</span></div>
+                    <div class="progress-track"><div class="progress-fill" id="compProgressFill"></div></div>
+                    <p id="compProgressText">Waiting to start.</p>
                 </div>
 
 
@@ -503,13 +486,13 @@
             </section>
 
             <!-- UPLOAD -->
-            <div class="upload-box" id="convDropZone">
+            <div class="upload-box" id="convDropZone" role="button" tabindex="0" aria-label="Upload images to convert">
                 <div class="upload-icon-pulse">⚡</div>
                 <h3>Upload Images</h3>
                 <p>Drag & drop your images here or <span>browse files</span></p>
                 <div class="upload-limits">Up to 100 images • Max 100 MB per image • 500 MB total batch safety</div>
-                <input type="file" id="convFileInput" multiple accept="image/jpeg,image/jpg,image/png,image/webp">
             </div>
+            <input type="file" id="convFileInput" multiple accept="image/jpeg,image/jpg,image/png,image/webp,.jpg,.jpeg,.png,.webp" hidden>
 
             <!-- CONVERTER QUEUE -->
             <section class="queue-panel" id="convQueuePanel" hidden>
@@ -603,7 +586,7 @@
                 <span class="section-label">PDF TOOLS</span>
                 <h2>Merge PDF Files</h2>
                 <p>
-                    Combine multiple PDF files into one document. Arrange them in your preferred order and merge them securely.
+                    Combine 2 to 20 PDFs into one document. Reorder pages, then merge everything in your browser.
                 </p>
             </div>
 
@@ -611,6 +594,9 @@
             <section
                 class="pdf-upload-box"
                 id="pdfMergeDropZone"
+                role="button"
+                tabindex="0"
+                aria-label="Upload PDF files to merge"
             >
                 <div class="pdf-upload-icon">📄</div>
                 <h3>Upload PDF Files</h3>
@@ -621,51 +607,15 @@
                 <div class="pdf-upload-limits">
                     2–20 PDFs • Max 100 MB each • 250 MB total • 500 pages
                 </div>
-                <input
-                    type="file"
-                    id="pdfMergeFileInput"
-                    multiple
-                    accept="application/pdf,.pdf"
-                >
+                <p class="pdf-upload-privacy">Files stay on this device. Nothing is uploaded to a server.</p>
             </section>
-
-
-            <div
-                class="pdf-warning-modal"
-                id="pdfLargeWarning"
+            <input
+                type="file"
+                id="pdfMergeFileInput"
+                multiple
+                accept="application/pdf,.pdf"
                 hidden
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby="pdfLargeWarningTitle"
-                aria-describedby="pdfLargeWarningText"
             >
-                <button
-                    type="button"
-                    class="pdf-warning-backdrop"
-                    id="pdfLargeWarningBackdrop"
-                    aria-label="Close warning"
-                ></button>
-
-                <div class="pdf-warning-dialog" role="document">
-                    <button
-                        type="button"
-                        class="pdf-warning-close"
-                        id="pdfLargeWarningClose"
-                        aria-label="Close warning"
-                    >✕</button>
-
-                    <div class="pdf-warning-icon" aria-hidden="true">⚠</div>
-                    <span class="section-label">PDF NOTICE</span>
-                    <h3 id="pdfLargeWarningTitle">Large PDF Files Detected</h3>
-                    <p id="pdfLargeWarningText">For smoother processing, please upload smaller PDF files.</p>
-
-                    <button
-                        type="button"
-                        class="pdf-warning-dismiss-btn"
-                        id="pdfLargeWarningDismiss"
-                    >Got it</button>
-                </div>
-            </div>
 
 
             <section
@@ -689,6 +639,8 @@
                     </button>
                 </div>
 
+                <p class="pdf-reorder-hint" id="pdfMergeReorderHint">Drag a file, or use the arrows, to set the merge order.</p>
+
                 <div
                     class="pdf-file-queue"
                     id="pdfMergeFileQueue"
@@ -709,6 +661,7 @@
                         <strong id="pdfMergeTotalPages">0</strong>
                     </div>
                 </div>
+                <p class="pdf-capacity-note" id="pdfMergeCapacity">20 file slots • 250 MB • 500 pages remaining</p>
             </section>
 
 
@@ -721,7 +674,7 @@
                     <div>
                         <span class="section-label">OUTPUT</span>
                         <h3>Name your merged PDF</h3>
-                        <p>Your original PDF files stay unchanged.</p>
+                        <p>Original files stay unchanged on your device.</p>
                     </div>
 
                     <label class="pdf-output-field">
@@ -807,6 +760,14 @@
                     </button>
 
                     <button
+                        class="action-btn outline"
+                        id="pdfMergePreviewBtn"
+                        type="button"
+                    >
+                        Open Preview
+                    </button>
+
+                    <button
                         class="action-btn"
                         id="pdfMergeDownloadBtn"
                         type="button"
@@ -835,6 +796,34 @@
     </div>
 
 
+    <div
+        class="app-dialog"
+        id="appDialog"
+        hidden
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="appDialogTitle"
+        aria-describedby="appDialogText"
+    >
+        <button
+            type="button"
+            class="app-dialog-backdrop"
+            id="appDialogBackdrop"
+            aria-label="Close dialog"
+        ></button>
+        <div class="app-dialog-panel">
+            <div class="app-dialog-icon" id="appDialogIcon" aria-hidden="true">!</div>
+            <h3 id="appDialogTitle">Notice</h3>
+            <p id="appDialogText"></p>
+            <ul class="app-dialog-list" id="appDialogList" hidden></ul>
+            <div class="app-dialog-actions">
+                <button type="button" class="action-btn outline" id="appDialogCancel" hidden>Cancel</button>
+                <button type="button" class="action-btn" id="appDialogAction">OK</button>
+            </div>
+        </div>
+    </div>
+
+
     <!-- =========================
          FOOTER
     ========================== -->
@@ -848,10 +837,11 @@
     </footer>
 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-    <script src="script.js"></script>
-    <script src="pdf-tools.js"></script>
-
+    <script src="js/dialog.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/compressor.js"></script>
+    <script src="js/converter.js"></script>
+    <script src="js/pdf-merge.js"></script>
 </body>
+
 </html>

@@ -70,6 +70,7 @@ button {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 12px;
 
     padding: 18px 40px;
 
@@ -88,6 +89,8 @@ button {
     font-family: "Instrument Serif", serif;
     font-size: 31px;
     letter-spacing: 0.5px;
+    min-width: 0;
+    text-align: left;
 
     cursor: pointer;
 }
@@ -1294,11 +1297,12 @@ button {
 .upload-box:hover,
 .upload-box.drag-over {
     border-color: var(--accent);
-
     background: var(--surface-hover);
 }
 
 .upload-box.drag-over {
+    border-color: var(--accent);
+    background: var(--surface-hover);
     transform: scale(1.01);
 }
 
@@ -2620,9 +2624,6 @@ input[type="range"]::-moz-range-thumb {
 .pdf-upload-box.is-dragover {
     border-color: var(--accent);
     background: var(--surface-hover);
-}
-
-.pdf-upload-box.is-dragover {
     transform: scale(1.01);
 }
 
@@ -3150,8 +3151,8 @@ body.menu-open{overflow:hidden}
 @media (max-width:900px){.home-tools-section .tools-grid{grid-template-columns:1fr 1fr}.home-tools-section .tool-card:last-child{grid-column:1/-1}}
 @media (max-width:700px){.menu-toggle{width:43px;height:43px;border-radius:13px}.tools-menu{width:100vw}.tools-menu-head{padding:24px 20px 20px}.tools-menu-head strong{font-size:36px}.tools-menu-head p{font-size:12px}.menu-accordion{padding:8px 12px 18px}.menu-category-trigger{padding:20px 8px}.menu-category-copy b{font-size:27px}.menu-category-copy small{font-size:10px}.menu-category-meta{min-width:88px;gap:10px}.menu-category-meta i{flex-basis:30px}.menu-item{padding:13px 11px}.menu-item em{flex-basis:30px;width:30px;height:30px;font-size:17px}.tools-menu-foot{padding:15px 20px 20px}.home-tools-section .tools-grid{grid-template-columns:1fr}.home-tools-section .tool-card:last-child{grid-column:auto}.home-tools-section .tool-card{min-height:205px}.feature-discovery{margin-bottom:78px;padding:24px 16px;border-radius:22px}.feature-discovery-intro h2{font-size:43px}.feature-discovery-intro p{font-size:13px}.discovery-grid{grid-template-columns:1fr}.discovery-card{min-height:205px;padding:20px}.discovery-card h3{margin-top:28px;font-size:31px}.discovery-footer{align-items:flex-start;flex-direction:column;font-size:12px}}
 
-.navbar.is-dashboard .nav-status{display:none}.navbar:not(.is-dashboard) .nav-tools{display:none}
-@media (max-width:700px){.navbar:not(.is-dashboard) .nav-status{display:none}.navbar.is-dashboard .nav-tools{display:flex}}
+.navbar.is-dashboard .nav-status{display:none}
+@media (max-width:700px){.navbar .nav-status{display:none}}
 
 
 
@@ -3217,4 +3218,181 @@ body.menu-open{overflow:hidden}
     .preview-feature-toast {
         bottom: 16px;
     }
+}
+
+
+/* =========================================================
+   APP DIALOG + PDF MERGE ADDITIONS
+========================================================= */
+
+body.dialog-open {
+    overflow: hidden;
+}
+
+.app-dialog {
+    position: fixed;
+    inset: 0;
+    z-index: 12000;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    isolation: isolate;
+}
+
+.app-dialog[hidden] {
+    display: none !important;
+}
+
+.app-dialog-backdrop {
+    position: absolute;
+    inset: 0;
+    border: 0;
+    background: rgba(9, 11, 20, 0.62);
+    cursor: default;
+}
+
+.app-dialog-panel {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 460px);
+    padding: 28px;
+    border: 1px solid var(--border-strong);
+    border-radius: 28px;
+    background: var(--surface);
+    color: var(--text-main);
+    box-shadow: 0 28px 90px rgba(0, 0, 0, 0.42);
+    text-align: center;
+}
+
+.app-dialog-icon {
+    width: 58px;
+    height: 58px;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 16px;
+    border-radius: 18px;
+    background: rgba(239, 68, 68, 0.12);
+    color: #f87171;
+    font-size: 26px;
+    font-weight: 800;
+}
+
+.app-dialog[data-variant="warning"] .app-dialog-icon {
+    background: rgba(245, 158, 11, 0.12);
+    color: #fbbf24;
+}
+
+.app-dialog[data-variant="success"] .app-dialog-icon {
+    background: rgba(16, 185, 129, 0.12);
+    color: #34d399;
+}
+
+.app-dialog[data-variant="confirm"] .app-dialog-icon {
+    background: rgba(99, 102, 241, 0.12);
+    color: var(--accent);
+}
+
+.app-dialog-panel h3 {
+    margin: 0 0 10px;
+    font-size: clamp(20px, 5vw, 26px);
+}
+
+.app-dialog-panel p {
+    margin: 0 auto;
+    max-width: 360px;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+.app-dialog-list {
+    margin: 14px 0 0;
+    padding: 0;
+    list-style: none;
+    text-align: left;
+    max-height: 180px;
+    overflow: auto;
+}
+
+.app-dialog-list li {
+    padding: 8px 10px;
+    border: 1px solid rgba(239, 68, 68, 0.18);
+    border-radius: 12px;
+    color: #fca5a5;
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+.app-dialog-list li + li {
+    margin-top: 8px;
+}
+
+.app-dialog-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 22px;
+}
+
+.app-dialog-actions .action-btn {
+    flex: 1;
+}
+
+.pdf-upload-privacy,
+.pdf-reorder-hint,
+.pdf-capacity-note {
+    color: var(--text-soft);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.pdf-upload-privacy {
+    margin-top: 10px;
+}
+
+.pdf-reorder-hint {
+    margin: 16px 0 0;
+}
+
+.pdf-capacity-note {
+    margin-top: 12px;
+}
+
+.pdf-thumb-wrap {
+    width: 42px;
+    height: 54px;
+    flex: 0 0 auto;
+    overflow: hidden;
+    border-radius: 10px;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.pdf-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.pdf-queue-item {
+    user-select: none;
+}
+
+.pdf-upload-box.is-reading {
+    opacity: 0.82;
+    cursor: progress;
+}
+
+#pdfMergeResultsPanel .result-actions {
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 800px) {
+    #pdfMergeResultsPanel .result-actions {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+.upload-box:focus-visible,
+.pdf-upload-box:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
 }
