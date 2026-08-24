@@ -372,12 +372,17 @@ document.addEventListener("DOMContentLoaded", () => {
     menuCategories.forEach(category => {
         const trigger = category.querySelector(".menu-category-trigger");
 
-        trigger?.addEventListener("click", () => {
+        trigger?.addEventListener("click", event => {
+            event.preventDefault();
+            event.stopPropagation();
+
             const willOpen = !category.classList.contains("open");
 
             menuCategories.forEach(otherCategory => {
                 otherCategory.classList.remove("open");
-                otherCategory.querySelector(".menu-category-trigger")?.setAttribute("aria-expanded", "false");
+                otherCategory
+                    .querySelector(".menu-category-trigger")
+                    ?.setAttribute("aria-expanded", "false");
             });
 
             if (willOpen) {
