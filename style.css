@@ -3065,3 +3065,146 @@ input[type="range"]::-moz-range-thumb {
 
 .navbar.is-dashboard .nav-status{display:none}.navbar:not(.is-dashboard) .nav-tools{display:none}
 @media (max-width:700px){.navbar:not(.is-dashboard) .nav-status{display:none}.navbar.is-dashboard .nav-tools{display:flex}}
+
+
+/* =========================================================
+   AURASTUDIO — LIQUID GLASS DESIGN SYSTEM
+   Performance-first glass layer. Existing layout/advertisement
+   dimensions remain untouched so ad integrations stay stable.
+========================================================= */
+:root{
+    --bg:#08090f;
+    --surface:rgba(20,22,32,.68);
+    --surface-soft:rgba(28,30,42,.54);
+    --surface-hover:rgba(40,43,59,.72);
+    --border:rgba(255,255,255,.11);
+    --border-strong:rgba(255,255,255,.22);
+    --text-main:#f4f5fb;
+    --text-muted:#a8adbd;
+    --text-soft:#73798c;
+    --accent:#8b8cff;
+    --accent-hover:#9b9cff;
+    --accent-glow:rgba(112,114,255,.26);
+    --glass-blur:18px;
+    --glass-saturate:145%;
+    --glass-shadow:0 22px 70px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.10);
+}
+
+html{background:#08090f;}
+body{
+    background:
+        radial-gradient(900px 560px at -10% -10%,rgba(98,102,255,.16),transparent 60%),
+        radial-gradient(760px 520px at 105% 8%,rgba(126,92,255,.11),transparent 62%),
+        radial-gradient(850px 600px at 50% 105%,rgba(35,158,255,.07),transparent 68%),
+        #08090f;
+    background-attachment:fixed;
+}
+body::before,body::after{content:"";position:fixed;pointer-events:none;z-index:-1;border-radius:50%;filter:blur(70px);opacity:.28;transform:translateZ(0);}
+body::before{width:260px;height:260px;left:-130px;top:32vh;background:rgba(104,104,255,.42);}
+body::after{width:220px;height:220px;right:-110px;top:68vh;background:rgba(68,136,255,.22);}
+
+.glass-navbar,.navbar{
+    background:rgba(9,10,17,.62);
+    backdrop-filter:blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    border-bottom-color:rgba(255,255,255,.09);
+    box-shadow:0 8px 28px rgba(0,0,0,.12),inset 0 -1px 0 rgba(255,255,255,.025);
+}
+.logo{position:relative;z-index:2;text-shadow:0 0 24px rgba(255,255,255,.08);}
+.nav-status{display:none!important;}
+.nav-tools{z-index:401;}
+.menu-toggle{
+    width:50px;height:50px;border-radius:17px;
+    background:linear-gradient(145deg,rgba(255,255,255,.11),rgba(255,255,255,.035));
+    border-color:rgba(255,255,255,.16);
+    box-shadow:var(--glass-shadow);
+    backdrop-filter:blur(16px) saturate(150%);
+    -webkit-backdrop-filter:blur(16px) saturate(150%);
+}
+.menu-toggle:hover,.menu-toggle.active{transform:translateY(-1px) scale(1.02);background:linear-gradient(145deg,rgba(139,140,255,.30),rgba(255,255,255,.07));border-color:rgba(177,178,255,.48);}
+.menu-toggle span{width:20px;background:#eef0ff;box-shadow:0 0 10px rgba(255,255,255,.16);}
+
+.tools-menu-backdrop{position:fixed;inset:0;z-index:350;background:rgba(3,4,9,.32);opacity:0;visibility:hidden;transition:opacity .3s ease,visibility .3s ease;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);}
+.tools-menu-backdrop.open{opacity:1;visibility:visible;}
+.tools-menu{
+    position:fixed;z-index:400;top:50%;left:50%;right:auto;width:min(820px,calc(100vw - 48px));max-height:min(78vh,720px);overflow:auto;
+    padding:26px;border-radius:32px;border:1px solid rgba(255,255,255,.18);
+    background:linear-gradient(135deg,rgba(30,32,46,.82),rgba(14,15,24,.72));
+    box-shadow:0 42px 120px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.14);
+    backdrop-filter:blur(28px) saturate(160%);-webkit-backdrop-filter:blur(28px) saturate(160%);
+    opacity:0;visibility:hidden;transform:translate(-50%,-46%) scale(.97);transform-origin:center;
+    transition:opacity .28s ease,transform .34s cubic-bezier(.22,.8,.2,1),visibility .28s ease;
+}
+.tools-menu.open{opacity:1;visibility:visible;transform:translate(-50%,-50%) scale(1);}
+.tools-menu-grabber{display:none;}
+.tools-menu-head{padding:2px 4px 22px;align-items:flex-start;}
+.tools-menu-head span,.menu-category-label{color:#a9aaff;text-shadow:0 0 20px rgba(139,140,255,.35);}
+.tools-menu-head strong{font-size:clamp(30px,5vw,44px);line-height:1;font-weight:400;}
+.tools-menu-head p{max-width:470px;margin-top:10px;color:var(--text-muted);font-size:13px;line-height:1.65;}
+.menu-close{width:42px;height:42px;border-radius:14px;background:rgba(255,255,255,.055);border-color:rgba(255,255,255,.13);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
+.menu-directory-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.menu-category.glass-directory-card{padding:16px;border:1px solid rgba(255,255,255,.10);border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.025));box-shadow:inset 0 1px 0 rgba(255,255,255,.06);}
+.menu-item{padding:13px 12px;border:1px solid transparent;border-radius:15px;}
+.menu-item:hover{transform:translateX(2px);background:rgba(255,255,255,.075);border-color:rgba(255,255,255,.08);}
+.menu-item em{display:flex;align-items:center;gap:6px;padding:6px 8px;border-radius:999px;background:rgba(139,140,255,.10);font-size:10px;}
+.menu-item.preview-feature em{background:rgba(255,255,255,.035);}
+.menu-item em i{font-style:normal;font-size:13px;}
+body.menu-open{overflow:hidden;}
+
+.hero,.tools-section,.feature-discovery,.feature-intro,.info-section,.workspace-header,.settings-panel,.queue-panel,.results-panel,.pdf-merge-card,.pdf-settings-panel,.pdf-results-panel,.pdf-processing-panel,.upload-box,.drop-zone,.tool-card,.discovery-card,.feature-point,.faq-item,.result-row,.queue-item,.pdf-queue-item,.sponsored-dock{
+    box-shadow:var(--glass-shadow);
+}
+.hero{position:relative;isolation:isolate;}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:linear-gradient(135deg,rgba(255,255,255,.025),transparent 40%);pointer-events:none;}
+.badge,.capability-pill,.complete-badge,.upload-status,.pdf-uploaded-tick,.tool-number,.discovery-index,.section-label{
+    background:rgba(255,255,255,.055)!important;
+    border-color:rgba(255,255,255,.12)!important;
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+}
+.tool-card,.discovery-card,.settings-panel,.queue-panel,.results-panel,.pdf-merge-card,.pdf-settings-panel,.pdf-results-panel,.pdf-processing-panel,.feature-discovery,.feature-point,.faq-item{
+    background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.025));
+    border-color:rgba(255,255,255,.10);
+    backdrop-filter:blur(15px) saturate(135%);-webkit-backdrop-filter:blur(15px) saturate(135%);
+}
+.tool-card:hover,.discovery-card:hover{border-color:rgba(172,174,255,.28);box-shadow:0 28px 70px rgba(0,0,0,.32),0 0 0 1px rgba(139,140,255,.06) inset;}
+.upload-box,.drop-zone{background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.018));border-color:rgba(255,255,255,.10);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);}
+.upload-box:hover,.drop-zone:hover{border-color:rgba(165,166,255,.30);}
+.action-btn,.hero-primary-btn,.download-link,.pdf-merge-start,.pdf-download-btn{
+    border:1px solid rgba(190,191,255,.28)!important;
+    background:linear-gradient(135deg,#7778ed,#5557d8)!important;
+    box-shadow:0 14px 34px rgba(88,90,226,.25),inset 0 1px 0 rgba(255,255,255,.24)!important;
+}
+.action-btn.outline,.hero-secondary-btn,.back-btn,.discovery-menu-link,.pdf-merge-more{
+    background:rgba(255,255,255,.045)!important;
+    border-color:rgba(255,255,255,.13)!important;
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+}
+.styled-select,input[type="text"],input[type="color"],.pdf-output-input{background:rgba(7,8,14,.48)!important;border-color:rgba(255,255,255,.12)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.03);}
+.sponsored-dock{background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.012));border-color:rgba(255,255,255,.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
+/* Ad containers intentionally keep their existing size rules. */
+.ad-slot{background:rgba(3,4,9,.42)!important;border-color:rgba(255,255,255,.07)!important;}
+.footer{background:rgba(7,8,14,.38);border-color:rgba(255,255,255,.07);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);}
+
+@media (max-width:700px){
+    .navbar{padding:14px 18px;}
+    .logo{font-size:29px;}
+    .menu-toggle{width:46px;height:46px;border-radius:16px;}
+    .tools-menu{top:auto;bottom:12px;left:12px;right:12px;width:auto;max-height:min(82vh,760px);padding:18px;border-radius:28px;transform:translateY(28px) scale(.985);}
+    .tools-menu.open{transform:translateY(0) scale(1);}
+    .tools-menu-grabber{display:block;width:38px;height:4px;margin:0 auto 14px;border-radius:99px;background:rgba(255,255,255,.22);}
+    .tools-menu-head{padding:0 2px 16px;}
+    .tools-menu-head strong{font-size:34px;}
+    .tools-menu-head p{font-size:12px;line-height:1.55;}
+    .menu-directory-grid{grid-template-columns:1fr;gap:10px;}
+    .menu-category.glass-directory-card{padding:11px;}
+    .menu-item{padding:11px 10px;}
+    .menu-item b{font-size:14px;}
+    .menu-item small{font-size:10px;}
+    .menu-close{width:38px;height:38px;}
+    .hero,.tools-section,.feature-discovery,.info-section{backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);}
+}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+    .glass-navbar,.navbar,.tools-menu,.tool-card,.discovery-card,.settings-panel,.queue-panel,.results-panel,.pdf-merge-card,.pdf-settings-panel,.pdf-results-panel,.pdf-processing-panel,.feature-discovery,.feature-point,.faq-item,.sponsored-dock{background:rgba(18,20,29,.96)!important;}
+}

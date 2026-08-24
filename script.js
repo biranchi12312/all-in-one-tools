@@ -329,111 +329,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       GLOBAL TOOLS MENU
+       GLOBAL TOOLS MENU — GLASS SHEET
     ========================================================= */
 
     const menuToggle = document.getElementById("menuToggle");
     const toolsMenu = document.getElementById("toolsMenu");
     const menuClose = document.getElementById("menuClose");
+    const toolsMenuBackdrop = document.getElementById("toolsMenuBackdrop");
 
     function setToolsMenu(open) {
         if (!menuToggle || !toolsMenu) return;
         toolsMenu.classList.toggle("open", open);
         menuToggle.classList.toggle("active", open);
+        document.body.classList.toggle("menu-open", open);
         menuToggle.setAttribute("aria-expanded", String(open));
         toolsMenu.setAttribute("aria-hidden", String(!open));
+        toolsMenuBackdrop?.classList.toggle("open", open);
+        toolsMenuBackdrop?.setAttribute("aria-hidden", String(!open));
     }
 
-    menuToggle?.addEventListener("click", event => { event.stopPropagation(); setToolsMenu(!toolsMenu.classList.contains("open")); });
+    menuToggle?.addEventListener("click", event => {
+        event.stopPropagation();
+        setToolsMenu(!toolsMenu.classList.contains("open"));
+    });
+
     menuClose?.addEventListener("click", () => setToolsMenu(false));
+    toolsMenuBackdrop?.addEventListener("click", () => setToolsMenu(false));
     document.querySelectorAll("[data-open-menu]").forEach(button => button.addEventListener("click", () => setToolsMenu(true)));
-    document.addEventListener("click", event => { if (!toolsMenu?.classList.contains("open")) return; if (toolsMenu.contains(event.target) || menuToggle?.contains(event.target)) return; setToolsMenu(false); });
-    document.addEventListener("keydown", event => { if (event.key === "Escape") setToolsMenu(false); });
-    toolsMenu?.querySelectorAll("[data-open-view]").forEach(button => button.addEventListener("click", () => setToolsMenu(false)));
 
-    /* =========================================================
-       SCROLL ANIMATIONS
-    ========================================================= */
+    toolsMenu?.querySelectorAll("[data-open-view]").forEach(button => {
+        button.addEventListener("click", () => setToolsMenu(false));
+    });
 
-    let revealObserver;
-
-
-    function initScrollAnimations() {
-
-        if (revealObserver) {
-            revealObserver.disconnect();
-        }
-
-
-        const revealElements =
-            document.querySelectorAll(".reveal");
-
-
-        if (!("IntersectionObserver" in window)) {
-
-            revealElements.forEach(element => {
-                element.classList.add("visible");
-            });
-
-            return;
-        }
-
-
-        revealObserver =
-            new IntersectionObserver(
-                entries => {
-
-                    entries.forEach(entry => {
-
-                        if (entry.isIntersecting) {
-
-                            entry.target.classList.add(
-                                "visible"
-                            );
-
-                            revealObserver.unobserve(
-                                entry.target
-                            );
-
-                        }
-
-                    });
-
-                },
-                {
-                    threshold: 0.12,
-                    rootMargin: "0px 0px -60px 0px"
-                }
-            );
-
-
-        revealElements.forEach(element => {
-
-            if (
-                element.getBoundingClientRect().top <
-                window.innerHeight
-            ) {
-
-                setTimeout(
-                    () => {
-                        element.classList.add("visible");
-                    },
-                    100
-                );
-
-            } else {
-
-                revealObserver.observe(element);
-
-            }
-
-        });
-
-    }
-
-
-    initScrollAnimations();
-
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape" && toolsMenu?.classList.contains("open")) setToolsMenu(false);
+    });
 
     /* =========================================================
        FAQ

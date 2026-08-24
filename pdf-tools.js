@@ -507,12 +507,29 @@
 
     el.download.addEventListener("click", () => {
         if (!outputBlobUrl) return;
-        const anchor = document.createElement("a");
-        anchor.href = outputBlobUrl;
-        anchor.download = sanitizeFileName(el.outputName.value);
-        document.body.appendChild(anchor);
-        anchor.click();
-        anchor.remove();
+        const fileName = sanitizeFileName(el.outputName.value);
+        fetch(outputBlobUrl)
+            .then(response => response.blob())
+            .then(blob => {
+                const downloadBlob = new Blob([blob], { type: "application/octet-stream" });
+                const downloadUrl = URL.createObjectURL(downloadBlob);
+                const anchor = document.createElement("a");
+                anchor.href = downloadUrl;
+                anchor.download = fileName;
+                anchor.style.display = "none";
+                document.body.appendChild(anchor);
+                anchor.click();
+                anchor.remove();
+                setTimeout(() => URL.revokeObjectURL(downloadUrl), 1500);
+            })
+            .catch(() => {
+                const anchor = document.createElement("a");
+                anchor.href = outputBlobUrl;
+                anchor.download = fileName;
+                document.body.appendChild(anchor);
+                anchor.click();
+                anchor.remove();
+            });
     });
 
     el.mergeMore.addEventListener("click", () => {

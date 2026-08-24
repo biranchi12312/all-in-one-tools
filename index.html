@@ -9,11 +9,11 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>AuraStudio — Image Compressor & Converter</title>
+    <title>AuraStudio — Free File Tools</title>
 
     <meta
         name="description"
-        content="Compress and convert supported image formats directly in your browser. Process up to 100 images in one batch and download optimized results."
+        content="Free browser-based file tools for compressing images, converting formats and merging PDFs from one clean workspace."
     >
 
     <link
@@ -47,34 +47,46 @@
          HEADER
     ========================== -->
 
-    <header class="navbar">
-        <button class="logo" id="logoBtn" type="button">Aura<span>Studio</span></button>
-        <div class="nav-status">
-            <span class="pulse-dot"></span>
-            Secure Engine Active
-        </div>
+    <header class="navbar glass-navbar">
+    <button class="logo" id="logoBtn" type="button">Aura<span>Studio</span></button>
 
-        <div class="nav-tools">
-            <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="toolsMenu" aria-label="Open tools menu"><span></span><span></span><span></span></button>
-            <div class="tools-menu" id="toolsMenu" aria-hidden="true">
-                <div class="tools-menu-head"><div><span>TOOL DIRECTORY</span><strong>Choose your workspace</strong></div><button type="button" class="menu-close" id="menuClose" aria-label="Close tools menu">×</button></div>
-                <div class="menu-category">
-                    <span class="menu-category-label">IMAGE TOOLS</span>
-                    <button type="button" class="menu-item menu-item-live" data-open-view="compressor"><span><b>Compress Images</b><small>Reduce file size in batches</small></span><em>Open</em></button>
-                    <button type="button" class="menu-item menu-item-live" data-open-view="converter"><span><b>Convert Images</b><small>Switch between supported formats</small></span><em>Open</em></button>
-                    <button type="button" class="menu-item preview-feature"><span><b>Resize Images</b><small>Prepare images for any layout</small></span><em>Preview</em></button>
-                    <button type="button" class="menu-item preview-feature"><span><b>Crop & Rotate</b><small>Quick framing and orientation tools</small></span><em>Preview</em></button>
-                </div>
-                <div class="menu-category">
-                    <span class="menu-category-label">PDF TOOLS</span>
-                    <button type="button" class="menu-item menu-item-live" data-open-view="pdfMerge"><span><b>Merge PDF</b><small>Combine multiple PDFs into one</small></span><em>Open</em></button>
-                    <button type="button" class="menu-item preview-feature"><span><b>Split PDF</b><small>Separate pages into new files</small></span><em>Preview</em></button>
-                    <button type="button" class="menu-item preview-feature"><span><b>Compress PDF</b><small>Make large documents lighter</small></span><em>Preview</em></button>
-                    <button type="button" class="menu-item preview-feature"><span><b>PDF to Images</b><small>Turn pages into image files</small></span><em>Preview</em></button>
-                </div>
-            </div>
+    <div class="nav-tools">
+        <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="toolsMenu" aria-label="Open tool directory">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</header>
+
+<div class="tools-menu-backdrop" id="toolsMenuBackdrop" aria-hidden="true"></div>
+
+<aside class="tools-menu" id="toolsMenu" aria-hidden="true" aria-label="Tool directory">
+    <div class="tools-menu-grabber" aria-hidden="true"></div>
+    <div class="tools-menu-head">
+        <div>
+            <span>TOOL DIRECTORY</span>
+            <strong>Choose your workspace.</strong>
+            <p>Everything stays in one place. Pick a tool and get straight to the task.</p>
         </div>
-    </header>
+        <button type="button" class="menu-close" id="menuClose" aria-label="Close tools menu">×</button>
+    </div>
+
+    <div class="menu-directory-grid">
+        <section class="menu-category glass-directory-card">
+            <span class="menu-category-label">IMAGE TOOLS</span>
+            <button type="button" class="menu-item menu-item-live" data-open-view="compressor"><span><b>Compress Images</b><small>Reduce file size in batches</small></span><em>Open <i>→</i></em></button>
+            <button type="button" class="menu-item menu-item-live" data-open-view="converter"><span><b>Convert Images</b><small>Switch between supported formats</small></span><em>Open <i>→</i></em></button>
+            <button type="button" class="menu-item preview-feature"><span><b>Resize Images</b><small>Prepare images for any layout</small></span><em>Preview</em></button>
+            <button type="button" class="menu-item preview-feature"><span><b>Crop &amp; Rotate</b><small>Quick framing and orientation tools</small></span><em>Preview</em></button>
+        </section>
+        <section class="menu-category glass-directory-card">
+            <span class="menu-category-label">PDF TOOLS</span>
+            <button type="button" class="menu-item menu-item-live" data-open-view="pdfMerge"><span><b>Merge PDF</b><small>Combine multiple PDFs into one</small></span><em>Open <i>→</i></em></button>
+            <button type="button" class="menu-item preview-feature"><span><b>Split PDF</b><small>Separate pages into new files</small></span><em>Preview</em></button>
+            <button type="button" class="menu-item preview-feature"><span><b>Compress PDF</b><small>Make large documents lighter</small></span><em>Preview</em></button>
+            <button type="button" class="menu-item preview-feature"><span><b>PDF to Images</b><small>Turn pages into image files</small></span><em>Preview</em></button>
+        </section>
+    </div>
+</aside>
 
 
     <main class="container">
@@ -87,12 +99,12 @@
             <section class="hero hero-home">
                 <div class="hero-glow"></div>
                 <span class="badge hero-enter">ALL-IN-ONE FILE WORKSPACE</span>
-                <h1 class="hero-title">Your files.<br><span>Your workflow. One place.</span></h1>
-                <p class="hero-description">One place for the file tools you need today, with more to explore next. From quick fixes to bigger tasks, AuraStudio keeps everyday work moving without the clutter.</p>
+                <h1 class="hero-title">One space for files.<br><span>More ways to get things done.</span></h1>
+                <p class="hero-description">Start with the tools you need now, then explore a growing workspace built to make everyday file tasks feel lighter, faster and far less cluttered.</p>
                 <div class="hero-capabilities hero-home-capabilities">
-                    <div class="capability-pill"><span class="capability-icon">✦</span>More tools. One workspace.</div>
-                    <div class="capability-pill"><span class="capability-icon">↗</span>Made for everyday files.</div>
-                    <div class="capability-pill"><span class="capability-icon">☰</span>Explore what’s next.</div>
+                    <div class="capability-pill"><span class="capability-icon">✦</span>Free tools, one workspace.</div>
+                    <div class="capability-pill"><span class="capability-icon">↗</span>Built around real file tasks.</div>
+                    <div class="capability-pill"><span class="capability-icon">☰</span>More tools to explore.</div>
                 </div>
             </section>
 
