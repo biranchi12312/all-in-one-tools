@@ -44,7 +44,7 @@ body {
     background: var(--bg);
     color: var(--text-main);
 
-    font-family: "Plus Jakarta Sans", sans-serif;
+    font-family: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 button,
@@ -52,6 +52,16 @@ input,
 select {
     font: inherit;
 }
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
 
 button {
     -webkit-tap-highlight-color: transparent;
@@ -164,14 +174,13 @@ button {
 
 .view.active {
     display: block;
-
-    animation: viewEnter 0.45s ease both;
+    animation: viewEnter 0.28s ease both;
 }
 
 @keyframes viewEnter {
     from {
-        opacity: 0;
-        transform: translateY(10px);
+        opacity: 0.96;
+        transform: translateY(6px);
     }
 
     to {
@@ -182,62 +191,13 @@ button {
 
 
 /* =========================
-   SCROLL REVEAL
+   SCROLL REVEAL (lightweight — never hides content)
 ========================= */
 
-/* Content visible by default — no blank first paint.
-   Only off-screen sections use .is-pending and animate in on scroll. */
 .reveal {
     opacity: 1;
     transform: none;
 }
-
-.reveal.is-pending:not(.visible) {
-    opacity: 0;
-    transform: translateY(28px);
-    transition:
-        opacity 0.75s ease,
-        transform 0.75s cubic-bezier(.22, .61, .36, 1);
-    will-change: opacity, transform;
-}
-
-.reveal.is-pending.reveal-left:not(.visible) {
-    transform: translateX(-28px);
-}
-
-.reveal.is-pending.reveal-right:not(.visible) {
-    transform: translateX(28px);
-}
-
-.reveal.is-pending.visible {
-    opacity: 1;
-    transform: none;
-    transition:
-        opacity 0.75s ease,
-        transform 0.75s cubic-bezier(.22, .61, .36, 1);
-}
-
-.reveal-delay-1.is-pending:not(.visible) {
-    transition-delay: 0.1s;
-}
-
-.reveal-delay-2.is-pending:not(.visible) {
-    transition-delay: 0.2s;
-}
-
-.reveal-delay-3.is-pending:not(.visible) {
-    transition-delay: 0.3s;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .reveal.is-pending:not(.visible),
-    .reveal.is-pending.visible {
-        opacity: 1 !important;
-        transform: none !important;
-        transition: none !important;
-    }
-}
-
 
 /* =========================
    SECTION LABEL
@@ -315,13 +275,13 @@ button {
     font-weight: 700;
     letter-spacing: 1.6px;
 
-    animation: badgeEnter 0.7s ease both;
+    animation: badgeEnter 0.35s ease both;
 }
 
 @keyframes badgeEnter {
     from {
-        opacity: 0;
-        transform: translateY(-10px);
+        opacity: 0.92;
+        transform: translateY(-6px);
     }
 
     to {
@@ -341,7 +301,7 @@ button {
     font-weight: 400;
     line-height: 0.98;
 
-    animation: titleEnter 0.9s 0.08s ease both;
+    animation: titleEnter 0.4s ease both;
 }
 
 .hero-title span {
@@ -350,8 +310,8 @@ button {
 
 @keyframes titleEnter {
     from {
-        opacity: 0;
-        transform: translateY(24px);
+        opacity: 0.94;
+        transform: translateY(10px);
     }
 
     to {
@@ -373,13 +333,13 @@ button {
     font-size: clamp(16px, 1.45vw, 19px);
     line-height: 1.75;
 
-    animation: descriptionEnter 0.8s 0.18s ease both;
+    animation: descriptionEnter 0.4s 0.04s ease both;
 }
 
 @keyframes descriptionEnter {
     from {
-        opacity: 0;
-        transform: translateY(18px);
+        opacity: 0.94;
+        transform: translateY(8px);
     }
 
     to {
@@ -400,7 +360,7 @@ button {
 
     margin-bottom: 30px;
 
-    animation: descriptionEnter 0.8s 0.28s ease both;
+    animation: descriptionEnter 0.35s 0.06s ease both;
 }
 
 .hero-primary-btn,
@@ -475,7 +435,7 @@ button {
 
     gap: 10px;
 
-    animation: descriptionEnter 0.8s 0.38s ease both;
+    animation: descriptionEnter 0.35s 0.08s ease both;
 }
 
 .capability-pill {

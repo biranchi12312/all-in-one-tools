@@ -6,10 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuraStudio — Free Image & PDF Tools</title>
     <meta name="description" content="Compress and convert images, merge PDFs and manage everyday files directly in your browser with AuraStudio. Process supported files in a clean, privacy-focused workspace.">
+    <link rel="stylesheet" href="./style.css">
+    <!-- Fonts load non-blocking so text is never delayed -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+    </noscript>
 </head>
 
 <body>
@@ -834,19 +838,17 @@
     </footer>
 
 
-    <!-- Core UI first: menu + routing work immediately, no CDN wait -->
+    <!-- Instant UI: menu + routing (no network dependency) -->
     <script src="./js/dialog.js"></script>
     <script src="./js/app.js"></script>
+    <script src="./js/compressor.js"></script>
+    <script src="./js/converter.js"></script>
+    <script src="./js/pdf-merge.js"></script>
 
-    <!-- Heavy libraries after UI is live -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js" defer></script>
-
-    <!-- Feature modules (depend on UI shell; libs available by first use) -->
-    <script src="./js/compressor.js" defer></script>
-    <script src="./js/converter.js" defer></script>
-    <script src="./js/pdf-merge.js" defer></script>
+    <!-- CDN libs in background — tools already mounted; libs used on action -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" async></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" async></script>
+    <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js" async></script>
 </body>
 
 </html>

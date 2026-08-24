@@ -33,7 +33,7 @@
         window.scrollTo({ top: 0, behavior: "smooth" });
 
         if (viewName === "dashboard") {
-            setTimeout(initScrollAnimations, 80);
+            initScrollAnimations();
         }
 
         window.dispatchEvent(
@@ -223,70 +223,10 @@
         button.addEventListener("click", () => showPreviewFeatureNotice());
     });
 
-    let revealObserver = null;
-
-    function prefersReducedMotion() {
-        return (
-            window.matchMedia &&
-            window.matchMedia("(prefers-reduced-motion: reduce)").matches
-        );
-    }
-
-    function forceRevealVisible() {
-        document.querySelectorAll(".reveal").forEach(element => {
-            element.classList.remove("is-pending");
-            element.classList.add("visible");
-        });
-    }
-
+    // Reveal classes are CSS-only now (always visible). No JS hide/show.
     function initScrollAnimations() {
-        if (revealObserver) {
-            revealObserver.disconnect();
-            revealObserver = null;
-        }
-
-        const revealElements = Array.from(document.querySelectorAll(".reveal"));
-        if (!revealElements.length) return;
-
-        // Always keep above-the-fold content visible immediately
-        revealElements.forEach(element => {
-            element.classList.remove("is-pending");
-            const rect = element.getBoundingClientRect();
-            const inView = rect.top < window.innerHeight * 0.98 && rect.bottom > 0;
-            if (inView) {
-                element.classList.add("visible");
-            }
-        });
-
-        if (prefersReducedMotion() || !("IntersectionObserver" in window)) {
-            forceRevealVisible();
-            return;
-        }
-
-        revealObserver = new IntersectionObserver(
-            entries => {
-                entries.forEach(entry => {
-                    if (!entry.isIntersecting) return;
-                    entry.target.classList.add("visible");
-                    entry.target.classList.remove("is-pending");
-                    revealObserver.unobserve(entry.target);
-                });
-            },
-            {
-                threshold: 0.1,
-                rootMargin: "0px 0px -6% 0px"
-            }
-        );
-
-        // Only off-screen sections get pending + scroll animation
-        revealElements.forEach(element => {
-            if (element.classList.contains("visible")) return;
-            element.classList.add("is-pending");
-            revealObserver.observe(element);
-        });
+        // no-op: content stays visible for instant first paint
     }
-
-    initScrollAnimations();
 
     document.querySelectorAll(".faq-question").forEach(button => {
         button.addEventListener("click", () => {
