@@ -1,12 +1,20 @@
 (() => {
     "use strict";
 
+    document.documentElement.classList.add("js-ready");
+
     const views = {
         dashboard: document.getElementById("dashboardView"),
         compressor: document.getElementById("compressorView"),
         converter: document.getElementById("converterView"),
         pdfMerge: document.getElementById("pdfMergeView")
     };
+
+    const menuToggle = document.getElementById("menuToggle");
+    const toolsMenu = document.getElementById("toolsMenu");
+    const menuClose = document.getElementById("menuClose");
+    const menuBackdrop = document.getElementById("menuBackdrop");
+    const menuCategories = Array.from(document.querySelectorAll(".menu-category"));
 
     function renderView(viewName) {
         Object.values(views).forEach(view => {
@@ -25,7 +33,7 @@
         window.scrollTo({ top: 0, behavior: "smooth" });
 
         if (viewName === "dashboard") {
-            setTimeout(initScrollAnimations, 100);
+            setTimeout(initScrollAnimations, 80);
         }
 
         window.dispatchEvent(
@@ -36,6 +44,8 @@
     }
 
     function switchView(viewName, pushHistory = true) {
+        if (!views[viewName]) return;
+        setToolsMenu(false);
         renderView(viewName);
 
         if (!pushHistory) return;
@@ -45,7 +55,7 @@
             history.pushState(
                 { view: viewName },
                 "",
-                viewName === "dashboard" ? location.pathname : `#${viewName}`
+                viewName === "dashboard" ? location.pathname + location.search : `#${viewName}`
             );
         }
     }
@@ -76,14 +86,16 @@
         }
 
         renderView("dashboard");
-        history.replaceState({ view: "dashboard" }, "", location.pathname);
+        history.replaceState({ view: "dashboard" }, "", location.pathname + location.search);
     }
 
     const initialView = getViewFromHash();
     history.replaceState(
         { view: initialView },
         "",
-        initialView === "dashboard" ? location.pathname : `#${initialView}`
+        initialView === "dashboard"
+            ? location.pathname + location.search
+            : `#${initialView}`
     );
     renderView(initialView);
 
@@ -106,19 +118,25 @@
     document.getElementById("logoBtn")?.addEventListener("click", () => {
         if (getViewFromHash() === "dashboard") {
             renderView("dashboard");
+            setToolsMenu(false);
             return;
         }
         backToDashboard();
     });
 
-    const menuToggle = document.getElementById("menuToggle");
-    const toolsMenu = document.getElementById("toolsMenu");
-    const menuClose = document.getElementById("menuClose");
-    const menuBackdrop = document.getElementById("menuBackdrop");
-    const menuCategories = document.querySelectorAll(".menu-category");
+    function openFirstMenuCategory() {
+        if (!menuCategories.length) return;
+        menuCategories.forEach((category, index) => {
+            const trigger = category.querySelector(".menu-category-trigger");
+            const shouldOpen = index === 0;
+            category.classList.toggle("open", shouldOpen);
+            trigger?.setAttribute("aria-expanded", String(shouldOpen));
+        });
+    }
 
     function setToolsMenu(open) {
         if (!menuToggle || !toolsMenu) return;
+
         toolsMenu.classList.toggle("open", open);
         menuToggle.classList.toggle("active", open);
         menuBackdrop?.classList.toggle("open", open);
@@ -126,16 +144,28 @@
         menuToggle.setAttribute("aria-expanded", String(open));
         toolsMenu.setAttribute("aria-hidden", String(!open));
         menuBackdrop?.setAttribute("aria-hidden", String(!open));
+
+        if (open) openFirstMenuCategory();
     }
 
-    menuToggle?.addEventListener("click", event => {
-        event.preventDefault();
-        event.stopPropagation();
+    function toggleToolsMenu(event) {
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        if (!toolsMenu) return;
         setToolsMenu(!toolsMenu.classList.contains("open"));
-    });
+    }
 
-    menuClose?.addEventListener("click", () => setToolsMenu(false));
-    menuBackdrop?.addEventListener("click", () => setToolsMenu(false));
+    if (menuToggle) {
+        menuToggle.addEventListener("click", toggleToolsMenu);
+    }
+    if (menuClose) {
+        menuClose.addEventListener("click", () => setToolsMenu(false));
+    }
+    if (menuBackdrop) {
+        menuBackdrop.addEventListener("click", () => setToolsMenu(false));
+    }
 
     document.querySelectorAll("[data-open-menu]").forEach(button => {
         button.addEventListener("click", () => setToolsMenu(true));
@@ -193,79 +223,70 @@
         button.addEventListener("click", () => showPreviewFeatureNotice());
     });
 
-    let revealObserver;
-    let revealSafetyTimer = null;
+    let revealObserver = null;
+
+    function prefersReducedMotion() {
+        return (
+            window.matchMedia &&
+            window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        );
+    }
 
     function forceRevealVisible() {
         document.querySelectorAll(".reveal").forEach(element => {
+            element.classList.remove("is-pending");
             element.classList.add("visible");
         });
     }
 
     function initScrollAnimations() {
-        if (revealObserver) revealObserver.disconnect();
-        if (revealSafetyTimer) {
-            clearTimeout(revealSafetyTimer);
-            revealSafetyTimer = null;
+        if (revealObserver) {
+            revealObserver.disconnect();
+            revealObserver = null;
         }
 
-        const revealElements = document.querySelectorAll(".reveal");
+        const revealElements = Array.from(document.querySelectorAll(".reveal"));
         if (!revealElements.length) return;
 
-        const reduceMotion =
-            window.matchMedia &&
-            window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        // Always keep above-the-fold content visible immediately
+        revealElements.forEach(element => {
+            element.classList.remove("is-pending");
+            const rect = element.getBoundingClientRect();
+            const inView = rect.top < window.innerHeight * 0.98 && rect.bottom > 0;
+            if (inView) {
+                element.classList.add("visible");
+            }
+        });
 
-        if (reduceMotion || !("IntersectionObserver" in window)) {
+        if (prefersReducedMotion() || !("IntersectionObserver" in window)) {
             forceRevealVisible();
             return;
         }
 
-        document.documentElement.classList.add("js-anim");
-
         revealObserver = new IntersectionObserver(
             entries => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add("visible");
-                        revealObserver.unobserve(entry.target);
-                    }
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add("visible");
+                    entry.target.classList.remove("is-pending");
+                    revealObserver.unobserve(entry.target);
                 });
             },
-            { threshold: 0.08, rootMargin: "0px 0px -12% 0px" }
+            {
+                threshold: 0.1,
+                rootMargin: "0px 0px -6% 0px"
+            }
         );
 
+        // Only off-screen sections get pending + scroll animation
         revealElements.forEach(element => {
-            const rect = element.getBoundingClientRect();
-            const inView = rect.top < window.innerHeight * 0.95 && rect.bottom > 0;
-            if (inView) {
-                element.classList.add("visible");
-            } else {
-                revealObserver.observe(element);
-            }
+            if (element.classList.contains("visible")) return;
+            element.classList.add("is-pending");
+            revealObserver.observe(element);
         });
-
-        // Safety net: never leave near-viewport sections blank on mobile
-        revealSafetyTimer = setTimeout(() => {
-            document.querySelectorAll(".reveal:not(.visible)").forEach(element => {
-                if (element.getBoundingClientRect().top < window.innerHeight * 1.35) {
-                    element.classList.add("visible");
-                }
-            });
-        }, 1200);
     }
 
     initScrollAnimations();
-
-    window.addEventListener("load", () => {
-        setTimeout(() => {
-            document.querySelectorAll(".reveal:not(.visible)").forEach(element => {
-                if (element.getBoundingClientRect().top < window.innerHeight * 1.5) {
-                    element.classList.add("visible");
-                }
-            });
-        }, 1800);
-    });
 
     document.querySelectorAll(".faq-question").forEach(button => {
         button.addEventListener("click", () => {
@@ -296,6 +317,7 @@
         switchView,
         renderView,
         getViewFromHash,
-        backToDashboard
+        backToDashboard,
+        setToolsMenu
     };
 })();

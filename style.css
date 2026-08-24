@@ -65,7 +65,7 @@ button {
 .navbar {
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 1300;
 
     display: flex;
     align-items: center;
@@ -185,55 +185,53 @@ button {
    SCROLL REVEAL
 ========================= */
 
-/* Visible by default so content never stays blank if JS is slow/blocked.
-   Animation mode (html.js-anim) hides until .visible is applied. */
+/* Content visible by default — no blank first paint.
+   Only off-screen sections use .is-pending and animate in on scroll. */
 .reveal {
     opacity: 1;
     transform: none;
 }
 
-html.js-anim .reveal:not(.visible) {
+.reveal.is-pending:not(.visible) {
     opacity: 0;
-    transform: translateY(34px);
+    transform: translateY(28px);
     transition:
-        opacity 0.8s ease,
-        transform 0.8s cubic-bezier(.22, .61, .36, 1);
+        opacity 0.75s ease,
+        transform 0.75s cubic-bezier(.22, .61, .36, 1);
+    will-change: opacity, transform;
 }
 
-html.js-anim .reveal.reveal-left:not(.visible) {
-    transform: translateX(-40px);
+.reveal.is-pending.reveal-left:not(.visible) {
+    transform: translateX(-28px);
 }
 
-html.js-anim .reveal.reveal-right:not(.visible) {
-    transform: translateX(40px);
+.reveal.is-pending.reveal-right:not(.visible) {
+    transform: translateX(28px);
 }
 
-html.js-anim .reveal.visible,
-.reveal.visible {
+.reveal.is-pending.visible {
     opacity: 1;
-    transform: translate(0, 0);
+    transform: none;
     transition:
-        opacity 0.8s ease,
-        transform 0.8s cubic-bezier(.22, .61, .36, 1);
+        opacity 0.75s ease,
+        transform 0.75s cubic-bezier(.22, .61, .36, 1);
 }
 
-html.js-anim .reveal-delay-1:not(.visible) {
+.reveal-delay-1.is-pending:not(.visible) {
     transition-delay: 0.1s;
 }
 
-html.js-anim .reveal-delay-2:not(.visible) {
+.reveal-delay-2.is-pending:not(.visible) {
     transition-delay: 0.2s;
 }
 
-html.js-anim .reveal-delay-3:not(.visible) {
+.reveal-delay-3.is-pending:not(.visible) {
     transition-delay: 0.3s;
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .reveal,
-    html.js-anim .reveal:not(.visible),
-    html.js-anim .reveal.visible,
-    .reveal.visible {
+    .reveal.is-pending:not(.visible),
+    .reveal.is-pending.visible {
         opacity: 1 !important;
         transform: none !important;
         transition: none !important;
@@ -3119,16 +3117,17 @@ input[type="range"]::-moz-range-thumb {
    HOME MENU + FEATURE DISCOVERY
 ========================= */
 .nav-tools{display:flex;align-items:center}
-.menu-toggle{width:48px;height:48px;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border:1px solid var(--border);border-radius:15px;background:var(--surface);cursor:pointer;transition:transform .25s ease,border-color .25s ease,background .25s ease;position:relative;z-index:410}
+.menu-toggle{width:48px;height:48px;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border:1px solid var(--border);border-radius:15px;background:var(--surface);cursor:pointer;transition:transform .25s ease,border-color .25s ease,background .25s ease;position:relative;z-index:1310;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 .menu-toggle:hover,.menu-toggle.active{transform:translateY(-2px);border-color:rgba(99,102,241,.58);background:var(--surface-hover)}
-.menu-toggle span{width:19px;height:2px;border-radius:99px;background:var(--text-main);transition:transform .25s ease,opacity .25s ease}
+.menu-toggle span{width:19px;height:2px;border-radius:99px;background:var(--text-main);transition:transform .25s ease,opacity .25s ease;pointer-events:none}
 .menu-toggle.active span:nth-child(1){transform:translateY(7px) rotate(45deg)}
 .menu-toggle.active span:nth-child(2){opacity:0}
 .menu-toggle.active span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-.menu-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.52);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .25s ease,visibility .25s ease;z-index:380}
+.menu-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.52);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .25s ease,visibility .25s ease;z-index:1200}
 .menu-backdrop.open{opacity:1;visibility:visible;pointer-events:auto}
-.tools-menu{position:fixed;top:0;right:0;width:min(470px,100vw);height:100dvh;display:flex;flex-direction:column;overflow:hidden;border-left:1px solid var(--border-strong);background:#111116;box-shadow:-24px 0 70px rgba(0,0,0,.48);transform:translateX(104%);transition:transform .3s cubic-bezier(.22,.8,.2,1);z-index:400;will-change:transform}
+.tools-menu{position:fixed;top:0;right:0;width:min(470px,100vw);height:100dvh;display:flex;flex-direction:column;overflow:hidden;border-left:1px solid var(--border-strong);background:#111116;box-shadow:-24px 0 70px rgba(0,0,0,.48);transform:translateX(104%);transition:transform .3s cubic-bezier(.22,.8,.2,1);z-index:1250;will-change:transform}
 .tools-menu.open{transform:translateX(0)}
+body.menu-open{overflow:hidden;touch-action:none}
 .tools-menu-head{display:flex;align-items:flex-start;justify-content:space-between;gap:22px;padding:32px 28px 24px;border-bottom:1px solid var(--border)}
 .tools-menu-head span{display:block;color:var(--accent);font-size:10px;font-weight:700;letter-spacing:1.8px}
 .tools-menu-head strong{display:block;margin-top:9px;font-family:"Instrument Serif",serif;font-size:42px;font-weight:400;line-height:1}
@@ -3165,7 +3164,6 @@ input[type="range"]::-moz-range-thumb {
 .menu-item.preview-feature em{color:var(--text-soft)}
 .menu-item.preview-feature:hover em{transform:none;border-color:var(--border);background:transparent}
 .tools-menu-foot{padding:17px 28px 22px;border-top:1px solid var(--border);color:var(--text-soft);font-size:11px;line-height:1.6}
-body.menu-open{overflow:hidden}
 .home-tools-section .tools-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.home-tools-section .tool-card{min-height:250px}.tool-card-bottom>div{min-width:0}.tool-card-bottom p{margin-top:7px;color:var(--text-soft);font-size:12px;line-height:1.5}
 .feature-discovery{margin-bottom:115px;padding:44px;border:1px solid var(--border);border-radius:30px;background:radial-gradient(circle at top right,rgba(99,102,241,.12),transparent 35%),var(--surface)}.feature-discovery-intro{max-width:720px;margin-bottom:32px}.feature-discovery-intro h2{font-family:"Instrument Serif",serif;font-size:clamp(48px,4.6vw,70px);font-weight:400;line-height:1}.feature-discovery-intro p{margin-top:16px;color:var(--text-muted);font-size:15px;line-height:1.75}.discovery-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.discovery-card{position:relative;min-height:250px;padding:24px;border:1px solid var(--border);border-radius:20px;background:rgba(7,7,9,.35);color:var(--text-main);text-align:left;overflow:hidden;cursor:pointer;transition:transform .3s ease,border-color .3s ease,background .3s ease}.discovery-card::after{content:"";position:absolute;inset:auto -30px -70px auto;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(99,102,241,.15),transparent 70%);opacity:0;transition:opacity .3s ease}.discovery-card:hover{transform:translateY(-5px);border-color:rgba(99,102,241,.5);background:var(--surface-hover)}.discovery-card:hover::after{opacity:1}.discovery-index{position:absolute;top:18px;right:20px;color:var(--text-soft);font-size:10px;font-weight:700;letter-spacing:1px}.discovery-icon{display:flex;align-items:center;justify-content:center;width:48px;height:48px;border:1px solid var(--border);border-radius:14px;background:rgba(255,255,255,.035);font-size:20px}.discovery-card h3{margin:38px 0 9px;font-family:"Instrument Serif",serif;font-size:34px;font-weight:400}.discovery-card p{max-width:330px;color:var(--text-muted);font-size:13px;line-height:1.65}.discovery-question{display:block;margin-top:20px;color:var(--accent);font-size:12px;font-weight:700}.discovery-question b{font-size:17px;margin-left:4px}.discovery-footer{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:22px;padding-top:22px;border-top:1px solid var(--border);color:var(--text-muted);font-size:13px}.discovery-menu-link{border:0;background:transparent;color:var(--text-main);font:inherit;font-weight:700;cursor:pointer}.discovery-menu-link b{margin-left:7px;color:var(--accent)}
 @media (max-width:900px){.home-tools-section .tools-grid{grid-template-columns:1fr 1fr}.home-tools-section .tool-card:last-child{grid-column:1/-1}}
