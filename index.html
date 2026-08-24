@@ -7,7 +7,6 @@
     <title>AuraStudio — Free Image & PDF Tools</title>
     <meta name="description" content="Compress and convert images, merge PDFs and manage everyday files directly in your browser with AuraStudio. Process supported files in a clean, privacy-focused workspace.">
     <link rel="stylesheet" href="./style.css">
-    <!-- Fonts load non-blocking so text is never delayed -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
@@ -37,6 +36,7 @@
                 aria-expanded="false"
                 aria-controls="toolsMenu"
                 aria-label="Open tools menu"
+                onclick="window.__auraToggleMenu&&window.__auraToggleMenu(event)"
             >
                 <span></span><span></span><span></span>
             </button>
@@ -838,14 +838,72 @@
     </footer>
 
 
-    <!-- Instant UI: menu + routing (no network dependency) -->
+    <!-- Menu bootstrap (always available, even if app.js is slow) -->
+    <script>
+    (function () {
+        function setOpen(open) {
+            var menu = document.getElementById("toolsMenu");
+            var toggle = document.getElementById("menuToggle");
+            var backdrop = document.getElementById("menuBackdrop");
+            if (!menu || !toggle) return;
+            menu.classList.toggle("open", open);
+            toggle.classList.toggle("active", open);
+            if (backdrop) backdrop.classList.toggle("open", open);
+            document.body.classList.toggle("menu-open", open);
+            toggle.setAttribute("aria-expanded", String(open));
+            menu.setAttribute("aria-hidden", String(!open));
+            if (open) {
+                var cats = menu.querySelectorAll(".menu-category");
+                cats.forEach(function (c, i) {
+                    c.classList.toggle("open", i === 0);
+                    var tr = c.querySelector(".menu-category-trigger");
+                    if (tr) tr.setAttribute("aria-expanded", String(i === 0));
+                });
+            }
+        }
+        window.__auraToggleMenu = function (e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            var menu = document.getElementById("toolsMenu");
+            if (!menu) return;
+            setOpen(!menu.classList.contains("open"));
+        };
+        window.__auraSetMenu = setOpen;
+        document.addEventListener("click", function (e) {
+            var t = e.target;
+            if (!t || !t.closest) return;
+            if (t.closest("#menuClose") || t.closest("#menuBackdrop")) {
+                setOpen(false);
+                return;
+            }
+            var trigger = t.closest(".menu-category-trigger");
+            if (trigger) {
+                e.preventDefault();
+                e.stopPropagation();
+                var cat = trigger.closest(".menu-category");
+                if (!cat) return;
+                var willOpen = !cat.classList.contains("open");
+                document.querySelectorAll(".menu-category").forEach(function (c) {
+                    c.classList.remove("open");
+                    var tr = c.querySelector(".menu-category-trigger");
+                    if (tr) tr.setAttribute("aria-expanded", "false");
+                });
+                if (willOpen) {
+                    cat.classList.add("open");
+                    trigger.setAttribute("aria-expanded", "true");
+                }
+            }
+        });
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") setOpen(false);
+        });
+    })();
+    </script>
+    <!-- UI + features first (local, instant). CDN libs async in background. -->
     <script src="./js/dialog.js"></script>
     <script src="./js/app.js"></script>
     <script src="./js/compressor.js"></script>
     <script src="./js/converter.js"></script>
     <script src="./js/pdf-merge.js"></script>
-
-    <!-- CDN libs in background — tools already mounted; libs used on action -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" async></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" async></script>
     <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js" async></script>

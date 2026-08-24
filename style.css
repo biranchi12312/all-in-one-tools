@@ -44,7 +44,7 @@ body {
     background: var(--bg);
     color: var(--text-main);
 
-    font-family: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
 button,
@@ -52,16 +52,6 @@ input,
 select {
     font: inherit;
 }
-
-@media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-    }
-}
-
 
 button {
     -webkit-tap-highlight-color: transparent;
@@ -174,13 +164,13 @@ button {
 
 .view.active {
     display: block;
-    animation: viewEnter 0.28s ease both;
+    animation: viewEnter 0.4s cubic-bezier(.22,.61,.36,1) both;
 }
 
 @keyframes viewEnter {
     from {
-        opacity: 0.96;
-        transform: translateY(6px);
+        opacity: 0;
+        transform: translateY(12px);
     }
 
     to {
@@ -191,13 +181,52 @@ button {
 
 
 /* =========================
-   SCROLL REVEAL (lightweight — never hides content)
+   SCROLL REVEAL
 ========================= */
 
+/* Always visible by default. Off-screen sections get .is-pending for scroll-in. */
 .reveal {
     opacity: 1;
     transform: none;
 }
+
+.reveal.is-pending:not(.visible) {
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+        opacity 0.6s cubic-bezier(.22, .61, .36, 1),
+        transform 0.6s cubic-bezier(.22, .61, .36, 1);
+}
+
+.reveal.is-pending.reveal-left:not(.visible) {
+    transform: translateX(-22px);
+}
+
+.reveal.is-pending.reveal-right:not(.visible) {
+    transform: translateX(22px);
+}
+
+.reveal.is-pending.visible {
+    opacity: 1;
+    transform: none;
+    transition:
+        opacity 0.6s cubic-bezier(.22, .61, .36, 1),
+        transform 0.6s cubic-bezier(.22, .61, .36, 1);
+}
+
+.reveal-delay-1.is-pending:not(.visible) { transition-delay: 0.08s; }
+.reveal-delay-2.is-pending:not(.visible) { transition-delay: 0.16s; }
+.reveal-delay-3.is-pending:not(.visible) { transition-delay: 0.24s; }
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal.is-pending:not(.visible),
+    .reveal.is-pending.visible {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+}
+
 
 /* =========================
    SECTION LABEL
@@ -275,13 +304,13 @@ button {
     font-weight: 700;
     letter-spacing: 1.6px;
 
-    animation: badgeEnter 0.35s ease both;
+    animation: badgeEnter 0.55s cubic-bezier(.22,.61,.36,1) both;
 }
 
 @keyframes badgeEnter {
     from {
-        opacity: 0.92;
-        transform: translateY(-6px);
+        opacity: 0;
+        transform: translateY(-8px);
     }
 
     to {
@@ -301,7 +330,7 @@ button {
     font-weight: 400;
     line-height: 0.98;
 
-    animation: titleEnter 0.4s ease both;
+    animation: titleEnter 0.65s 0.06s cubic-bezier(.22,.61,.36,1) both;
 }
 
 .hero-title span {
@@ -310,8 +339,8 @@ button {
 
 @keyframes titleEnter {
     from {
-        opacity: 0.94;
-        transform: translateY(10px);
+        opacity: 0;
+        transform: translateY(16px);
     }
 
     to {
@@ -333,13 +362,13 @@ button {
     font-size: clamp(16px, 1.45vw, 19px);
     line-height: 1.75;
 
-    animation: descriptionEnter 0.4s 0.04s ease both;
+    animation: descriptionEnter 0.6s 0.12s cubic-bezier(.22,.61,.36,1) both;
 }
 
 @keyframes descriptionEnter {
     from {
-        opacity: 0.94;
-        transform: translateY(8px);
+        opacity: 0;
+        transform: translateY(12px);
     }
 
     to {
@@ -360,7 +389,7 @@ button {
 
     margin-bottom: 30px;
 
-    animation: descriptionEnter 0.35s 0.06s ease both;
+    animation: descriptionEnter 0.55s 0.18s cubic-bezier(.22,.61,.36,1) both;
 }
 
 .hero-primary-btn,
@@ -435,7 +464,7 @@ button {
 
     gap: 10px;
 
-    animation: descriptionEnter 0.35s 0.08s ease both;
+    animation: descriptionEnter 0.55s 0.24s cubic-bezier(.22,.61,.36,1) both;
 }
 
 .capability-pill {
@@ -3083,11 +3112,11 @@ input[type="range"]::-moz-range-thumb {
 .menu-toggle.active span:nth-child(1){transform:translateY(7px) rotate(45deg)}
 .menu-toggle.active span:nth-child(2){opacity:0}
 .menu-toggle.active span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-.menu-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.52);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .25s ease,visibility .25s ease;z-index:1200}
+.menu-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.52);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .25s ease,visibility .25s ease;z-index:1400}
 .menu-backdrop.open{opacity:1;visibility:visible;pointer-events:auto}
-.tools-menu{position:fixed;top:0;right:0;width:min(470px,100vw);height:100dvh;display:flex;flex-direction:column;overflow:hidden;border-left:1px solid var(--border-strong);background:#111116;box-shadow:-24px 0 70px rgba(0,0,0,.48);transform:translateX(104%);transition:transform .3s cubic-bezier(.22,.8,.2,1);z-index:1250;will-change:transform}
+.tools-menu{position:fixed;top:0;right:0;width:min(470px,100vw);height:100dvh;display:flex;flex-direction:column;overflow:hidden;border-left:1px solid var(--border-strong);background:#111116;box-shadow:-24px 0 70px rgba(0,0,0,.48);transform:translateX(104%);transition:transform .32s cubic-bezier(.22,.8,.2,1);z-index:1450;will-change:transform;-webkit-overflow-scrolling:touch}
 .tools-menu.open{transform:translateX(0)}
-body.menu-open{overflow:hidden;touch-action:none}
+body.menu-open{overflow:hidden}
 .tools-menu-head{display:flex;align-items:flex-start;justify-content:space-between;gap:22px;padding:32px 28px 24px;border-bottom:1px solid var(--border)}
 .tools-menu-head span{display:block;color:var(--accent);font-size:10px;font-weight:700;letter-spacing:1.8px}
 .tools-menu-head strong{display:block;margin-top:9px;font-family:"Instrument Serif",serif;font-size:42px;font-weight:400;line-height:1}
