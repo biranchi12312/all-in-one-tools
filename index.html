@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>AuraStudio — Free Image & PDF Tools</title>
     <meta name="description" content="Compress and convert images, merge PDFs and manage everyday files directly in your browser with AuraStudio. Process supported files in a clean, privacy-focused workspace.">
     <link rel="stylesheet" href="./style.css">
@@ -150,12 +150,12 @@
 
             <section class="info-section reveal">
                 <div class="faq-heading"><span class="section-label">FAQ</span><h2>Frequently asked questions.</h2></div>
-                <div class="faq-item"><button class="faq-question" type="button">How many images can I upload?<span>+</span></button><div class="faq-answer"><p>You can process up to 100 supported images in one batch, with a 100 MB per-file limit and a 500 MB total batch safety cap.</p></div></div>
-                <div class="faq-item"><button class="faq-question" type="button">Which image formats are supported?<span>+</span></button><div class="faq-answer"><p>JPG, JPEG, PNG and WebP are supported for compress and convert. Other formats are shown in the converter and stay locked until their engine is added.</p></div></div>
-                <div class="faq-item"><button class="faq-question" type="button">How does PDF merge work?<span>+</span></button><div class="faq-answer"><p>Upload 2 to 20 PDFs, drag them into order, then merge. The batch can be up to 250 MB and 500 pages. Password-protected PDFs are not supported.</p></div></div>
-                <div class="faq-item"><button class="faq-question" type="button">How does PDF to Images work?<span>+</span></button><div class="faq-answer"><p>Upload up to 10 PDFs at a time (100 MB each, 200 pages total per batch). Choose PNG or JPG, convert in your browser, then download images one by one or as a ZIP. Password-protected PDFs are not supported.</p></div></div>
-                <div class="faq-item"><button class="faq-question" type="button">Do my files leave this device?<span>+</span></button><div class="faq-answer"><p>No. Compress, convert, PDF merge and PDF to Images all run in your browser. Files are not uploaded to a server.</p></div></div>
-                <div class="faq-item"><button class="faq-question" type="button">Can I use AuraStudio on mobile?<span>+</span></button><div class="faq-answer"><p>Yes. The interface is responsive and the tools can be used on supported mobile and desktop browsers.</p></div></div>
+                <div class="faq-item"><button class="faq-question" type="button" aria-expanded="false">How many images can I upload?<span>+</span></button><div class="faq-answer"><p>You can process up to 100 supported images in one batch, with a 100 MB per-file limit and a 500 MB total batch safety cap.</p></div></div>
+                <div class="faq-item"><button class="faq-question" type="button" aria-expanded="false">Which image formats are supported?<span>+</span></button><div class="faq-answer"><p>JPG, JPEG, PNG and WebP are supported for compress and convert. Other formats are shown in the converter and stay locked until their engine is added.</p></div></div>
+                <div class="faq-item"><button class="faq-question" type="button" aria-expanded="false">How does PDF merge work?<span>+</span></button><div class="faq-answer"><p>Upload 2 to 20 PDFs, drag them into order, then merge. The batch can be up to 250 MB and 500 pages. Password-protected PDFs are not supported.</p></div></div>
+                <div class="faq-item"><button class="faq-question" type="button" aria-expanded="false">How does PDF to Images work?<span>+</span></button><div class="faq-answer"><p>Upload up to 10 PDFs at a time (100 MB each, 250 MB total, 100 pages per batch). Choose PNG or JPG, convert in your browser, then download images one by one or as a ZIP. Password-protected PDFs are not supported.</p></div></div>
+                <div class="faq-item"><button class="faq-question" type="button" aria-expanded="false">Do my files leave this device?<span>+</span></button><div class="faq-answer"><p>No. Compress, convert, PDF merge and PDF to Images all run in your browser. Files are not uploaded to a server.</p></div></div>
+                <div class="faq-item"><button class="faq-question" type="button" aria-expanded="false">Can I use AuraStudio on mobile?<span>+</span></button><div class="faq-answer"><p>Yes. The interface is responsive and the tools can be used on supported mobile and desktop browsers.</p></div></div>
             </section>
         </section>
 
@@ -812,7 +812,7 @@
                     <span>browse files</span>
                 </p>
                 <div class="pdf-upload-limits">
-                    Up to 10 PDFs at a time • Max 100 MB each • 200 pages total per batch
+                    Up to 10 PDFs at a time • Max 100 MB each • 250 MB total • 100 pages per batch
                 </div>
                 <p class="pdf-upload-privacy">Files stay on this device. Nothing is uploaded to a server.</p>
             </section>
@@ -850,7 +850,7 @@
                         <strong id="p2iTotalPages">0</strong>
                     </div>
                 </div>
-                <p class="pdf-capacity-note" id="p2iCapacity">10 file slots • 200 pages remaining</p>
+                <p class="pdf-capacity-note" id="p2iCapacity">10 file slots • 100 pages remaining</p>
             </section>
 
             <section class="pdf-settings-panel" id="p2iSettingsPanel" hidden>
@@ -1048,9 +1048,9 @@
     <script src="./converter.js"></script>
     <script src="./pdf-merge.js"></script>
     <script src="./pdf-to-images.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" async></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" async></script>
-    <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js" async></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js" defer></script>
 </body>
 
 </html>

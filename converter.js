@@ -84,10 +84,11 @@
     }
 
     function formatBytes(bytes) {
-        if (!bytes) return "0 Bytes";
+        const n = Number(bytes);
+        if (!Number.isFinite(n) || n <= 0) return "0 Bytes";
         const units = ["Bytes", "KB", "MB", "GB"];
-        const index = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
-        return `${(bytes / Math.pow(1024, index)).toFixed(index === 0 ? 0 : 2)} ${units[index]}`;
+        const index = Math.min(Math.floor(Math.log(n) / Math.log(1024)), units.length - 1);
+        return `${(n / Math.pow(1024, index)).toFixed(index === 0 ? 0 : 2)} ${units[index]}`;
     }
 
     function escapeHTML(value) {
@@ -399,12 +400,14 @@
 
     function canvasToBlob(canvas, format, quality) {
         return new Promise((resolve, reject) => {
+            // PNG ignores quality; JPEG/WebP get an explicit clamped value (Safari-safe)
+            const q = format === "image/png" ? undefined : clampQuality(quality);
             canvas.toBlob(
                 result => result
                     ? resolve(result)
                     : reject(new Error("The browser could not create the selected output format.")),
                 format,
-                format === "image/png" ? undefined : clampQuality(quality)
+                q
             );
         });
     }
@@ -455,6 +458,7 @@
 
     async function convertImage(file, format, quality, background) {
         const bitmap = await decodeImage(file);
+        let canvas = null;
         try {
             const pixels = bitmap.width * bitmap.height;
             if (
@@ -464,7 +468,7 @@
                 throw new Error("Image resolution is too large for safe browser-side conversion on this device.");
             }
 
-            const canvas = document.createElement("canvas");
+            canvas = document.createElement("canvas");
             canvas.width = bitmap.width;
             canvas.height = bitmap.height;
             const context = canvas.getContext("2d", { alpha: format !== "image/jpeg" });
@@ -493,7 +497,14 @@
                 smartGuardAdjusted: encoded.smartGuardAdjusted
             };
         } finally {
-            bitmap.close();
+            // Release decode + canvas GPU/CPU memory promptly (helps iOS Safari)
+            try {
+                bitmap.close();
+            } catch (_) {}
+            if (canvas) {
+                canvas.width = 0;
+                canvas.height = 0;
+            }
         }
     }
 
@@ -765,7 +776,8 @@
             document.body.appendChild(anchor);
             anchor.click();
             anchor.remove();
-            setTimeout(() => URL.revokeObjectURL(url), 1000);
+            // Longer delay so slow devices can start the download before revoke
+            setTimeout(() => URL.revokeObjectURL(url), 8000);
         } catch (error) {
             console.error(error);
             await popupError("ZIP failed", "Could not create the ZIP archive.");

@@ -87,20 +87,30 @@
     }
 
     function backToDashboard() {
+        // Always stay inside the app. Never history.back() here —
+        // deep-links (#compressor etc.) may have no prior dashboard
+        // entry, and history.back() would exit the site.
+        setToolsMenu(false);
         if (getViewFromHash() === "dashboard") {
             renderView("dashboard");
             return;
         }
-        if (history.state?.view && history.state.view !== "dashboard") {
-            history.back();
-            return;
-        }
         renderView("dashboard");
-        history.replaceState(
-            { view: "dashboard" },
-            "",
-            location.pathname + location.search
-        );
+        try {
+            history.pushState(
+                { view: "dashboard" },
+                "",
+                location.pathname + location.search
+            );
+        } catch (_) {
+            try {
+                history.replaceState(
+                    { view: "dashboard" },
+                    "",
+                    location.pathname + location.search
+                );
+            } catch (__) {}
+        }
     }
 
     // ---- Routing init ----
@@ -185,6 +195,9 @@
 
     // FAQ accordion
     document.querySelectorAll(".faq-question").forEach(button => {
+        if (!button.hasAttribute("aria-expanded")) {
+            button.setAttribute("aria-expanded", "false");
+        }
         button.addEventListener("click", event => {
             event.preventDefault();
             const item = button.closest(".faq-item");
@@ -196,15 +209,19 @@
             document.querySelectorAll(".faq-item").forEach(otherItem => {
                 if (otherItem === item) return;
                 otherItem.classList.remove("open");
+                const otherBtn = otherItem.querySelector(".faq-question");
+                if (otherBtn) otherBtn.setAttribute("aria-expanded", "false");
                 const otherAnswer = otherItem.querySelector(".faq-answer");
                 if (otherAnswer) otherAnswer.style.maxHeight = null;
             });
 
             if (isOpen) {
                 item.classList.remove("open");
+                button.setAttribute("aria-expanded", "false");
                 answer.style.maxHeight = null;
             } else {
                 item.classList.add("open");
+                button.setAttribute("aria-expanded", "true");
                 answer.style.maxHeight = `${answer.scrollHeight}px`;
             }
         });
@@ -286,4 +303,14 @@
         backToDashboard,
         setToolsMenu
     };
+
+
+    // Soft zoom lock for iOS Safari gesture events (viewport already sets user-scalable=no)
+    (function lockPageZoom() {
+        const stop = event => event.preventDefault();
+        ["gesturestart", "gesturechange", "gestureend"].forEach(type => {
+            document.addEventListener(type, stop, { passive: false });
+        });
+    })();
+
 })();

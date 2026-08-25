@@ -126,6 +126,62 @@
         }
     }
 
+    function waitForPdfJs(timeoutMs) {
+        const limit = timeoutMs || 15000;
+        if (window.pdfjsLib) {
+            ensurePdfJs();
+            return Promise.resolve();
+        }
+        return new Promise((resolve, reject) => {
+            const start = Date.now();
+            const timer = setInterval(() => {
+                if (window.pdfjsLib) {
+                    clearInterval(timer);
+                    try {
+                        ensurePdfJs();
+                        resolve();
+                    } catch (error) {
+                        reject(error);
+                    }
+                    return;
+                }
+                if (Date.now() - start > limit) {
+                    clearInterval(timer);
+                    reject(
+                        new Error(
+                            "PDF reader is still loading. Check your connection, wait a moment, and try again."
+                        )
+                    );
+                }
+            }, 100);
+        });
+    }
+
+    function waitForPdfLib(timeoutMs) {
+        const limit = timeoutMs || 15000;
+        if (window.PDFLib?.PDFDocument) {
+            return Promise.resolve();
+        }
+        return new Promise((resolve, reject) => {
+            const start = Date.now();
+            const timer = setInterval(() => {
+                if (window.PDFLib?.PDFDocument) {
+                    clearInterval(timer);
+                    resolve();
+                    return;
+                }
+                if (Date.now() - start > limit) {
+                    clearInterval(timer);
+                    reject(
+                        new Error(
+                            "PDF merge library is still loading. Check your connection, wait a moment, and try again."
+                        )
+                    );
+                }
+            }, 100);
+        });
+    }
+
     function updateSummary() {
         const { size, pages } = totals();
         const count = files.length;
@@ -320,6 +376,10 @@
                         }, "image/jpeg", 0.72);
                     });
                 }
+                // Free canvas/page memory (helps iOS/Safari with many thumbnails)
+                if (page.cleanup) page.cleanup();
+                canvas.width = 0;
+                canvas.height = 0;
             } catch (_) {
                 thumbUrl = "";
             }
@@ -350,6 +410,16 @@
         const candidates = Array.from(fileList || []);
         if (!candidates.length) return;
 
+        try {
+            await waitForPdfJs();
+        } catch (error) {
+            await popupError(
+                "PDF reader not ready",
+                error.message || "Please wait a moment and try again."
+            );
+            return;
+        }
+
         const rejected = [];
         el.dropZone.classList.add("is-reading");
 
@@ -369,6 +439,16 @@
                 }
                 if (!/\.pdf$/i.test(file.name) && file.type !== "application/pdf") {
                     rejected.push(`${file.name}: only PDF files are supported.`);
+                    continue;
+                }
+
+                if (
+                    files.some(
+                        item =>
+                            item.file.name === file.name && item.file.size === file.size
+                    )
+                ) {
+                    rejected.push(`${file.name}: already in the merge list.`);
                     continue;
                 }
 
@@ -437,8 +517,10 @@
             .replace(/[\\/:*?"<>|]+/g, "-")
             .replace(/\.+$/g, "");
         if (!name) name = "merged-document";
-        if (!/\.pdf$/i.test(name)) name += ".pdf";
-        return name.slice(0, 120);
+        // Strip extension, truncate base, then always append .pdf
+        // (avoids cutting ".pdf" when the full string is near the max length)
+        const base = name.replace(/\.pdf$/i, "").slice(0, 116) || "merged-document";
+        return `${base}.pdf`;
     }
 
     function setProcessingProgress(percent, title, text) {
@@ -466,7 +548,7 @@
         }
 
         try {
-            ensurePdfLib();
+            await waitForPdfLib();
         } catch (error) {
             await popupError("Merge library missing", error.message);
             return;

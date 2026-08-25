@@ -56,15 +56,29 @@
 
     function open(options) {
         const opts = options || {};
+
+        // If a dialog is already open, settle the previous promise so callers
+        // never hang forever when a second open() arrives (shared AuraDialog).
+        if (resolver) {
+            const previous = resolver;
+            resolver = null;
+            try {
+                previous(false);
+            } catch (_) {}
+        }
+
         lastFocus = document.activeElement;
         titleEl.textContent = opts.title || "Notice";
         textEl.textContent = opts.message || "";
         textEl.hidden = !opts.message;
-        root.dataset.variant = opts.variant || "error";
+
+        const allowed = { error: true, warning: true, success: true, confirm: true };
+        const variant = allowed[opts.variant] ? opts.variant : "error";
+        root.dataset.variant = variant;
         iconEl.textContent =
-            opts.variant === "success" ? "✓" :
-            opts.variant === "warning" ? "!" :
-            opts.variant === "confirm" ? "?" : "!";
+            variant === "success" ? "✓" :
+            variant === "warning" ? "!" :
+            variant === "confirm" ? "?" : "!";
 
         setItems(opts.items);
         actionEl.textContent = opts.confirmLabel || "OK";

@@ -66,7 +66,9 @@
     }
 
     function formatBytes(bytes) {
-        if (!bytes) return "0 Bytes";
+        const n = Number(bytes);
+        if (!Number.isFinite(n) || n <= 0) return "0 Bytes";
+        bytes = n;
         const units = ["Bytes", "KB", "MB", "GB"];
         const index = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
         return `${(bytes / Math.pow(1024, index)).toFixed(index === 0 ? 0 : 2)} ${units[index]}`;
@@ -294,6 +296,7 @@
     async function compressImage(file, quality) {
         const type = guessImageType(file) || "image/jpeg";
         const bitmap = await decodeImage(file);
+        let canvas = null;
         try {
             const pixels = bitmap.width * bitmap.height;
             if (
@@ -314,7 +317,7 @@
                 resized = true;
             }
 
-            const canvas = document.createElement("canvas");
+            canvas = document.createElement("canvas");
             canvas.width = width;
             canvas.height = height;
             const context = canvas.getContext("2d", { alpha: true });
@@ -322,11 +325,13 @@
             context.drawImage(bitmap, 0, 0, width, height);
 
             const outputType = type === "image/jpg" ? "image/jpeg" : type;
+            // PNG ignores quality; JPEG/WebP get an explicit number (Safari-safe)
+            const q = outputType === "image/png" ? undefined : quality;
             const blob = await new Promise((resolve, reject) => {
                 canvas.toBlob(
                     result => result ? resolve(result) : reject(new Error("Compression failed")),
                     outputType,
-                    outputType === "image/png" ? undefined : quality
+                    q
                 );
             });
 
@@ -355,7 +360,14 @@
                 toHeight: height
             };
         } finally {
-            bitmap.close();
+            // Free decode + canvas memory promptly (helps iOS Safari)
+            try {
+                bitmap.close();
+            } catch (_) {}
+            if (canvas) {
+                canvas.width = 0;
+                canvas.height = 0;
+            }
         }
     }
 
@@ -549,7 +561,7 @@
             document.body.appendChild(anchor);
             anchor.click();
             anchor.remove();
-            setTimeout(() => URL.revokeObjectURL(url), 1000);
+            setTimeout(() => URL.revokeObjectURL(url), 8000);
         } catch (error) {
             console.error(error);
             await popupError("ZIP failed", "Could not create the ZIP archive.");
