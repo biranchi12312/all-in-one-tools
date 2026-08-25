@@ -41,7 +41,10 @@
             viewName === "dashboard"
         );
 
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        // Tool pages: tighter top spacing (works without CSS :has())
+        document.body.classList.toggle("tool-view", viewName !== "dashboard");
+
+        window.scrollTo(0, 0);
 
         if (viewName === "dashboard") {
             requestAnimationFrame(() => initScrollAnimations());
