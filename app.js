@@ -7,7 +7,8 @@
         dashboard: document.getElementById("dashboardView"),
         compressor: document.getElementById("compressorView"),
         converter: document.getElementById("converterView"),
-        pdfMerge: document.getElementById("pdfMergeView")
+        pdfMerge: document.getElementById("pdfMergeView"),
+        pdfToImages: document.getElementById("pdfToImagesView")
     };
 
     function setToolsMenu(open) {
@@ -77,7 +78,8 @@
             hash === "dashboard" ||
             hash === "compressor" ||
             hash === "converter" ||
-            hash === "pdfMerge"
+            hash === "pdfMerge" ||
+            hash === "pdfToImages"
         ) {
             return hash;
         }

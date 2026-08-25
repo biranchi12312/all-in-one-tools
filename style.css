@@ -3403,3 +3403,111 @@ body.dialog-open {
     outline: 2px solid var(--accent);
     outline-offset: 3px;
 }
+
+/* —— PDF to Images —— */
+.p2i-settings-grid {
+    display: grid;
+    gap: 1.25rem;
+}
+
+@media (min-width: 720px) {
+    .p2i-settings-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+}
+
+.p2i-format-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.85rem;
+}
+
+.p2i-format-option {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.55rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    background: rgba(15, 17, 24, 0.65);
+    cursor: pointer;
+    font-size: 0.92rem;
+    color: #e2e8f0;
+}
+
+.p2i-format-option input {
+    accent-color: #8b7cff;
+}
+
+.p2i-quality-row {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-top: 0.85rem;
+}
+
+.p2i-quality-row input[type="range"] {
+    flex: 1;
+}
+
+.p2i-result-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.9rem;
+    margin: 1.25rem 0 0.5rem;
+    width: 100%;
+    text-align: left;
+}
+
+.p2i-result-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    padding: 0.7rem;
+    border-radius: 16px;
+    border: 1px solid rgba(148, 163, 184, 0.16);
+    background: rgba(12, 14, 20, 0.72);
+}
+
+.p2i-result-thumb-wrap {
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #0b0d12;
+}
+
+.p2i-result-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.p2i-result-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+}
+
+.p2i-result-meta strong {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #e8edf7;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.p2i-result-meta span {
+    font-size: 0.72rem;
+    color: rgba(148, 163, 184, 0.9);
+}
+
+.p2i-result-card .action-btn {
+    width: 100%;
+    padding: 0.55rem 0.7rem;
+    font-size: 0.82rem;
+}
