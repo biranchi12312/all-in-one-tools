@@ -425,7 +425,7 @@
     });
 
     el.clearButton.addEventListener("click", () => resetCompressor(false));
-    el.processMore.addEventListener("click", () => resetCompressor(true));
+    el.processMore.addEventListener("click", () => resetCompressor(false));
 
     el.quality.addEventListener("input", event => {
         el.qualityValue.textContent = `${event.target.value}%`;

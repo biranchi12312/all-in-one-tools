@@ -2743,6 +2743,11 @@ input[type="range"]:focus-visible::-moz-range-thumb {
     display: grid;
     gap: 10px;
     margin-top: 22px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+    box-sizing: border-box;
 }
 
 .pdf-queue-item {
@@ -3019,10 +3024,20 @@ input[type="range"]:focus-visible::-moz-range-thumb {
         grid-template-columns: auto minmax(0,1fr);
     }
 
-    .pdf-file-actions {
+    .pdf-queue-item > .pdf-file-actions {
         grid-column: 1 / -1;
         justify-content: flex-end;
         padding-top: 2px;
+    }
+
+    .pdf-file-row {
+        flex-wrap: nowrap;
+    }
+
+    .pdf-file-row .pdf-file-actions {
+        flex-shrink: 0;
+        padding-top: 0;
+        grid-column: auto;
     }
 
     .pdf-queue-summary,
@@ -3447,4 +3462,125 @@ body.dialog-open {
     width: 100%;
     padding: 0.55rem 0.7rem;
     font-size: 0.82rem;
+}
+
+/* Images to PDF / PDF-to-images queue rows — locked inside parent, no horizontal overflow */
+.pdf-file-queue {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+
+.pdf-file-row {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 14px;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.pdf-file-row .pdf-file-main {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.pdf-file-row .pdf-file-icon {
+    flex: 0 0 auto;
+}
+
+.pdf-file-row .pdf-file-copy {
+    min-width: 0;
+    flex: 1 1 auto;
+    overflow: hidden;
+}
+
+.pdf-file-row .pdf-file-copy strong {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pdf-file-row .pdf-file-copy span {
+    display: block;
+    margin-top: 4px;
+    color: var(--text-soft);
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pdf-file-row .pdf-file-actions {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.pdf-row-btn {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-soft);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    transition: color .2s ease, border-color .2s ease, background .2s ease, transform .15s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.pdf-row-btn:hover:not(:disabled) {
+    color: var(--text-main);
+    border-color: var(--accent);
+    background: rgba(99, 102, 241, 0.1);
+}
+
+.pdf-row-btn:active:not(:disabled) {
+    transform: scale(0.96);
+}
+
+.pdf-row-btn.remove:hover:not(:disabled) {
+    color: #f87171;
+    border-color: rgba(248, 113, 113, 0.45);
+    background: rgba(248, 113, 113, 0.1);
+}
+
+.pdf-row-btn:disabled {
+    opacity: 0.32;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.i2p-queue-item {
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+}
+.i2p-queue-item.is-dragging {
+    opacity: 0.55;
 }

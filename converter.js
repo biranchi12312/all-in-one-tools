@@ -600,7 +600,7 @@
 
     el.clearButton.addEventListener("click", () => clearSelection(false));
     el.processMore.addEventListener("click", async () => {
-        await clearSelection(true);
+        await clearSelection(false);
         window.scrollTo({ top: 0, behavior: "smooth" });
     });
 

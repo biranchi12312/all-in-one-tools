@@ -62,6 +62,12 @@
         window.alert([title, message, (items || []).join("\n")].filter(Boolean).join("\n"));
     }
 
+    async function popupConfirm(title, message) {
+        const ui = dialog();
+        if (ui) return ui.confirm(title, message);
+        return window.confirm(`${title}\n\n${message}`);
+    }
+
     function formatBytes(bytes) {
         if (!bytes || bytes < 0) return "0 B";
         const units = ["B", "KB", "MB", "GB"];
@@ -214,7 +220,7 @@
                 </div>
             </div>
             <div class="pdf-file-actions">
-                <button type="button" class="pdf-row-btn" data-action="remove" aria-label="Remove">✕</button>
+                <button type="button" class="pdf-row-btn remove" data-action="remove" aria-label="Remove">✕</button>
             </div>
         `;
         const removeBtn = article.querySelector('[data-action="remove"]');
@@ -716,8 +722,13 @@
     }
 
     if (el.clearBtn) {
-        el.clearBtn.addEventListener("click", () => {
-            if (!processing) resetToUpload(true);
+        el.clearBtn.addEventListener("click", async () => {
+            if (processing || !files.length) return;
+            const confirmed = await popupConfirm(
+                "Clear all PDFs?",
+                "This removes the current list. Your original files on the device stay unchanged."
+            );
+            if (confirmed) resetToUpload(true);
         });
     }
     if (el.startBtn) {
@@ -731,7 +742,15 @@
         });
     }
     if (el.moreBtn) {
-        el.moreBtn.addEventListener("click", () => {
+        el.moreBtn.addEventListener("click", async () => {
+            if (processing) return;
+            if (files.length > 0 || results.length > 0) {
+                const confirmed = await popupConfirm(
+                    "Convert more PDFs?",
+                    "This clears the current list and results. Original files on your device stay unchanged."
+                );
+                if (!confirmed) return;
+            }
             resetToUpload(true);
         });
     }

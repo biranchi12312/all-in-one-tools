@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>AuraStudio — Free Image & PDF Tools</title>
     <meta name="description" content="Compress and convert images, merge PDFs and manage everyday files directly in your browser with AuraStudio. Process supported files in a clean, privacy-focused workspace.">
     <link rel="stylesheet" href="./style.css">
@@ -80,6 +80,7 @@
                     <div class="menu-category-panel-inner">
                         <button type="button" class="menu-item menu-item-live" data-open-view="pdfMerge"><span><b>Merge PDF</b><small>Combine multiple PDFs into one</small></span><em aria-label="Open tool">→</em></button>
                         <button type="button" class="menu-item menu-item-live" data-open-view="pdfToImages"><span><b>PDF to Images</b><small>Turn pages into image files</small></span><em aria-label="Open tool">→</em></button>
+                        <button type="button" class="menu-item menu-item-live" data-open-view="imagesToPdf"><span><b>Images to PDF</b><small>Combine images into one PDF</small></span><em aria-label="Open tool">→</em></button>
                         <button type="button" class="menu-item preview-feature"><span><b>Split PDF</b><small>Separate pages into new files</small></span><em aria-label="Preview tool">↗</em></button>
                         <button type="button" class="menu-item preview-feature"><span><b>Compress PDF</b><small>Make large documents lighter</small></span><em aria-label="Preview tool">↗</em></button>
                     </div>
@@ -124,6 +125,7 @@
                     <button class="tool-card reveal reveal-delay-2" type="button" data-open-view="converter"><div class="tool-card-top"><div class="tool-icon">↔</div><span class="tool-number">02</span></div><div class="tool-card-bottom"><div><h3>Convert</h3><p>Choose the format you need.</p></div><span class="tool-arrow">→</span></div></button>
                     <button class="tool-card reveal reveal-delay-3" type="button" data-open-view="pdfMerge"><div class="tool-card-top"><div class="tool-icon">📄</div><span class="tool-number">03</span></div><div class="tool-card-bottom"><div><h3>Merge PDF</h3><p>Combine documents in your order.</p></div><span class="tool-arrow">→</span></div></button>
                     <button class="tool-card reveal reveal-delay-1" type="button" data-open-view="pdfToImages"><div class="tool-card-top"><div class="tool-icon">▣</div><span class="tool-number">04</span></div><div class="tool-card-bottom"><div><h3>PDF to Images</h3><p>Turn pages into image files.</p></div><span class="tool-arrow">→</span></div></button>
+                    <button class="tool-card reveal reveal-delay-2" type="button" data-open-view="imagesToPdf"><div class="tool-card-top"><div class="tool-icon">📎</div><span class="tool-number">05</span></div><div class="tool-card-bottom"><div><h3>Images to PDF</h3><p>Combine images into one PDF.</p></div><span class="tool-arrow">→</span></div></button>
                 </div>
             </section>
 
@@ -154,6 +156,7 @@
                 <div class="faq-item"><button class="faq-question" type="button" aria-expanded="false">Which image formats are supported?<span>+</span></button><div class="faq-answer"><p>JPG, JPEG, PNG and WebP are supported for compress and convert. Other formats are shown in the converter and stay locked until their engine is added.</p></div></div>
                 <div class="faq-item"><button class="faq-question" type="button" aria-expanded="false">How does PDF merge work?<span>+</span></button><div class="faq-answer"><p>Upload 2 to 20 PDFs, drag them into order, then merge. The batch can be up to 250 MB and 500 pages. Password-protected PDFs are not supported.</p></div></div>
                 <div class="faq-item"><button class="faq-question" type="button" aria-expanded="false">How does PDF to Images work?<span>+</span></button><div class="faq-answer"><p>Upload up to 10 PDFs at a time (100 MB each, 250 MB total, 100 pages per batch). Choose PNG or JPG, convert in your browser, then download images one by one or as a ZIP. Password-protected PDFs are not supported.</p></div></div>
+                <div class="faq-item"><button class="faq-question" type="button" aria-expanded="false">How does Images to PDF work?<span>+</span></button><div class="faq-answer"><p>Upload up to 30 JPG, PNG or WebP images (100 MB each, 250 MB total). Reorder them, choose Fit to image, A4 or Letter pages, then create a single PDF in your browser. Large images are safely resized for mobile devices.</p></div></div>
                 <div class="faq-item"><button class="faq-question" type="button" aria-expanded="false">Do my files leave this device?<span>+</span></button><div class="faq-answer"><p>No. Compress, convert, PDF merge and PDF to Images all run in your browser. Files are not uploaded to a server.</p></div></div>
                 <div class="faq-item"><button class="faq-question" type="button" aria-expanded="false">Can I use AuraStudio on mobile?<span>+</span></button><div class="faq-answer"><p>Yes. The interface is responsive and the tools can be used on supported mobile and desktop browsers.</p></div></div>
             </section>
@@ -934,6 +937,115 @@
 
 
 
+
+        <!-- =========================
+             IMAGES TO PDF
+        ========================== -->
+        <section id="imagesToPdfView" class="view">
+            <button class="back-btn" type="button" data-back-dashboard>← Back to Workshop</button>
+
+            <div class="workspace-header">
+                <span class="section-label">PDF TOOLS</span>
+                <h2>Images to PDF</h2>
+                <p>
+                    Combine JPG, PNG or WebP images into one PDF. Reorder pages, pick Fit to image, A4 or Letter, then download.
+                </p>
+            </div>
+
+            <section class="pdf-upload-box" id="i2pDropZone" role="button" tabindex="0" aria-label="Upload images to create a PDF">
+                <div class="pdf-upload-icon">📎</div>
+                <h3>Upload Images</h3>
+                <p>Drag & drop your images here or <span>browse files</span></p>
+                <div class="pdf-upload-limits">
+                    Up to 30 images · Max 100 MB each · 250 MB total · JPG / PNG / WebP
+                </div>
+                <p class="pdf-upload-privacy">Files stay on this device. Nothing is uploaded to a server.</p>
+            </section>
+            <input type="file" id="i2pFileInput" multiple accept="image/jpeg,image/jpg,image/png,image/webp,.jpg,.jpeg,.png,.webp" hidden>
+
+            <section class="pdf-queue-panel" id="i2pQueuePanel" hidden>
+                <div class="pdf-queue-header">
+                    <div>
+                        <span class="section-label">PAGE ORDER</span>
+                        <h3>Your Images</h3>
+                        <p id="i2pQueueSummary">No images selected</p>
+                    </div>
+                    <button type="button" class="small-reset-btn" id="i2pClearBtn">Clear All</button>
+                </div>
+                <p class="pdf-reorder-hint">Drag a row, or use the arrows, to set the page order.</p>
+                <div class="pdf-file-queue" id="i2pFileQueue" aria-live="polite"></div>
+                <div class="pdf-queue-summary">
+                    <div>
+                        <span>IMAGES</span>
+                        <strong id="i2pTotalFiles">0</strong>
+                    </div>
+                    <div>
+                        <span>TOTAL SIZE</span>
+                        <strong id="i2pTotalSize">0 B</strong>
+                    </div>
+                </div>
+                <p class="pdf-capacity-note" id="i2pCapacity">30 image slots · 250 MB remaining</p>
+            </section>
+
+            <section class="pdf-settings-panel" id="i2pSettingsPanel" hidden>
+                <div>
+                    <span class="section-label">PAGE SIZE</span>
+                    <h3>Choose page layout</h3>
+                    <p>Fit to image keeps each photo’s shape. A4 and Letter place images on standard pages.</p>
+                    <div class="p2i-format-row" role="radiogroup" aria-label="Page size">
+                        <label class="p2i-format-option">
+                            <input type="radio" name="i2pPageMode" id="i2pPageFit" value="fit" checked>
+                            <span>Fit to image</span>
+                        </label>
+                        <label class="p2i-format-option">
+                            <input type="radio" name="i2pPageMode" id="i2pPageA4" value="a4">
+                            <span>A4</span>
+                        </label>
+                        <label class="p2i-format-option">
+                            <input type="radio" name="i2pPageMode" id="i2pPageLetter" value="letter">
+                            <span>Letter</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="panel-action">
+                    <div id="i2pReadyText">Add at least 1 image to create a PDF.</div>
+                    <button class="action-btn" id="i2pStartBtn" type="button" disabled>Create PDF</button>
+                </div>
+            </section>
+
+            <section class="pdf-processing-panel" id="i2pProcessingPanel" hidden>
+                <div class="pdf-processing-orb">⏳</div>
+                <span class="section-label">PROCESSING</span>
+                <h3 id="i2pProgressTitle">Preparing PDF</h3>
+                <p id="i2pProgressText">Starting…</p>
+                <div class="pdf-progress-track">
+                    <div class="pdf-progress-fill" id="i2pProgressFill"></div>
+                </div>
+                <strong id="i2pProgressPercent">0%</strong>
+            </section>
+
+            <section class="pdf-results-panel" id="i2pResultsPanel" hidden>
+                <div class="pdf-success-icon">✓</div>
+                <span class="section-label">COMPLETE</span>
+                <h3>PDF Ready</h3>
+                <p id="i2pResultSummary">Your PDF is ready.</p>
+                <div class="pdf-result-stats">
+                    <div>
+                        <span>PAGES</span>
+                        <strong id="i2pResultPages">0</strong>
+                    </div>
+                    <div>
+                        <span>FILE SIZE</span>
+                        <strong id="i2pResultSize">0 B</strong>
+                    </div>
+                </div>
+                <div class="result-actions">
+                    <button class="action-btn outline" id="i2pMoreBtn" type="button">↺ Create Another</button>
+                    <button class="action-btn" id="i2pDownloadBtn" type="button">Download PDF</button>
+                </div>
+            </section>
+        </section>
+
     <div
         class="preview-feature-toast"
         id="previewFeatureToast"
@@ -1048,6 +1160,7 @@
     <script src="./converter.js"></script>
     <script src="./pdf-merge.js"></script>
     <script src="./pdf-to-images.js"></script>
+    <script src="./images-to-pdf.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js" defer></script>

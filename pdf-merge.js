@@ -840,7 +840,15 @@
         }
     });
 
-    el.mergeMore.addEventListener("click", () => {
+    el.mergeMore.addEventListener("click", async () => {
+        if (processing) return;
+        if (files.length > 0) {
+            const confirmed = await popupConfirm(
+                "Start a new merge?",
+                "This clears the current list and result. Original files on your device stay unchanged."
+            );
+            if (!confirmed) return;
+        }
         resetTool();
         window.scrollTo({ top: 0, behavior: "smooth" });
     });

@@ -8,7 +8,8 @@
         compressor: document.getElementById("compressorView"),
         converter: document.getElementById("converterView"),
         pdfMerge: document.getElementById("pdfMergeView"),
-        pdfToImages: document.getElementById("pdfToImagesView")
+        pdfToImages: document.getElementById("pdfToImagesView"),
+        imagesToPdf: document.getElementById("imagesToPdfView")
     };
 
     function setToolsMenu(open) {
@@ -79,7 +80,8 @@
             hash === "compressor" ||
             hash === "converter" ||
             hash === "pdfMerge" ||
-            hash === "pdfToImages"
+            hash === "pdfToImages" ||
+            hash === "imagesToPdf"
         ) {
             return hash;
         }
@@ -304,13 +306,5 @@
         setToolsMenu
     };
 
-
-    // Soft zoom lock for iOS Safari gesture events (viewport already sets user-scalable=no)
-    (function lockPageZoom() {
-        const stop = event => event.preventDefault();
-        ["gesturestart", "gesturechange", "gestureend"].forEach(type => {
-            document.addEventListener(type, stop, { passive: false });
-        });
-    })();
 
 })();
