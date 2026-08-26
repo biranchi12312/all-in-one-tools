@@ -831,11 +831,21 @@
             popupError("Nothing to preview", "Merge PDFs first, then open the preview.");
             return;
         }
-        const opened = window.open(outputBlobUrl, "_blank", "noopener");
-        if (!opened) {
+        // Anchor click is more reliable than window.open on mobile.
+        // Note: window.open(url, "_blank", "noopener") returns null even when
+        // the tab opens, which caused a false "Preview blocked" dialog.
+        try {
+            const anchor = document.createElement("a");
+            anchor.href = outputBlobUrl;
+            anchor.target = "_blank";
+            anchor.rel = "noopener noreferrer";
+            document.body.appendChild(anchor);
+            anchor.click();
+            anchor.remove();
+        } catch (err) {
             popupError(
-                "Preview blocked",
-                "The browser blocked the preview window. Allow popups for this site, or download the PDF instead."
+                "Preview unavailable",
+                "Could not open the preview. Download the PDF instead."
             );
         }
     });
