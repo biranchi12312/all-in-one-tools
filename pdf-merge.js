@@ -831,9 +831,31 @@
             popupError("Nothing to preview", "Merge PDFs first, then open the preview.");
             return;
         }
-        // Anchor click is more reliable than window.open on mobile.
-        // Note: window.open(url, "_blank", "noopener") returns null even when
-        // the tab opens, which caused a false "Preview blocked" dialog.
+        // Do not pass "noopener" as a window feature — that makes open() return
+        // null even on success (false "Preview blocked"). Clear opener manually.
+        let opened = null;
+        try {
+            opened = window.open(outputBlobUrl, "_blank");
+            if (opened) {
+                try {
+                    opened.opener = null;
+                } catch (_) {
+                    /* ignore */
+                }
+                return;
+            }
+        } catch (_) {
+            opened = null;
+        }
+
+        // Mobile often returns null even when navigation works — try anchor next.
+        const coarse =
+            typeof window.matchMedia === "function" &&
+            window.matchMedia("(pointer: coarse)").matches;
+        const mobileUa = /Android|iPhone|iPad|iPod|Mobile/i.test(
+            navigator.userAgent || ""
+        );
+
         try {
             const anchor = document.createElement("a");
             anchor.href = outputBlobUrl;
@@ -842,10 +864,20 @@
             document.body.appendChild(anchor);
             anchor.click();
             anchor.remove();
-        } catch (err) {
+        } catch (_) {
             popupError(
                 "Preview unavailable",
                 "Could not open the preview. Download the PDF instead."
+            );
+            return;
+        }
+
+        // Desktop + window.open null ≈ real popup block; tell the user.
+        // Skip this on mobile to avoid false warnings.
+        if (!opened && !coarse && !mobileUa) {
+            popupError(
+                "Preview blocked",
+                "The browser blocked the preview window. Allow popups for this site, or download the PDF instead."
             );
         }
     });
