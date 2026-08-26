@@ -9,7 +9,8 @@
         converter: document.getElementById("converterView"),
         pdfMerge: document.getElementById("pdfMergeView"),
         pdfToImages: document.getElementById("pdfToImagesView"),
-        imagesToPdf: document.getElementById("imagesToPdfView")
+        imagesToPdf: document.getElementById("imagesToPdfView"),
+        pdfSplit: document.getElementById("pdfSplitView")
     };
 
     function setToolsMenu(open) {
@@ -81,7 +82,8 @@
             hash === "converter" ||
             hash === "pdfMerge" ||
             hash === "pdfToImages" ||
-            hash === "imagesToPdf"
+            hash === "imagesToPdf" ||
+            hash === "pdfSplit"
         ) {
             return hash;
         }

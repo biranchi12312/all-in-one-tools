@@ -81,7 +81,7 @@
                         <button type="button" class="menu-item menu-item-live" data-open-view="pdfMerge"><span><b>Merge PDF</b><small>Combine multiple PDFs into one</small></span><em aria-label="Open tool">→</em></button>
                         <button type="button" class="menu-item menu-item-live" data-open-view="pdfToImages"><span><b>PDF to Images</b><small>Turn pages into image files</small></span><em aria-label="Open tool">→</em></button>
                         <button type="button" class="menu-item menu-item-live" data-open-view="imagesToPdf"><span><b>Images to PDF</b><small>Combine images into one PDF</small></span><em aria-label="Open tool">→</em></button>
-                        <button type="button" class="menu-item preview-feature"><span><b>Split PDF</b><small>Separate pages into new files</small></span><em aria-label="Preview tool">↗</em></button>
+                        <button type="button" class="menu-item menu-item-live" data-open-view="pdfSplit"><span><b>Split PDF</b><small>Separate pages into new files</small></span><em aria-label="Open tool">→</em></button>
                         <button type="button" class="menu-item preview-feature"><span><b>Compress PDF</b><small>Make large documents lighter</small></span><em aria-label="Preview tool">↗</em></button>
                     </div>
                 </div>
@@ -134,7 +134,7 @@
                 <div class="discovery-grid">
                     <button type="button" class="discovery-card preview-feature reveal reveal-delay-1"><span class="discovery-index">01</span><span class="discovery-icon">↔</span><h3>Resize Images</h3><p>Need a specific width, height or platform-ready size?</p><span class="discovery-question">Would you use this? <b>→</b></span></button>
                     <button type="button" class="discovery-card preview-feature reveal reveal-delay-2"><span class="discovery-index">02</span><span class="discovery-icon">✂</span><h3>Crop & Rotate</h3><p>Fix framing, orientation and unwanted edges in one workspace.</p><span class="discovery-question">Try this next <b>→</b></span></button>
-                    <button type="button" class="discovery-card preview-feature reveal reveal-delay-3"><span class="discovery-index">03</span><span class="discovery-icon">⇄</span><h3>Split PDF</h3><p>Separate selected pages when one document contains too much.</p><span class="discovery-question">Interested? <b>→</b></span></button>
+                    <button type="button" class="discovery-card reveal reveal-delay-3" data-open-view="pdfSplit"><span class="discovery-index">03</span><span class="discovery-icon">⇄</span><h3>Split PDF</h3><p>Separate selected pages when one document contains too much.</p><span class="discovery-question">Open tool <b>→</b></span></button>
                     <button type="button" class="discovery-card reveal reveal-delay-1" data-open-view="pdfToImages"><span class="discovery-index">04</span><span class="discovery-icon">▣</span><h3>PDF to Images</h3><p>Turn document pages into image files without a complicated workflow.</p><span class="discovery-question">Open tool <b>→</b></span></button>
                 </div>
                 <div class="discovery-footer reveal"><span>More tools are organized inside the menu.</span><button type="button" class="discovery-menu-link" data-open-menu>Browse tool categories <b>☰</b></button></div>
@@ -1041,6 +1041,143 @@
             </section>
         </section>
 
+
+        <!-- =========================
+             SPLIT PDF
+        ========================== -->
+        <section id="pdfSplitView" class="view">
+            <button class="back-btn" type="button" data-back-dashboard>← Back to Workshop</button>
+
+            <div class="workspace-header">
+                <span class="section-label">PDF TOOLS</span>
+                <h2>Split PDF</h2>
+                <p>
+                    Extract page ranges, split every page, or cut into equal chunks. Download separate PDFs or one ZIP.
+                </p>
+            </div>
+
+            <section
+                class="pdf-upload-box"
+                id="splitDropZone"
+                role="button"
+                tabindex="0"
+                aria-label="Upload a PDF to split"
+            >
+                <div class="pdf-upload-icon">⇄</div>
+                <h3>Upload PDF</h3>
+                <p>Drag & drop your PDF here or <span>browse files</span></p>
+                <div class="pdf-upload-limits">
+                    1 PDF · Max 100 MB · Max 500 pages
+                </div>
+                <p class="pdf-upload-privacy">Files stay on this device. Nothing is uploaded to a server.</p>
+            </section>
+            <input type="file" id="splitFileInput" accept="application/pdf,.pdf" hidden>
+
+            <section class="pdf-queue-panel" id="splitQueuePanel" hidden>
+                <div class="pdf-queue-header">
+                    <div>
+                        <span class="section-label">SOURCE</span>
+                        <h3 id="splitFileName">document.pdf</h3>
+                        <p id="splitFileMeta">0 pages</p>
+                    </div>
+                    <button type="button" class="small-reset-btn" id="splitClearBtn">Clear</button>
+                </div>
+            </section>
+
+            <section class="pdf-settings-panel" id="splitSettingsPanel" hidden>
+                <div class="panel-block">
+                    <h3>Split mode</h3>
+                    <p>Choose how pages should be separated into new files.</p>
+                    <div class="p2i-format-row" role="radiogroup" aria-label="Split mode">
+                        <label class="p2i-format-option">
+                            <input type="radio" name="splitMode" id="splitModeRanges" value="ranges" checked>
+                            <span>Page ranges</span>
+                        </label>
+                        <label class="p2i-format-option">
+                            <input type="radio" name="splitMode" id="splitModeEvery" value="every">
+                            <span>Every page</span>
+                        </label>
+                        <label class="p2i-format-option">
+                            <input type="radio" name="splitMode" id="splitModeChunk" value="chunk">
+                            <span>Every N pages</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="panel-block" id="splitRangesWrap">
+                    <h3>Page ranges</h3>
+                    <p>Examples: <strong>1-3, 5, 8-10</strong> — each range becomes its own PDF (unless single-file is on).</p>
+                    <input
+                        type="text"
+                        class="pdf-output-field"
+                        id="splitRangesInput"
+                        placeholder="e.g. 1-3, 5, 8-10"
+                        autocomplete="off"
+                        spellcheck="false"
+                    >
+                    <label class="split-single-row" id="splitSingleWrap">
+                        <input type="checkbox" id="splitSingleToggle">
+                        <span>Single PDF with only the selected pages</span>
+                    </label>
+                </div>
+
+                <div class="panel-block" id="splitChunkWrap" hidden>
+                    <h3>Chunk size</h3>
+                    <p>Split the document into files of N pages each.</p>
+                    <input
+                        type="number"
+                        class="pdf-output-field"
+                        id="splitChunkInput"
+                        min="1"
+                        max="500"
+                        value="5"
+                    >
+                </div>
+
+                <div class="panel-action">
+                    <div id="splitReadyText">Upload a PDF to start splitting.</div>
+                    <button class="action-btn" id="splitStartBtn" type="button" disabled>Split PDF</button>
+                </div>
+            </section>
+
+            <section class="pdf-processing-panel" id="splitProcessingPanel" hidden>
+                <div class="pdf-processing-orb">⏳</div>
+                <span class="section-label">PROCESSING</span>
+                <h3 id="splitProgressTitle">Preparing PDF</h3>
+                <p id="splitProgressText">Starting…</p>
+                <div class="pdf-progress-track">
+                    <div class="pdf-progress-fill" id="splitProgressFill"></div>
+                </div>
+                <strong id="splitProgressPercent">0%</strong>
+            </section>
+
+            <section class="pdf-results-panel" id="splitResultsPanel" hidden>
+                <div class="pdf-success-icon">✓</div>
+                <span class="section-label">COMPLETE</span>
+                <h3>Split Ready</h3>
+                <p id="splitResultSummary">Your files are ready.</p>
+                <div class="pdf-result-stats">
+                    <div>
+                        <span>FILES</span>
+                        <strong id="splitResultFiles">0</strong>
+                    </div>
+                    <div>
+                        <span>PAGES</span>
+                        <strong id="splitResultPages">0</strong>
+                    </div>
+                    <div>
+                        <span>SIZE</span>
+                        <strong id="splitResultSize">0 B</strong>
+                    </div>
+                </div>
+                <div class="pdf-file-queue" id="splitResultList" style="margin-top:18px" aria-live="polite"></div>
+                <div class="result-actions" style="margin-top:18px">
+                    <button class="action-btn outline" id="splitMoreBtn" type="button">↺ Split Another</button>
+                    <button class="action-btn" id="splitZipBtn" type="button" hidden>Download All as ZIP</button>
+                </div>
+            </section>
+        </section>
+
     </main>
 
 
@@ -1159,6 +1296,7 @@
     <script src="./pdf-merge.js"></script>
     <script src="./pdf-to-images.js"></script>
     <script src="./images-to-pdf.js"></script>
+    <script src="./pdf-split.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js" defer></script>
