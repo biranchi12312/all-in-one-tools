@@ -65,7 +65,7 @@
                     <div class="menu-category-panel-inner">
                         <button type="button" class="menu-item menu-item-live" data-open-view="compressor"><span><b>Compress Images</b><small>Reduce file size in batches</small></span><em aria-label="Open tool">→</em></button>
                         <button type="button" class="menu-item menu-item-live" data-open-view="converter"><span><b>Convert Images</b><small>Switch between supported formats</small></span><em aria-label="Open tool">→</em></button>
-                        <button type="button" class="menu-item preview-feature"><span><b>Resize Images</b><small>Prepare images for any layout</small></span><em aria-label="Preview tool">↗</em></button>
+                        <button type="button" class="menu-item menu-item-live" data-open-view="resize"><span><b>Resize Images</b><small>Prepare images for any layout</small></span><em aria-label="Open tool">→</em></button>
                         <button type="button" class="menu-item preview-feature"><span><b>Crop &amp; Rotate</b><small>Quick framing and orientation tools</small></span><em aria-label="Preview tool">↗</em></button>
                     </div>
                 </div>
@@ -132,7 +132,7 @@
             <section class="feature-discovery">
                 <div class="feature-discovery-intro reveal"><span class="section-label">EXPLORE THE WORKSPACE</span><h2>What do you want to do next?</h2><p>These are the next tools being shaped for AuraStudio. Pick what catches your eye and keep the idea on your radar.</p></div>
                 <div class="discovery-grid">
-                    <button type="button" class="discovery-card preview-feature reveal reveal-delay-1"><span class="discovery-index">01</span><span class="discovery-icon">↔</span><h3>Resize Images</h3><p>Need a specific width, height or platform-ready size?</p><span class="discovery-question">Would you use this? <b>→</b></span></button>
+                    <button type="button" class="discovery-card reveal reveal-delay-1" data-open-view="resize"><span class="discovery-index">01</span><span class="discovery-icon">↔</span><h3>Resize Images</h3><p>Need a specific width, height or platform-ready size?</p><span class="discovery-question">Open tool <b>→</b></span></button>
                     <button type="button" class="discovery-card preview-feature reveal reveal-delay-2"><span class="discovery-index">02</span><span class="discovery-icon">✂</span><h3>Crop & Rotate</h3><p>Fix framing, orientation and unwanted edges in one workspace.</p><span class="discovery-question">Try this next <b>→</b></span></button>
                     <button type="button" class="discovery-card reveal reveal-delay-3" data-open-view="pdfSplit"><span class="discovery-index">03</span><span class="discovery-icon">⇄</span><h3>Split PDF</h3><p>Separate selected pages when one document contains too much.</p><span class="discovery-question">Open tool <b>→</b></span></button>
                     <button type="button" class="discovery-card reveal reveal-delay-1" data-open-view="pdfToImages"><span class="discovery-index">04</span><span class="discovery-icon">▣</span><h3>PDF to Images</h3><p>Turn document pages into image files without a complicated workflow.</p><span class="discovery-question">Open tool <b>→</b></span></button>
@@ -1178,6 +1178,156 @@
             </section>
         </section>
 
+
+        <!-- =========================
+             RESIZE IMAGES
+        ========================== -->
+        <section id="resizeView" class="view">
+            <button class="back-btn" type="button" data-back-dashboard>← Back to Workshop</button>
+
+            <div class="workspace-header">
+                <span class="section-label">IMAGE TOOLS</span>
+                <h2>Resize Images</h2>
+                <p>
+                    Scale images to a max box, exact size, or percentage. Keep aspect ratio, avoid unwanted upscaling, then download.
+                </p>
+            </div>
+
+            <div
+                class="upload-box"
+                id="resizeDropZone"
+                role="button"
+                tabindex="0"
+                aria-label="Upload images to resize"
+            >
+                <div class="upload-icon-pulse">↔</div>
+                <h3>Upload Images</h3>
+                <p>Drag & drop your images here or <span>browse files</span></p>
+                <div class="upload-limits">
+                    Up to 50 images · Max 100 MB each · 250 MB total · JPG, PNG, WebP
+                </div>
+            </div>
+            <input
+                type="file"
+                id="resizeFileInput"
+                multiple
+                accept="image/jpeg,image/jpg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+                hidden
+            >
+
+            <section class="queue-panel" id="resizeQueuePanel" hidden>
+                <div class="queue-header">
+                    <div>
+                        <h3>Uploaded Images</h3>
+                        <p id="resizeQueueSummary">0 images uploaded</p>
+                    </div>
+                    <button type="button" class="small-reset-btn" id="resizeClearBtn">Clear All</button>
+                </div>
+                <div class="file-queue" id="resizeFileQueue" aria-live="polite"></div>
+            </section>
+
+            <section class="settings-panel" id="resizeSettingsPanel" hidden>
+                <div class="panel-block">
+                    <h3>Resize mode</h3>
+                    <p>Fit inside keeps proportions within a box. Exact sets targets. Percentage scales from the original.</p>
+                    <div class="p2i-format-row" role="radiogroup" aria-label="Resize mode">
+                        <label class="p2i-format-option">
+                            <input type="radio" name="resizeMode" id="resizeModeFit" value="fit" checked>
+                            <span>Fit inside</span>
+                        </label>
+                        <label class="p2i-format-option">
+                            <input type="radio" name="resizeMode" id="resizeModeExact" value="exact">
+                            <span>Exact size</span>
+                        </label>
+                        <label class="p2i-format-option">
+                            <input type="radio" name="resizeMode" id="resizeModePercent" value="percent">
+                            <span>Percentage</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="panel-block" id="resizeDimRow">
+                    <h3>Dimensions (px)</h3>
+                    <p>Leave one field empty to scale by a single side when aspect lock is on.</p>
+                    <div class="resize-dim-grid">
+                        <label class="resize-field">
+                            <span>Width</span>
+                            <input type="number" id="resizeWidth" min="1" max="4096" placeholder="e.g. 1920" inputmode="numeric">
+                        </label>
+                        <label class="resize-field">
+                            <span>Height</span>
+                            <input type="number" id="resizeHeight" min="1" max="4096" placeholder="e.g. 1080" inputmode="numeric">
+                        </label>
+                    </div>
+                </div>
+
+                <div class="panel-block" id="resizePercentRow" hidden>
+                    <h3>Scale percentage</h3>
+                    <p>100 keeps the original size. Values under 100 shrink; over 100 enlarge (unless “don’t enlarge” is on).</p>
+                    <input type="number" id="resizePercent" class="resize-percent-input" min="1" max="1000" value="50" inputmode="decimal">
+                </div>
+
+                <div class="panel-block">
+                    <label class="split-single-row" id="resizeLockRow">
+                        <input type="checkbox" id="resizeLockAspect" checked>
+                        <span>Lock aspect ratio</span>
+                    </label>
+                    <label class="split-single-row">
+                        <input type="checkbox" id="resizeNoEnlarge" checked>
+                        <span>Don’t enlarge smaller images</span>
+                    </label>
+                </div>
+
+                <div class="panel-block">
+                    <h3>Output format</h3>
+                    <select id="resizeFormat" class="styled-select" aria-label="Output format">
+                        <option value="keep" selected>Keep original format</option>
+                        <option value="image/jpeg">JPEG</option>
+                        <option value="image/png">PNG</option>
+                        <option value="image/webp">WebP</option>
+                    </select>
+                </div>
+
+                <div class="slider-group panel-block" id="resizeQualityGroup">
+                    <div class="setting-label-row">
+                        <label for="resizeQualitySlider">Output quality</label>
+                        <strong id="resizeQualityVal">80%</strong>
+                    </div>
+                    <input type="range" id="resizeQualitySlider" min="1" max="100" value="80">
+                    <p class="setting-help">Applies to JPEG and WebP. PNG is lossless.</p>
+                </div>
+
+                <div class="converter-progress" id="resizeProgressPanel" hidden>
+                    <div class="progress-label-row">
+                        <strong id="resizeProgressTitle">Preparing resize</strong>
+                        <span id="resizeProgressPercent">0%</span>
+                    </div>
+                    <div class="progress-track"><div class="progress-fill" id="resizeProgressFill"></div></div>
+                    <p id="resizeProgressText">Waiting to start.</p>
+                </div>
+
+                <div class="panel-action">
+                    <div id="resizeReadyText">Add images to resize.</div>
+                    <button class="action-btn" id="resizeStartBtn" type="button" disabled>Resize Images</button>
+                </div>
+            </section>
+
+            <section class="results-panel" id="resizeResultsPanel" hidden>
+                <div class="results-top">
+                    <div>
+                        <h3>Resize Complete</h3>
+                        <p id="resizeResultSummary">Your processed files will appear below.</p>
+                    </div>
+                    <span class="complete-badge">✓ Complete</span>
+                </div>
+                <div id="resizeResultsList" aria-live="polite"></div>
+                <div class="result-actions">
+                    <button class="action-btn outline" id="resizeProcessMoreBtn" type="button">↺ Resize More</button>
+                    <button class="action-btn" id="resizeZipBtn" type="button" hidden>Download All as ZIP</button>
+                </div>
+            </section>
+        </section>
+
     </main>
 
 
@@ -1292,6 +1442,7 @@
     <script src="./dialog.js"></script>
     <script src="./app.js"></script>
     <script src="./compressor.js"></script>
+    <script src="./resize.js"></script>
     <script src="./converter.js"></script>
     <script src="./pdf-merge.js"></script>
     <script src="./pdf-to-images.js"></script>

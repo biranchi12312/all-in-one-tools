@@ -3680,6 +3680,9 @@ body.dialog-open {
 }
 
 /* Split PDF — settings extras */
+.split-single-row[hidden] {
+    display: none !important;
+}
 .split-single-row {
     display: flex;
     align-items: flex-start;
@@ -3738,4 +3741,59 @@ body.dialog-open {
 }
 .pdf-file-row .pdf-file-actions {
     max-width: 45%;
+}
+
+
+/* Resize Images */
+.resize-dim-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 10px;
+}
+.resize-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 600;
+}
+.resize-field input,
+.resize-percent-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    outline: none;
+    background: rgba(255, 255, 255, 0.035);
+    color: var(--text-main);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    -webkit-appearance: none;
+    appearance: none;
+}
+.resize-field input:focus,
+.resize-percent-input:focus {
+    border-color: var(--accent);
+}
+.resize-field input:focus-visible,
+.resize-percent-input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+.resize-percent-input {
+    margin-top: 8px;
+    max-width: 200px;
+}
+@media (max-width: 700px) {
+    .resize-dim-grid {
+        grid-template-columns: 1fr;
+    }
+    .resize-percent-input {
+        max-width: none;
+        width: 100%;
+    }
 }

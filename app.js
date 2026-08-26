@@ -6,6 +6,7 @@
     const views = {
         dashboard: document.getElementById("dashboardView"),
         compressor: document.getElementById("compressorView"),
+        resize: document.getElementById("resizeView"),
         converter: document.getElementById("converterView"),
         pdfMerge: document.getElementById("pdfMergeView"),
         pdfToImages: document.getElementById("pdfToImagesView"),
@@ -79,6 +80,7 @@
         if (
             hash === "dashboard" ||
             hash === "compressor" ||
+            hash === "resize" ||
             hash === "converter" ||
             hash === "pdfMerge" ||
             hash === "pdfToImages" ||
