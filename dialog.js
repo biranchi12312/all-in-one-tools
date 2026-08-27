@@ -140,6 +140,10 @@
         panel.setAttribute("tabindex", "-1");
     }
 
+    window.addEventListener("popstate", () => {
+        if (!root.hidden) close(false);
+    });
+
     window.AuraDialog = {
         open,
         error(title, message, items) {

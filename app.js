@@ -7,12 +7,15 @@
         dashboard: document.getElementById("dashboardView"),
         compressor: document.getElementById("compressorView"),
         resize: document.getElementById("resizeView"),
+        cropRotate: document.getElementById("cropRotateView"),
         converter: document.getElementById("converterView"),
         pdfMerge: document.getElementById("pdfMergeView"),
         pdfToImages: document.getElementById("pdfToImagesView"),
         imagesToPdf: document.getElementById("imagesToPdfView"),
         pdfSplit: document.getElementById("pdfSplitView")
     };
+
+    let currentView = "dashboard";
 
     function setToolsMenu(open) {
         if (typeof window.__auraSetMenu === "function") {
@@ -49,6 +52,7 @@
             requestAnimationFrame(() => initScrollAnimations());
         }
 
+        currentView = viewName;
         window.dispatchEvent(
             new CustomEvent("aurastudio:viewchange", {
                 detail: { view: viewName }
@@ -58,6 +62,16 @@
 
     function switchView(viewName, pushHistory = true) {
         if (!views[viewName]) return;
+        if (window.__auraProcessing && viewName !== currentView) {
+            const ui = window.AuraDialog;
+            if (ui) {
+                ui.warning(
+                    "Please wait",
+                    "A file is still processing. Finish or wait for it to complete before switching tools."
+                );
+            }
+            return;
+        }
         setToolsMenu(false);
         renderView(viewName);
 
@@ -81,6 +95,7 @@
             hash === "dashboard" ||
             hash === "compressor" ||
             hash === "resize" ||
+            hash === "cropRotate" ||
             hash === "converter" ||
             hash === "pdfMerge" ||
             hash === "pdfToImages" ||

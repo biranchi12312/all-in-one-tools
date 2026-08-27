@@ -1694,7 +1694,7 @@ input[type="range"]::-moz-range-thumb {
     cursor: grab;
 }
 
-/* Keyboard focus visible (WCAG 2.4.7) — outline:none alone is not enough */
+/* Keyboard focus visible (WCAG 2.4.7) â€” outline:none alone is not enough */
 input[type="range"]:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 4px;
@@ -2542,7 +2542,7 @@ input[type="range"]:focus-visible::-moz-range-thumb {
 }
 
 /* =========================================================
-   CONVERTER V2 — DUAL FORMAT WORKSPACE
+   CONVERTER V2 â€” DUAL FORMAT WORKSPACE
 ========================================================= */
 .converter-format-panel {
     margin-bottom: 22px;
@@ -3366,7 +3366,7 @@ body.dialog-open {
     outline-offset: 3px;
 }
 
-/* —— PDF to Images —— */
+/* â€”â€” PDF to Images â€”â€” */
 .p2i-settings-grid {
     display: grid;
     gap: 1.25rem;
@@ -3474,7 +3474,7 @@ body.dialog-open {
     font-size: 0.82rem;
 }
 
-/* Images to PDF / PDF-to-images queue rows — locked inside parent, no horizontal overflow */
+/* Images to PDF / PDF-to-images queue rows â€” locked inside parent, no horizontal overflow */
 .pdf-file-queue {
     width: 100%;
     max-width: 100%;
@@ -3596,7 +3596,7 @@ body.dialog-open {
 }
 
 
-/* tool view spacing parity — same density as compressor/converter */
+/* tool view spacing parity â€” same density as compressor/converter */
 .view > .back-btn {
     margin-top: 0;
     margin-bottom: 12px;
@@ -3679,7 +3679,7 @@ body.dialog-open {
     line-height: 1.5;
 }
 
-/* Split PDF — settings extras */
+/* Split PDF â€” settings extras */
 .split-single-row[hidden] {
     display: none !important;
 }
@@ -3795,5 +3795,170 @@ body.dialog-open {
     .resize-percent-input {
         max-width: none;
         width: 100%;
+    }
+}
+
+
+/* Crop & Rotate â€” namespaced */
+.crop-rotate-tool {
+    margin-top: 22px;
+}
+.crop-rotate-meta {
+    margin: 0 0 12px;
+    color: var(--text-muted);
+    font-size: 13px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.crop-rotate-workspace {
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    background: var(--surface);
+    overflow: visible;
+}
+.crop-rotate-stage {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 160px;
+    height: auto;
+    max-height: none;
+    padding: 24px 16px;
+    box-sizing: border-box;
+    background: #0b0b0e;
+    border-radius: 24px;
+    overflow: hidden;
+    touch-action: pan-y;
+}
+.crop-rotate-frame {
+    position: relative;
+    display: block;
+    flex-shrink: 0;
+    overflow: hidden;
+    background: #111;
+    line-height: 0;
+}
+.crop-rotate-image {
+    display: block;
+    margin: 0;
+    padding: 0;
+    max-width: none;
+    object-fit: fill;
+    transform-origin: center center;
+    pointer-events: none;
+    user-select: none;
+}
+.crop-rotate-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+.crop-rotate-selection {
+    position: absolute;
+    box-sizing: border-box;
+    border: 2px solid var(--accent);
+    background: transparent;
+    cursor: move;
+    pointer-events: auto;
+    touch-action: none;
+}
+.crop-rotate-selection.is-dragging {
+    cursor: grabbing;
+}
+.crop-rotate-handle {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background: var(--accent);
+    border: 2px solid #0b0b0e;
+    border-radius: 4px;
+    box-shadow: 0 0 0 1px rgba(255,255,255,.35);
+    touch-action: none;
+    z-index: 2;
+}
+.crop-rotate-handle[data-cr-handle="nw"] { left: 0; top: 0; transform: translate(-50%, -50%); cursor: nwse-resize; }
+.crop-rotate-handle[data-cr-handle="ne"] { right: 0; top: 0; transform: translate(50%, -50%); cursor: nesw-resize; }
+.crop-rotate-handle[data-cr-handle="se"] { right: 0; bottom: 0; transform: translate(50%, 50%); cursor: nwse-resize; }
+.crop-rotate-handle[data-cr-handle="sw"] { left: 0; bottom: 0; transform: translate(-50%, 50%); cursor: nesw-resize; }
+.crop-rotate-handle[data-cr-handle="n"] { left: 50%; top: 0; transform: translate(-50%, -50%); cursor: ns-resize; }
+.crop-rotate-handle[data-cr-handle="s"] { left: 50%; bottom: 0; transform: translate(-50%, 50%); cursor: ns-resize; }
+.crop-rotate-handle[data-cr-handle="e"] { right: 0; top: 50%; transform: translate(50%, -50%); cursor: ew-resize; }
+.crop-rotate-handle[data-cr-handle="w"] { left: 0; top: 50%; transform: translate(-50%, -50%); cursor: ew-resize; }
+.crop-rotate-status {
+    margin: 12px 0 0;
+    color: var(--text-soft);
+    font-size: 13px;
+    min-height: 1.3em;
+}
+.crop-rotate-toolbar,
+.crop-rotate-ratios {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+}
+.crop-rotate-control,
+.crop-rotate-ratio {
+    min-height: 40px;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    color: var(--text-main);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.crop-rotate-ratio.is-active,
+.crop-rotate-control:active {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+.crop-rotate-actions {
+    margin-top: 16px;
+}
+.crop-rotate-results {
+    margin-top: 22px;
+}
+.crop-rotate-result-preview {
+    margin: 16px 0;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #0b0b0e;
+    text-align: center;
+}
+.crop-rotate-result-preview img {
+    max-width: 100%;
+    max-height: 360px;
+    display: inline-block;
+}
+
+/* Fix for Download button alignment and text-decoration underline */
+#crDownloadBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    text-align: center;
+}
+
+@media (max-width: 700px) {
+    .crop-rotate-stage {
+        height: auto;
+        min-height: 140px;
+        padding: 16px;
+        touch-action: pan-y;
+    }
+    .crop-rotate-handle {
+        width: 22px;
+        height: 22px;
+        box-shadow: 0 0 0 10px rgba(139,141,248,0.001), 0 0 0 1px rgba(255,255,255,.35);
+    }
+    .crop-rotate-control,
+    .crop-rotate-ratio {
+        min-height: 44px;
     }
 }

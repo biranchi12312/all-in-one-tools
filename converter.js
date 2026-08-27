@@ -178,6 +178,7 @@
 
     function setProcessingState(active) {
         processing = active;
+        window.__auraProcessing = !!active;
         el.start.disabled = active || files.length === 0;
         el.clearButton.disabled = active;
         el.input.disabled = active;
@@ -438,7 +439,7 @@
 
         if (lowBlob.size <= originalSize) {
             let fittingBlob = lowBlob;
-            for (let attempt = 0; attempt < 7; attempt++) {
+            for (let attempt = 0; attempt < 4; attempt++) {
                 const midQuality = (lowQuality + highQuality) / 2;
                 const midBlob = await canvasToBlob(canvas, format, midQuality);
                 if (midBlob.size <= originalSize) {
@@ -449,8 +450,9 @@
                 }
             }
             bestBlob = fittingBlob;
-        } else if (lowBlob.size < bestBlob.size) {
-            bestBlob = lowBlob;
+        } else {
+            // Keep requested quality rather than returning a 2% "smallest" mash
+            bestBlob = firstBlob;
         }
 
         return { blob: bestBlob, smartGuardAdjusted: true };

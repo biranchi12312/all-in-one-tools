@@ -66,7 +66,7 @@
                         <button type="button" class="menu-item menu-item-live" data-open-view="compressor"><span><b>Compress Images</b><small>Reduce file size in batches</small></span><em aria-label="Open tool">→</em></button>
                         <button type="button" class="menu-item menu-item-live" data-open-view="converter"><span><b>Convert Images</b><small>Switch between supported formats</small></span><em aria-label="Open tool">→</em></button>
                         <button type="button" class="menu-item menu-item-live" data-open-view="resize"><span><b>Resize Images</b><small>Prepare images for any layout</small></span><em aria-label="Open tool">→</em></button>
-                        <button type="button" class="menu-item preview-feature"><span><b>Crop &amp; Rotate</b><small>Quick framing and orientation tools</small></span><em aria-label="Preview tool">↗</em></button>
+                        <button type="button" class="menu-item menu-item-live" data-open-view="cropRotate"><span><b>Crop &amp; Rotate</b><small>Quick framing and orientation tools</small></span><em aria-label="Open tool">→</em></button>
                     </div>
                 </div>
             </section>
@@ -133,7 +133,7 @@
                 <div class="feature-discovery-intro reveal"><span class="section-label">EXPLORE THE WORKSPACE</span><h2>What do you want to do next?</h2><p>These are the next tools being shaped for AuraStudio. Pick what catches your eye and keep the idea on your radar.</p></div>
                 <div class="discovery-grid">
                     <button type="button" class="discovery-card reveal reveal-delay-1" data-open-view="resize"><span class="discovery-index">01</span><span class="discovery-icon">↔</span><h3>Resize Images</h3><p>Need a specific width, height or platform-ready size?</p><span class="discovery-question">Open tool <b>→</b></span></button>
-                    <button type="button" class="discovery-card preview-feature reveal reveal-delay-2"><span class="discovery-index">02</span><span class="discovery-icon">✂</span><h3>Crop & Rotate</h3><p>Fix framing, orientation and unwanted edges in one workspace.</p><span class="discovery-question">Try this next <b>→</b></span></button>
+                    <button type="button" class="discovery-card reveal reveal-delay-2" data-open-view="cropRotate"><span class="discovery-index">02</span><span class="discovery-icon">✂</span><h3>Crop & Rotate</h3><p>Fix framing, orientation and unwanted edges in one workspace.</p><span class="discovery-question">Open tool <b>→</b></span></button>
                     <button type="button" class="discovery-card reveal reveal-delay-3" data-open-view="pdfSplit"><span class="discovery-index">03</span><span class="discovery-icon">⇄</span><h3>Split PDF</h3><p>Separate selected pages when one document contains too much.</p><span class="discovery-question">Open tool <b>→</b></span></button>
                     <button type="button" class="discovery-card reveal reveal-delay-1" data-open-view="pdfToImages"><span class="discovery-index">04</span><span class="discovery-icon">▣</span><h3>PDF to Images</h3><p>Turn document pages into image files without a complicated workflow.</p><span class="discovery-question">Open tool <b>→</b></span></button>
                 </div>
@@ -1328,6 +1328,84 @@
             </section>
         </section>
 
+
+        <section id="cropRotateView" class="view">
+            <button class="back-btn" type="button" data-back-dashboard>← Back to Workshop</button>
+            <div class="workspace-header">
+                <span class="section-label">IMAGE TOOLS</span>
+                <h2>Crop &amp; Rotate</h2>
+                <p>Frame one image at a time. Crop, rotate or flip on this device, then export.</p>
+            </div>
+
+            <div class="upload-box" id="crDropZone" role="button" tabindex="0" aria-label="Upload an image to crop or rotate">
+                <div class="upload-icon-pulse">✂</div>
+                <h3>Upload Image</h3>
+                <p>Drag &amp; drop one image here or <span>browse files</span></p>
+                <div class="upload-limits">1 image · Max 100 MB · JPG, PNG, WebP</div>
+            </div>
+            <input type="file" id="crFileInput" accept="image/jpeg,image/jpg,image/png,image/webp,.jpg,.jpeg,.png,.webp" hidden>
+
+            <section class="crop-rotate-tool" id="crEditor" hidden>
+                <p class="crop-rotate-meta" id="crFileMeta"></p>
+                <div class="crop-rotate-workspace">
+                    <div class="crop-rotate-stage" id="crStage">
+                        <div class="crop-rotate-frame" id="crFrame">
+                            <img class="crop-rotate-image" id="crImage" alt="Image being edited">
+                            <div class="crop-rotate-overlay" id="crOverlay">
+                                <div class="crop-rotate-selection" id="crBox">
+                                    <span class="crop-rotate-handle" data-cr-handle="nw"></span>
+                                    <span class="crop-rotate-handle" data-cr-handle="n"></span>
+                                    <span class="crop-rotate-handle" data-cr-handle="ne"></span>
+                                    <span class="crop-rotate-handle" data-cr-handle="e"></span>
+                                    <span class="crop-rotate-handle" data-cr-handle="se"></span>
+                                    <span class="crop-rotate-handle" data-cr-handle="s"></span>
+                                    <span class="crop-rotate-handle" data-cr-handle="sw"></span>
+                                    <span class="crop-rotate-handle" data-cr-handle="w"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="crop-rotate-status" id="crStatus" aria-live="polite"></p>
+                <div class="crop-rotate-toolbar">
+                    <button type="button" class="crop-rotate-control" id="crRotLeft" aria-label="Rotate left">↶ 90°</button>
+                    <button type="button" class="crop-rotate-control" id="crRotRight" aria-label="Rotate right">↷ 90°</button>
+                    <button type="button" class="crop-rotate-control" id="crFlipH" aria-label="Flip horizontal">↔ Flip H</button>
+                    <button type="button" class="crop-rotate-control" id="crFlipV" aria-label="Flip vertical">↕ Flip V</button>
+                </div>
+                <div class="crop-rotate-ratios" id="crRatios" role="group" aria-label="Aspect ratio">
+                    <button type="button" class="crop-rotate-ratio is-active" data-cr-ratio="free">Free</button>
+                    <button type="button" class="crop-rotate-ratio" data-cr-ratio="original">Original</button>
+                    <button type="button" class="crop-rotate-ratio" data-cr-ratio="1:1">1:1</button>
+                    <button type="button" class="crop-rotate-ratio" data-cr-ratio="4:5">4:5</button>
+                    <button type="button" class="crop-rotate-ratio" data-cr-ratio="3:4">3:4</button>
+                    <button type="button" class="crop-rotate-ratio" data-cr-ratio="16:9">16:9</button>
+                    <button type="button" class="crop-rotate-ratio" data-cr-ratio="9:16">9:16</button>
+                </div>
+                <div class="result-actions crop-rotate-actions">
+                    <button type="button" class="action-btn outline" id="crResetBtn">Reset</button>
+                    <button type="button" class="action-btn outline" id="crAnotherBtn">Edit another</button>
+                    <button type="button" class="action-btn" id="crExportBtn">Export</button>
+                </div>
+            </section>
+
+            <section class="results-panel crop-rotate-results" id="crResults" hidden>
+                <div class="results-top">
+                    <div>
+                        <h3>Export ready</h3>
+                        <p id="crResultMeta">Your edited image is ready.</p>
+                    </div>
+                    <span class="complete-badge">✓ Complete</span>
+                </div>
+                <div class="crop-rotate-result-preview">
+                    <img id="crResultImg" alt="Exported result">
+                </div>
+                <div class="result-actions">
+                    <a class="action-btn" id="crDownloadBtn" download>Download</a>
+                </div>
+            </section>
+        </section>
+
     </main>
 
 
@@ -1443,6 +1521,7 @@
     <script src="./app.js"></script>
     <script src="./compressor.js"></script>
     <script src="./resize.js"></script>
+    <script src="./crop-rotate.js"></script>
     <script src="./converter.js"></script>
     <script src="./pdf-merge.js"></script>
     <script src="./pdf-to-images.js"></script>

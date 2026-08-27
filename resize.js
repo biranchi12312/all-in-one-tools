@@ -262,6 +262,7 @@
 
     function setProcessingState(active) {
         processing = active;
+        window.__auraProcessing = !!active;
         if (el.dropZone) {
             el.dropZone.classList.toggle("is-disabled", active);
             el.dropZone.setAttribute("aria-disabled", String(!!active));

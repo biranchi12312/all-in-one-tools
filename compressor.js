@@ -162,6 +162,7 @@
 
     function setProcessingState(active) {
         processing = active;
+        window.__auraProcessing = !!active;
         el.start.disabled = active || files.length === 0;
         el.clearButton.disabled = active;
         el.input.disabled = active;
@@ -425,7 +426,7 @@
     });
 
     el.clearButton.addEventListener("click", () => resetCompressor(false));
-    el.processMore.addEventListener("click", () => resetCompressor(false));
+    el.processMore.addEventListener("click", () => resetCompressor(true));
 
     el.quality.addEventListener("input", event => {
         el.qualityValue.textContent = `${event.target.value}%`;
