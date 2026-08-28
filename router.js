@@ -92,7 +92,11 @@
       if (!target) { onUnknown(routeId, opts); return false; }
 
       if (routeId === currentRoute) {
-        if (opts.history === "replace") history.replaceState({ view: routeId }, "", getUrl(routeId));
+        // Keep the requested view rendered even if a prior page reload or a
+        // stale DOM state left the visible section out of sync with the router.
+        renderAndApply(routeId, target, { from: currentRoute, to: routeId, refresh: true });
+        if (opts.history === "push") history.pushState({ view: routeId }, "", getUrl(routeId));
+        else if (opts.history === "replace") history.replaceState({ view: routeId }, "", getUrl(routeId));
         return true;
       }
 
