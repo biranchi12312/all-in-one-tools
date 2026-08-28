@@ -1,0 +1,1 @@
+V49 independent-page migration. Removed core/router.js, app.js, data/seo-registry.js and modules/public-views.js from runtime. Each tool now has its own physical /tools/<slug>/index.html and loads only its own engine plus shared processing/dialog assets. No catch-all rewrite remains.
