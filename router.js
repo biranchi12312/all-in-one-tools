@@ -53,12 +53,17 @@
     }
 
     function getRouteFromLocation() {
-      const byPath = resolvePath(window.location.pathname);
-      if (byPath) return byPath;
-      const byHash = resolveLegacyHash(window.location.hash);
-      if (byHash) return byHash;
       const normalizedPath = normalizePath(window.location.pathname);
-      return (normalizedPath === "/" || normalizedPath === "/index.html/") ? defaultRoute : null;
+      const byPath = resolvePath(normalizedPath);
+      if (byPath) return byPath;
+      // A clean pathname always wins. Legacy hashes are only a fallback for
+      // the application shell and can never replace a valid pathname route.
+      if (normalizedPath === "/" || normalizedPath === "/index.html/") {
+        const byHash = resolveLegacyHash(window.location.hash);
+        if (byHash) return byHash;
+        return defaultRoute;
+      }
+      return null;
     }
 
     function getUrl(routeId) {

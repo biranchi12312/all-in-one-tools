@@ -160,9 +160,8 @@
     // Initialize routing before wiring click interception.
     router.init();
 
-    // Expose one small navigation bridge for early/static and dynamically
-    // generated links. This keeps clean-path links SPA-smooth without making
-    // the homepage a dead/view-only screen if event delegation order changes.
+    // Navigation uses real clean-path anchors as the primary mechanism.
+    // This avoids a second click-routing layer competing with deep-link routing.
     window.__auraNavigateToView = function (viewName) {
         return switchView(viewName);
     };
@@ -188,20 +187,8 @@
         }, 2600);
     }
 
-    // Central SPA link interception. Use capture phase so AuraStudio route links
-    // are handled before unrelated bubbling handlers, while preserving modified
-    // clicks for new tabs/windows and the real href as a non-JS fallback.
-    document.addEventListener("click", event => {
-        if (event.defaultPrevented) return;
-        if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-        const target = event.target && event.target.closest ? event.target.closest("[data-open-view]") : null;
-        if (!target) return;
-        const viewName = target.getAttribute("data-open-view");
-        if (!viewName || !router.isKnownRoute(viewName)) return;
-        event.preventDefault();
-        event.stopPropagation();
-        switchView(viewName);
-    }, true);
+    // Normal <a href> navigation is intentionally not intercepted here.
+    // Every clean URL loads the app shell and router.init() resolves pathname.
 
     document.querySelectorAll("[data-back-dashboard]").forEach(button => {
         button.addEventListener("click", event => {
