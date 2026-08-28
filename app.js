@@ -187,8 +187,33 @@
         }, 2600);
     }
 
-    // Normal <a href> navigation is intentionally not intercepted here.
-    // Every clean URL loads the app shell and router.init() resolves pathname.
+    // Intercept only AuraStudio's own route anchors. This keeps clean hrefs
+    // crawlable and usable without JavaScript, while preventing a plain local
+    // static server from trying to fetch /tools/... as physical folders.
+    document.addEventListener("click", event => {
+        if (event.defaultPrevented || event.button !== 0) return;
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+        const target = event.target instanceof Element ? event.target : null;
+        const anchor = target && target.closest("a[data-open-view]");
+        if (!anchor || anchor.target === "_blank" || anchor.hasAttribute("download")) return;
+
+        const viewName = anchor.dataset.openView;
+        if (!viewName || !router.isKnownRoute(viewName)) return;
+
+        // Only intercept same-origin route links. External links retain normal
+        // browser behaviour even if a future template accidentally adds data-open-view.
+        let url;
+        try {
+            url = new URL(anchor.href, window.location.href);
+        } catch (_) {
+            return;
+        }
+        if (url.origin !== window.location.origin) return;
+
+        event.preventDefault();
+        switchView(viewName, true);
+    });
 
     document.querySelectorAll("[data-back-dashboard]").forEach(button => {
         button.addEventListener("click", event => {
