@@ -1,0 +1,238 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><title>Merge PDF Files Online | AuraStudio</title><meta name="description" content="Combine multiple PDF files into one document with AuraStudio's focused PDF merge tool."><meta name="robots" content="index,follow"><meta name="theme-color" content="#0f1115"><link rel="canonical" href="https://aurastudiofiles.vercel.app/merge-pdf.html"><meta property="og:type" content="website"><meta property="og:title" content="Merge PDF Files Online | AuraStudio"><meta property="og:description" content="Combine multiple PDF files into one document with AuraStudio's focused PDF merge tool."><meta property="og:url" content="https://aurastudiofiles.vercel.app/merge-pdf.html"><link rel="stylesheet" href="/style.css"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"></head><body><header class="navbar">
+<a class="logo" href="/" id="logoBtn">Aura<span>Studio</span></a>
+<div class="nav-status">
+<span class="pulse-dot"></span>
+            Secure Engine Active
+        </div>
+<div class="nav-tools">
+<a aria-label="Open Help Center" class="nav-help-link" data-open-view="help" href="/help.html">
+<span aria-hidden="true">?</span>
+<b>Help</b>
+</a>
+<button aria-controls="toolsMenu" aria-expanded="false" aria-label="Open tools menu" class="menu-toggle" id="menuToggle" onclick="window.__auraToggleMenu&amp;&amp;window.__auraToggleMenu(event)" type="button">
+<span></span><span></span><span></span>
+</button>
+</div>
+</header><div aria-hidden="true" class="menu-backdrop" id="menuBackdrop"></div><aside aria-hidden="true" aria-label="Tool directory" class="tools-menu" id="toolsMenu">
+<div class="tools-menu-head">
+<div>
+<span>TOOL DIRECTORY</span>
+<strong>Find the right tool.</strong>
+<p>Browse by category, then jump straight into the task you want to finish.</p>
+</div>
+<button aria-label="Close tools menu" class="menu-close" id="menuClose" type="button"><span aria-hidden="true"></span></button>
+</div>
+<div class="menu-accordion" id="menuAccordion">
+<section class="menu-category">
+<button aria-expanded="false" class="menu-category-trigger" type="button">
+<span class="menu-category-copy"><b>Image Tools</b><small>Compress, convert and prepare images</small></span>
+<span class="menu-category-meta"><em>4 tools</em><i aria-hidden="true"></i></span>
+</button>
+<div class="menu-category-panel">
+<div class="menu-category-panel-inner">
+<a class="menu-item menu-item-live" data-open-view="compressor" href="/compress-images.html"><span><b>Compress Images</b><small>Reduce file size in batches</small></span><em aria-label="Open tool">→</em></a>
+<a class="menu-item menu-item-live" data-open-view="converter" href="/convert-images.html"><span><b>Convert Images</b><small>Switch between supported formats</small></span><em aria-label="Open tool">→</em></a>
+<a class="menu-item menu-item-live" data-open-view="resize" href="/resize-images.html"><span><b>Resize Images</b><small>Prepare images for any layout</small></span><em aria-label="Open tool">→</em></a>
+<a class="menu-item menu-item-live" data-open-view="cropRotate" href="/crop-rotate.html"><span><b>Crop &amp; Rotate</b><small>Quick framing and orientation tools</small></span><em aria-label="Open tool">→</em></a>
+</div>
+</div>
+</section>
+<section class="menu-category">
+<button aria-expanded="false" class="menu-category-trigger" type="button">
+<span class="menu-category-copy"><b>PDF Tools</b><small>Combine, split and transform documents</small></span>
+<span class="menu-category-meta"><em>4 tools</em><i aria-hidden="true"></i></span>
+</button>
+<div class="menu-category-panel">
+<div class="menu-category-panel-inner">
+<a class="menu-item menu-item-live" data-open-view="pdfMerge" href="/merge-pdf.html"><span><b>Merge PDF</b><small>Combine multiple PDFs into one</small></span><em aria-label="Open tool">→</em></a>
+<a class="menu-item menu-item-live" data-open-view="pdfToImages" href="/pdf-to-images.html"><span><b>PDF to Images</b><small>Turn pages into image files</small></span><em aria-label="Open tool">→</em></a>
+<a class="menu-item menu-item-live" data-open-view="imagesToPdf" href="/images-to-pdf.html"><span><b>Images to PDF</b><small>Combine images into one PDF</small></span><em aria-label="Open tool">→</em></a>
+<a class="menu-item menu-item-live" data-open-view="pdfSplit" href="/split-pdf.html"><span><b>Split PDF</b><small>Separate pages into new files</small></span><em aria-label="Open tool">→</em></a>
+</div>
+</div>
+</section>
+</div>
+<div class="tools-menu-foot">
+<span>Need guidance or want to browse everything?</span>
+<div class="tools-menu-foot-actions">
+<a class="menu-foot-link" data-open-view="tools" href="/tools.html">All Tools <b aria-hidden="true">→</b></a>
+<a class="menu-foot-link menu-foot-link-primary" data-open-view="help" href="/help.html">Help Center <b aria-hidden="true">→</b></a>
+</div>
+</div>
+</aside><main class="container"><section class="view active" id="pdfMergeView">
+<button class="back-btn" type="button">
+                ← Back to Workshop
+            </button>
+<div class="workspace-header">
+<span class="section-label">PDF TOOLS</span>
+<h2>Merge PDF Files</h2>
+<p>
+                    Combine 2 to 20 PDFs into one document. Reorder pages, then merge everything in one workflow.
+                </p>
+</div>
+<section aria-label="Upload PDF files to merge" class="pdf-upload-box" id="pdfMergeDropZone" role="button" tabindex="0">
+<div class="pdf-upload-icon">📄</div>
+<h3>Upload PDF Files</h3>
+<p>
+                    Drag &amp; drop your PDF files here or
+                    <span>browse files</span>
+</p>
+<div class="pdf-upload-limits">
+                    2–20 PDFs • Max 100 MB each • 250 MB total • 500 pages
+                </div>
+<p class="pdf-upload-privacy">Your files are used only for the workflow you choose.</p>
+</section>
+<input accept="application/pdf,.pdf" hidden="" id="pdfMergeFileInput" multiple="" type="file"/>
+<section class="pdf-queue-panel" hidden="" id="pdfMergeQueuePanel">
+<div class="pdf-queue-header">
+<div>
+<span class="section-label">MERGE ORDER</span>
+<h3>Your PDF Files</h3>
+<p id="pdfMergeQueueSummary">0 PDFs selected</p>
+</div>
+<button class="small-reset-btn" id="pdfMergeClearBtn" type="button">
+                        Clear All
+                    </button>
+</div>
+<p class="pdf-reorder-hint" id="pdfMergeReorderHint">Drag a file, or use the arrows, to set the merge order.</p>
+<div aria-live="polite" class="pdf-file-queue" id="pdfMergeFileQueue"></div>
+<div class="pdf-queue-summary">
+<div>
+<span>FILES</span>
+<strong id="pdfMergeTotalFiles">0</strong>
+</div>
+<div>
+<span>TOTAL SIZE</span>
+<strong id="pdfMergeTotalSize">0 B</strong>
+</div>
+<div>
+<span>TOTAL PAGES</span>
+<strong id="pdfMergeTotalPages">0</strong>
+</div>
+</div>
+<p class="pdf-capacity-note" id="pdfMergeCapacity">20 file slots • 250 MB • 500 pages remaining</p>
+</section>
+<section class="pdf-settings-panel" hidden="" id="pdfMergeSettingsPanel">
+<div class="pdf-output-name-row">
+<div>
+<span class="section-label">OUTPUT</span>
+<h3>Name your merged PDF</h3>
+<p>Original files stay unchanged.</p>
+</div>
+<label class="pdf-output-field">
+<span>OUTPUT FILE NAME</span>
+<input autocomplete="off" id="pdfMergeOutputName" maxlength="120" type="text" value="merged-document.pdf"/>
+</label>
+</div>
+<div class="panel-action">
+<div id="pdfMergeReadyText">
+                        Add at least 2 PDFs to merge.
+                    </div>
+<button class="action-btn" disabled="" id="pdfMergeStartBtn" type="button">
+                        Merge PDFs
+                    </button>
+</div>
+</section>
+<section class="pdf-processing-panel" hidden="" id="pdfMergeProcessingPanel">
+<div class="pdf-processing-orb">⏳</div>
+<span class="section-label">PROCESSING</span>
+<h3 id="pdfMergeProgressTitle">Preparing PDF files</h3>
+<p id="pdfMergeProgressText">Preparing your documents.</p>
+<div class="pdf-progress-track">
+<div class="pdf-progress-fill" id="pdfMergeProgressFill"></div>
+</div>
+<strong id="pdfMergeProgressPercent">0%</strong>
+</section>
+<section class="pdf-results-panel" hidden="" id="pdfMergeResultsPanel">
+<div class="pdf-success-icon">✓</div>
+<span class="section-label">COMPLETE</span>
+<h3>PDF Merged Successfully</h3>
+<p id="pdfMergeResultName">Your merged PDF is ready.</p>
+<div class="pdf-result-stats">
+<div>
+<span>FILES MERGED</span>
+<strong id="pdfMergeResultFiles">0</strong>
+</div>
+<div>
+<span>TOTAL PAGES</span>
+<strong id="pdfMergeResultPages">0</strong>
+</div>
+<div>
+<span>OUTPUT SIZE</span>
+<strong id="pdfMergeResultSize">0 B</strong>
+</div>
+</div>
+<div class="result-actions">
+<button class="action-btn outline" id="pdfMergeMoreBtn" type="button">
+                        ↺ Merge More PDFs
+                    </button>
+<button class="action-btn outline" id="pdfMergePreviewBtn" type="button">
+                        Open Preview
+                    </button>
+<button class="action-btn" id="pdfMergeDownloadBtn" type="button">
+                        Download PDF
+                    </button>
+</div>
+</section>
+</section></main><footer class="footer">
+<div class="footer-inner">
+<p>© 2026 AuraStudio. All rights reserved.</p>
+<nav aria-label="AuraStudio information" class="footer-links">
+<a data-open-view="about" href="/about.html">About</a>
+<a data-open-view="contact" href="/contact.html">Contact</a>
+<a data-open-view="privacy" href="/privacy.html">Privacy</a>
+<a data-open-view="terms" href="/terms.html">Terms</a>
+</nav>
+</div>
+</footer><script>
+    (function () {
+        function setOpen(open) {
+            var menu = document.getElementById("toolsMenu");
+            var toggle = document.getElementById("menuToggle");
+            var backdrop = document.getElementById("menuBackdrop");
+            if (!menu || !toggle) return;
+            menu.classList.toggle("open", !!open);
+            toggle.classList.toggle("active", !!open);
+            if (backdrop) backdrop.classList.toggle("open", !!open);
+            document.body.classList.toggle("menu-open", !!open);
+            toggle.setAttribute("aria-expanded", String(!!open));
+            menu.setAttribute("aria-hidden", String(!open));
+            // Categories stay as user left them — no auto-open
+        }
+        window.__auraToggleMenu = function (e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            var menu = document.getElementById("toolsMenu");
+            if (!menu) return;
+            setOpen(!menu.classList.contains("open"));
+        };
+        window.__auraSetMenu = setOpen;
+        document.addEventListener("click", function (e) {
+            var t = e.target;
+            if (!t || !t.closest) return;
+            if (t.closest("#menuClose") || t.closest("#menuBackdrop")) {
+                setOpen(false);
+                return;
+            }
+            var trigger = t.closest(".menu-category-trigger");
+            if (trigger) {
+                e.preventDefault();
+                e.stopPropagation();
+                var cat = trigger.closest(".menu-category");
+                if (!cat) return;
+                var willOpen = !cat.classList.contains("open");
+                document.querySelectorAll(".menu-category").forEach(function (c) {
+                    c.classList.remove("open");
+                    var tr = c.querySelector(".menu-category-trigger");
+                    if (tr) tr.setAttribute("aria-expanded", "false");
+                });
+                if (willOpen) {
+                    cat.classList.add("open");
+                    trigger.setAttribute("aria-expanded", "true");
+                }
+            }
+        });
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") setOpen(false);
+        });
+    })();
+    </script><script src="/dialog.js"></script><script src="/core/processing-manager.js"></script><script src="/pdf-merge.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js" defer></script></body></html>

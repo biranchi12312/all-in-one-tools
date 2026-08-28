@@ -1,0 +1,270 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><title>Convert Images Online | AuraStudio</title><meta name="description" content="Convert supported image files between common formats with AuraStudio."><meta name="robots" content="index,follow"><meta name="theme-color" content="#0f1115"><link rel="canonical" href="https://aurastudiofiles.vercel.app/convert-images.html"><meta property="og:type" content="website"><meta property="og:title" content="Convert Images Online | AuraStudio"><meta property="og:description" content="Convert supported image files between common formats with AuraStudio."><meta property="og:url" content="https://aurastudiofiles.vercel.app/convert-images.html"><link rel="stylesheet" href="/style.css"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"></head><body><header class="navbar">
+<a class="logo" href="/" id="logoBtn">Aura<span>Studio</span></a>
+<div class="nav-status">
+<span class="pulse-dot"></span>
+            Secure Engine Active
+        </div>
+<div class="nav-tools">
+<a aria-label="Open Help Center" class="nav-help-link" data-open-view="help" href="/help.html">
+<span aria-hidden="true">?</span>
+<b>Help</b>
+</a>
+<button aria-controls="toolsMenu" aria-expanded="false" aria-label="Open tools menu" class="menu-toggle" id="menuToggle" onclick="window.__auraToggleMenu&amp;&amp;window.__auraToggleMenu(event)" type="button">
+<span></span><span></span><span></span>
+</button>
+</div>
+</header><div aria-hidden="true" class="menu-backdrop" id="menuBackdrop"></div><aside aria-hidden="true" aria-label="Tool directory" class="tools-menu" id="toolsMenu">
+<div class="tools-menu-head">
+<div>
+<span>TOOL DIRECTORY</span>
+<strong>Find the right tool.</strong>
+<p>Browse by category, then jump straight into the task you want to finish.</p>
+</div>
+<button aria-label="Close tools menu" class="menu-close" id="menuClose" type="button"><span aria-hidden="true"></span></button>
+</div>
+<div class="menu-accordion" id="menuAccordion">
+<section class="menu-category">
+<button aria-expanded="false" class="menu-category-trigger" type="button">
+<span class="menu-category-copy"><b>Image Tools</b><small>Compress, convert and prepare images</small></span>
+<span class="menu-category-meta"><em>4 tools</em><i aria-hidden="true"></i></span>
+</button>
+<div class="menu-category-panel">
+<div class="menu-category-panel-inner">
+<a class="menu-item menu-item-live" data-open-view="compressor" href="/compress-images.html"><span><b>Compress Images</b><small>Reduce file size in batches</small></span><em aria-label="Open tool">→</em></a>
+<a class="menu-item menu-item-live" data-open-view="converter" href="/convert-images.html"><span><b>Convert Images</b><small>Switch between supported formats</small></span><em aria-label="Open tool">→</em></a>
+<a class="menu-item menu-item-live" data-open-view="resize" href="/resize-images.html"><span><b>Resize Images</b><small>Prepare images for any layout</small></span><em aria-label="Open tool">→</em></a>
+<a class="menu-item menu-item-live" data-open-view="cropRotate" href="/crop-rotate.html"><span><b>Crop &amp; Rotate</b><small>Quick framing and orientation tools</small></span><em aria-label="Open tool">→</em></a>
+</div>
+</div>
+</section>
+<section class="menu-category">
+<button aria-expanded="false" class="menu-category-trigger" type="button">
+<span class="menu-category-copy"><b>PDF Tools</b><small>Combine, split and transform documents</small></span>
+<span class="menu-category-meta"><em>4 tools</em><i aria-hidden="true"></i></span>
+</button>
+<div class="menu-category-panel">
+<div class="menu-category-panel-inner">
+<a class="menu-item menu-item-live" data-open-view="pdfMerge" href="/merge-pdf.html"><span><b>Merge PDF</b><small>Combine multiple PDFs into one</small></span><em aria-label="Open tool">→</em></a>
+<a class="menu-item menu-item-live" data-open-view="pdfToImages" href="/pdf-to-images.html"><span><b>PDF to Images</b><small>Turn pages into image files</small></span><em aria-label="Open tool">→</em></a>
+<a class="menu-item menu-item-live" data-open-view="imagesToPdf" href="/images-to-pdf.html"><span><b>Images to PDF</b><small>Combine images into one PDF</small></span><em aria-label="Open tool">→</em></a>
+<a class="menu-item menu-item-live" data-open-view="pdfSplit" href="/split-pdf.html"><span><b>Split PDF</b><small>Separate pages into new files</small></span><em aria-label="Open tool">→</em></a>
+</div>
+</div>
+</section>
+</div>
+<div class="tools-menu-foot">
+<span>Need guidance or want to browse everything?</span>
+<div class="tools-menu-foot-actions">
+<a class="menu-foot-link" data-open-view="tools" href="/tools.html">All Tools <b aria-hidden="true">→</b></a>
+<a class="menu-foot-link menu-foot-link-primary" data-open-view="help" href="/help.html">Help Center <b aria-hidden="true">→</b></a>
+</div>
+</div>
+</aside><main class="container"><section class="view active" id="converterView">
+<button class="back-btn" type="button">
+                ← Back to Workshop
+            </button>
+<div class="workspace-header">
+<h2>Format Converter</h2>
+<p>Choose the source and output format, then convert up to 100 images in one batch.</p>
+</div>
+<!-- FORMAT WORKSPACE -->
+<section class="converter-format-panel" id="convFormatPanel">
+<div class="converter-format-heading">
+<div>
+<span class="section-label">CONVERSION SETUP</span>
+<h3>Choose your formats.</h3>
+<p>Select what you have on the left and what you want on the right.</p>
+</div>
+<div class="format-live-summary" id="convFormatSummary">AUTO DETECT <span>→</span> WEBP</div>
+</div>
+<div class="format-columns">
+<div class="format-column">
+<div class="format-column-top">
+<span class="format-eyebrow">SOURCE</span>
+<strong>FROM</strong>
+</div>
+<div aria-label="Source image format" class="format-list" id="sourceFormatList" role="radiogroup">
+<button class="format-option selected" data-source-format="auto" type="button">
+<span class="format-option-main"><span class="format-code">AUTO</span><span><b>Auto Detect</b><small>Mixed supported formats</small></span></span>
+<span class="format-check">✓</span>
+</button>
+<button class="format-option" data-source-format="image/jpeg" type="button">
+<span class="format-option-main"><span class="format-code">JPG</span><span><b>JPEG / JPG</b><small>Universal image format</small></span></span>
+<span class="format-check">✓</span>
+</button>
+<button class="format-option" data-source-format="image/png" type="button">
+<span class="format-option-main"><span class="format-code">PNG</span><span><b>PNG</b><small>Lossless image format</small></span></span>
+<span class="format-check">✓</span>
+</button>
+<button class="format-option" data-source-format="image/webp" type="button">
+<span class="format-option-main"><span class="format-code">WEBP</span><span><b>WebP</b><small>Modern web format</small></span></span>
+<span class="format-check">✓</span>
+</button>
+<button class="format-option is-disabled" disabled="" type="button"><span class="format-option-main"><span class="format-code">AVIF</span><span><b>AVIF</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+<button class="format-option is-disabled" disabled="" type="button"><span class="format-option-main"><span class="format-code">BMP</span><span><b>BMP</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+<button class="format-option is-disabled" disabled="" type="button"><span class="format-option-main"><span class="format-code">GIF</span><span><b>GIF</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+<button class="format-option is-disabled" disabled="" type="button"><span class="format-option-main"><span class="format-code">TIFF</span><span><b>TIFF</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+<button class="format-option is-disabled" disabled="" type="button"><span class="format-option-main"><span class="format-code">ICO</span><span><b>ICO</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+</div>
+</div>
+<div aria-hidden="true" class="format-flow-arrow"><span>→</span></div>
+<div class="format-column">
+<div class="format-column-top">
+<span class="format-eyebrow">OUTPUT</span>
+<strong>CONVERT TO</strong>
+</div>
+<div aria-label="Target image format" class="format-list" id="targetFormatList" role="radiogroup">
+<button class="format-option" data-target-format="image/jpeg" type="button">
+<span class="format-option-main"><span class="format-code">JPG</span><span><b>JPEG / JPG</b><small>Universal image format</small></span></span>
+<span class="format-check">✓</span>
+</button>
+<button class="format-option" data-target-format="image/png" type="button">
+<span class="format-option-main"><span class="format-code">PNG</span><span><b>PNG</b><small>Lossless image format</small></span></span>
+<span class="format-check">✓</span>
+</button>
+<button class="format-option selected" data-target-format="image/webp" type="button">
+<span class="format-option-main"><span class="format-code">WEBP</span><span><b>WebP</b><small>Modern web format</small></span></span>
+<span class="format-check">✓</span>
+</button>
+<button class="format-option is-disabled" disabled="" type="button"><span class="format-option-main"><span class="format-code">AVIF</span><span><b>AVIF</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+<button class="format-option is-disabled" disabled="" type="button"><span class="format-option-main"><span class="format-code">BMP</span><span><b>BMP</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+<button class="format-option is-disabled" disabled="" type="button"><span class="format-option-main"><span class="format-code">GIF</span><span><b>GIF</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+<button class="format-option is-disabled" disabled="" type="button"><span class="format-option-main"><span class="format-code">TIFF</span><span><b>TIFF</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+<button class="format-option is-disabled" disabled="" type="button"><span class="format-option-main"><span class="format-code">ICO</span><span><b>ICO</b><small>Unsupported for now</small></span></span><span class="format-lock">Unsupported</span></button>
+</div>
+</div>
+</div>
+<p class="format-panel-note" id="convFormatNote">Auto Detect accepts a mixed batch of currently supported JPG, PNG and WebP images.</p>
+</section>
+<!-- UPLOAD -->
+<div aria-label="Upload images to convert" class="upload-box" id="convDropZone" role="button" tabindex="0">
+<div class="upload-icon-pulse">⚡</div>
+<h3>Upload Images</h3>
+<p>Drag &amp; drop your images here or <span>browse files</span></p>
+<div class="upload-limits">Up to 100 images • Max 100 MB per image • 500 MB total batch safety</div>
+</div>
+<input accept="image/jpeg,image/jpg,image/png,image/webp,.jpg,.jpeg,.png,.webp" hidden="" id="convFileInput" multiple="" type="file"/>
+<!-- CONVERTER QUEUE -->
+<section class="queue-panel" hidden="" id="convQueuePanel">
+<div class="queue-header">
+<div>
+<h3>Uploaded Images</h3>
+<p id="convQueueSummary">0 images uploaded</p>
+</div>
+<button class="small-reset-btn" id="convClearBtn" type="button">Clear All</button>
+</div>
+<div class="file-queue" id="convFileQueue"></div>
+</section>
+<!-- CONVERSION SETTINGS -->
+<section class="settings-panel converter-settings-panel" hidden="" id="convSettingsPanel">
+<div class="converter-settings-head">
+<div>
+<span class="section-label">OUTPUT SETTINGS</span>
+<h3>Fine-tune the conversion.</h3>
+</div>
+<div class="converter-ready-pill" id="convReadySummary">0 files ready</div>
+</div>
+<div class="slider-group" id="convQualityGroup">
+<div class="setting-label-row">
+<label for="convQualitySlider">Conversion Quality</label>
+<strong id="convQualityVal">92%</strong>
+</div>
+<input id="convQualitySlider" max="100" min="10" type="range" value="92"/>
+<p class="setting-help">Used for JPG and WebP output. Smart Size Guard prevents unnecessary larger JPG/WebP results whenever possible.</p>
+</div>
+<div class="jpg-background-group" hidden="" id="convJpgBackgroundGroup">
+<div class="setting-label-row"><label>Transparent Areas</label><strong>JPG Background</strong></div>
+<div class="background-options">
+<button class="background-option selected" data-bg="#ffffff" type="button"><span class="bg-swatch bg-white"></span>White</button>
+<button class="background-option" data-bg="#000000" type="button"><span class="bg-swatch bg-black"></span>Black</button>
+<label class="background-option custom-background-option"><input id="convCustomBackground" type="color" value="#ffffff"/><span class="bg-swatch bg-custom"></span>Custom</label>
+</div>
+<p class="setting-help">JPG does not support transparency, so transparent areas use the selected background.</p>
+</div>
+<div class="converter-progress" hidden="" id="convProgressPanel">
+<div class="progress-label-row"><strong id="convProgressTitle">Preparing conversion</strong><span id="convProgressPercent">0%</span></div>
+<div class="progress-track"><div class="progress-fill" id="convProgressFill"></div></div>
+<p id="convProgressText">Waiting to start.</p>
+</div>
+<div class="panel-action">
+<div id="convFileCount">0 files loaded</div>
+<button class="action-btn" id="convStartBtn" type="button">Convert Images</button>
+</div>
+</section>
+<!-- CONVERTER RESULTS -->
+<section class="results-panel" hidden="" id="convResultsPanel">
+<div class="results-top">
+<div>
+<h3>Conversion Complete</h3>
+<p id="convResultSummary">Your converted files will appear below.</p>
+</div>
+<span class="complete-badge">✓ Complete</span>
+</div>
+<div id="convResultsList"></div>
+<div class="result-actions">
+<button class="action-btn outline" id="convProcessMoreBtn" type="button">↺ Convert More Files</button>
+<button class="action-btn" hidden="" id="convZipBtn" type="button">Download All as ZIP</button>
+</div>
+</section>
+</section></main><footer class="footer">
+<div class="footer-inner">
+<p>© 2026 AuraStudio. All rights reserved.</p>
+<nav aria-label="AuraStudio information" class="footer-links">
+<a data-open-view="about" href="/about.html">About</a>
+<a data-open-view="contact" href="/contact.html">Contact</a>
+<a data-open-view="privacy" href="/privacy.html">Privacy</a>
+<a data-open-view="terms" href="/terms.html">Terms</a>
+</nav>
+</div>
+</footer><script>
+    (function () {
+        function setOpen(open) {
+            var menu = document.getElementById("toolsMenu");
+            var toggle = document.getElementById("menuToggle");
+            var backdrop = document.getElementById("menuBackdrop");
+            if (!menu || !toggle) return;
+            menu.classList.toggle("open", !!open);
+            toggle.classList.toggle("active", !!open);
+            if (backdrop) backdrop.classList.toggle("open", !!open);
+            document.body.classList.toggle("menu-open", !!open);
+            toggle.setAttribute("aria-expanded", String(!!open));
+            menu.setAttribute("aria-hidden", String(!open));
+            // Categories stay as user left them — no auto-open
+        }
+        window.__auraToggleMenu = function (e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            var menu = document.getElementById("toolsMenu");
+            if (!menu) return;
+            setOpen(!menu.classList.contains("open"));
+        };
+        window.__auraSetMenu = setOpen;
+        document.addEventListener("click", function (e) {
+            var t = e.target;
+            if (!t || !t.closest) return;
+            if (t.closest("#menuClose") || t.closest("#menuBackdrop")) {
+                setOpen(false);
+                return;
+            }
+            var trigger = t.closest(".menu-category-trigger");
+            if (trigger) {
+                e.preventDefault();
+                e.stopPropagation();
+                var cat = trigger.closest(".menu-category");
+                if (!cat) return;
+                var willOpen = !cat.classList.contains("open");
+                document.querySelectorAll(".menu-category").forEach(function (c) {
+                    c.classList.remove("open");
+                    var tr = c.querySelector(".menu-category-trigger");
+                    if (tr) tr.setAttribute("aria-expanded", "false");
+                });
+                if (willOpen) {
+                    cat.classList.add("open");
+                    trigger.setAttribute("aria-expanded", "true");
+                }
+            }
+        });
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") setOpen(false);
+        });
+    })();
+    </script><script src="/dialog.js"></script><script src="/core/processing-manager.js"></script><script src="/converter.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js" defer></script></body></html>
