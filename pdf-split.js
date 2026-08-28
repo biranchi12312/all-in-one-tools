@@ -50,6 +50,26 @@
     let outputs = []; // { name, blob, url, pages }
     let zipUrl = null;
     let processing = false;
+    let processingOperationId = null;
+
+    function syncProcessingManager(active) {
+        const manager = window.AuraProcessingManager;
+        if (!manager) {
+            window.__auraProcessing = !!active;
+            return;
+        }
+
+        if (active) {
+            const started = manager.start("pdf-split");
+            if (started && started.ok) {
+                processingOperationId = started.operationId;
+            }
+        } else if (processingOperationId) {
+            manager.finish(processingOperationId);
+            processingOperationId = null;
+        }
+    }
+
 
     function dialog() {
         return window.AuraDialog || null;
@@ -339,13 +359,15 @@
     }
 
     function setProcessingState(on) {
-        processing = on;
+        processing = !!on;
+        syncProcessingManager(processing);
+        window.__auraProcessing = processing;
         if (el.dropZone) {
-            el.dropZone.classList.toggle("is-disabled", on);
-            el.dropZone.setAttribute("aria-disabled", String(!!on));
+            el.dropZone.classList.toggle("is-disabled", processing);
+            el.dropZone.setAttribute("aria-disabled", String(processing));
         }
-        if (el.startBtn) el.startBtn.disabled = on || !source;
-        if (el.clearBtn) el.clearBtn.disabled = on;
+        if (el.startBtn) el.startBtn.disabled = processing || !source;
+        if (el.clearBtn) el.clearBtn.disabled = processing;
         updateReady();
     }
 
@@ -516,8 +538,8 @@
             const ok = await popupConfirm(
                 groups.length > MAX_OUTPUT_FILES ? "Many output files" : "Large split job",
                 groups.length > MAX_OUTPUT_FILES
-                    ? `This will create ${groups.length} PDFs (soft limit ${MAX_OUTPUT_FILES}). Large batches may be slow or use more memory on this device. Continue?`
-                    : `Creating ${groups.length} PDF files may take a while and use memory on this device. Continue?`
+                    ? `This will create ${groups.length} PDFs (soft limit ${MAX_OUTPUT_FILES}). Large batches may take longer or require more processing resources. Continue?`
+                    : `Creating ${groups.length} PDF files may take a while and require additional processing resources. Continue?`
             );
             if (!ok) return;
         }
@@ -710,7 +732,7 @@
         if (!source) return;
         const ok = await popupConfirm(
             "Clear PDF?",
-            "This removes the current file and any split results. Original files on your device stay unchanged."
+            "This removes the current file and any split results. Original files stay unchanged."
         );
         if (ok) resetAll(true);
     });
@@ -720,7 +742,7 @@
         if (source || outputs.length) {
             const ok = await popupConfirm(
                 "Split another PDF?",
-                "This clears the current file and results. Original files on your device stay unchanged."
+                "This clears the current file and results. Original files stay unchanged."
             );
             if (!ok) return;
         }

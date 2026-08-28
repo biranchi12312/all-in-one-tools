@@ -49,6 +49,26 @@
     let files = [];
     let outputBlobUrl = null;
     let processing = false;
+    let processingOperationId = null;
+
+    function syncProcessingManager(active) {
+        const manager = window.AuraProcessingManager;
+        if (!manager) {
+            window.__auraProcessing = !!active;
+            return;
+        }
+
+        if (active) {
+            const started = manager.start("pdf-merge");
+            if (started && started.ok) {
+                processingOperationId = started.operationId;
+            }
+        } else if (processingOperationId) {
+            manager.finish(processingOperationId);
+            processingOperationId = null;
+        }
+    }
+
     let addChain = Promise.resolve();
     let warningDismissed = false;
     let draggedId = null;
@@ -230,7 +250,7 @@
         warningDismissed = true;
         popupWarning(
             largeFiles.length ? "Large PDF Files Detected" : "Large PDF Batch Detected",
-            "Merging can still continue, but very large files may take longer or use more memory on this device.",
+            "Merging can still continue, but very large files may take longer or require more processing resources.",
             reasons
         );
     }
@@ -532,12 +552,14 @@
     }
 
     function setProcessingState(active) {
-        processing = active;
-        el.dropZone.classList.toggle("is-disabled", active);
-        el.clear.disabled = active;
-        el.outputName.disabled = active;
-        el.start.disabled = active || files.length < 2;
-        el.dropZone.setAttribute("aria-disabled", String(active));
+        processing = !!active;
+        syncProcessingManager(processing);
+        window.__auraProcessing = processing;
+        el.dropZone.classList.toggle("is-disabled", processing);
+        el.clear.disabled = processing;
+        el.outputName.disabled = processing;
+        el.start.disabled = processing || files.length < 2;
+        el.dropZone.setAttribute("aria-disabled", String(processing));
         renderQueue();
     }
 
@@ -714,7 +736,7 @@
         if (processing || files.length === 0) return;
         const confirmed = await popupConfirm(
             "Clear all PDFs?",
-            "This removes the current merge list. Your original files on the device stay unchanged."
+            "This removes the current merge list. Your original files stay unchanged."
         );
         if (confirmed) resetTool();
     });
@@ -887,7 +909,7 @@
         if (files.length > 0) {
             const confirmed = await popupConfirm(
                 "Start a new merge?",
-                "This clears the current list and result. Original files on your device stay unchanged."
+                "This clears the current list and result. Original files stay unchanged."
             );
             if (!confirmed) return;
         }

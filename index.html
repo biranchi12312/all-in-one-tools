@@ -5,14 +5,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>AuraStudio — Free Image & PDF Tools</title>
-    <meta name="description" content="Compress and convert images, merge PDFs and manage everyday files directly in your browser with AuraStudio. Process supported files in a clean, privacy-focused workspace.">
+    <meta name="description" content="Compress and convert images, merge PDFs and manage everyday files with AuraStudio. Complete supported tasks in a clean, focused workspace.">
+    <meta name="robots" content="index,follow">
+    <meta name="theme-color" content="#0f1115">
+    <link rel="canonical" href="https://aurastudiofiles.vercel.app/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="AuraStudio — Free Image & PDF Tools">
+    <meta property="og:description" content="Compress and convert images, merge PDFs and manage everyday files with AuraStudio.">
+    <meta property="og:url" content="https://aurastudiofiles.vercel.app/">
     <link rel="stylesheet" href="./style.css">
+    <!-- V44: Load Google Fonts directly to avoid the unused preload warning on mobile browsers. -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
-    </noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://aurastudiofiles.vercel.app/#website",
+          "url": "https://aurastudiofiles.vercel.app/",
+          "name": "AuraStudio",
+          "description": "Free image and PDF tools for everyday file tasks."
+        },
+        {
+          "@type": "WebApplication",
+          "@id": "https://aurastudiofiles.vercel.app/#webapp",
+          "name": "AuraStudio",
+          "url": "https://aurastudiofiles.vercel.app/",
+          "applicationCategory": "UtilitiesApplication",
+          "operatingSystem": "Web"
+        }
+      ]
+    }
+    </script>
 </head>
 
 <body>
@@ -21,7 +49,7 @@
     ========================== -->
 
     <header class="navbar">
-        <button class="logo" id="logoBtn" type="button">Aura<span>Studio</span></button>
+        <a class="logo" id="logoBtn" href="/">Aura<span>Studio</span></a>
 
         <div class="nav-status">
             <span class="pulse-dot"></span>
@@ -29,6 +57,10 @@
         </div>
 
         <div class="nav-tools">
+            <a class="nav-help-link" data-open-view="help" aria-label="Open Help Center" href="/help/">
+                <span aria-hidden="true">?</span>
+                <b>Help</b>
+            </a>
             <button
                 class="menu-toggle"
                 id="menuToggle"
@@ -63,10 +95,10 @@
                 </button>
                 <div class="menu-category-panel">
                     <div class="menu-category-panel-inner">
-                        <button type="button" class="menu-item menu-item-live" data-open-view="compressor"><span><b>Compress Images</b><small>Reduce file size in batches</small></span><em aria-label="Open tool">→</em></button>
-                        <button type="button" class="menu-item menu-item-live" data-open-view="converter"><span><b>Convert Images</b><small>Switch between supported formats</small></span><em aria-label="Open tool">→</em></button>
-                        <button type="button" class="menu-item menu-item-live" data-open-view="resize"><span><b>Resize Images</b><small>Prepare images for any layout</small></span><em aria-label="Open tool">→</em></button>
-                        <button type="button" class="menu-item menu-item-live" data-open-view="cropRotate"><span><b>Crop &amp; Rotate</b><small>Quick framing and orientation tools</small></span><em aria-label="Open tool">→</em></button>
+                        <a class="menu-item menu-item-live" data-open-view="compressor" href="/tools/compress-images/"><span><b>Compress Images</b><small>Reduce file size in batches</small></span><em aria-label="Open tool">→</em></a>
+                        <a class="menu-item menu-item-live" data-open-view="converter" href="/tools/convert-images/"><span><b>Convert Images</b><small>Switch between supported formats</small></span><em aria-label="Open tool">→</em></a>
+                        <a class="menu-item menu-item-live" data-open-view="resize" href="/tools/resize-images/"><span><b>Resize Images</b><small>Prepare images for any layout</small></span><em aria-label="Open tool">→</em></a>
+                        <a class="menu-item menu-item-live" data-open-view="cropRotate" href="/tools/crop-rotate/"><span><b>Crop &amp; Rotate</b><small>Quick framing and orientation tools</small></span><em aria-label="Open tool">→</em></a>
                     </div>
                 </div>
             </section>
@@ -78,18 +110,21 @@
                 </button>
                 <div class="menu-category-panel">
                     <div class="menu-category-panel-inner">
-                        <button type="button" class="menu-item menu-item-live" data-open-view="pdfMerge"><span><b>Merge PDF</b><small>Combine multiple PDFs into one</small></span><em aria-label="Open tool">→</em></button>
-                        <button type="button" class="menu-item menu-item-live" data-open-view="pdfToImages"><span><b>PDF to Images</b><small>Turn pages into image files</small></span><em aria-label="Open tool">→</em></button>
-                        <button type="button" class="menu-item menu-item-live" data-open-view="imagesToPdf"><span><b>Images to PDF</b><small>Combine images into one PDF</small></span><em aria-label="Open tool">→</em></button>
-                        <button type="button" class="menu-item menu-item-live" data-open-view="pdfSplit"><span><b>Split PDF</b><small>Separate pages into new files</small></span><em aria-label="Open tool">→</em></button>
-                        <button type="button" class="menu-item preview-feature"><span><b>Compress PDF</b><small>Make large documents lighter</small></span><em aria-label="Preview tool">↗</em></button>
+                        <a class="menu-item menu-item-live" data-open-view="pdfMerge" href="/tools/merge-pdf/"><span><b>Merge PDF</b><small>Combine multiple PDFs into one</small></span><em aria-label="Open tool">→</em></a>
+                        <a class="menu-item menu-item-live" data-open-view="pdfToImages" href="/tools/pdf-to-images/"><span><b>PDF to Images</b><small>Turn pages into image files</small></span><em aria-label="Open tool">→</em></a>
+                        <a class="menu-item menu-item-live" data-open-view="imagesToPdf" href="/tools/images-to-pdf/"><span><b>Images to PDF</b><small>Combine images into one PDF</small></span><em aria-label="Open tool">→</em></a>
+                        <a class="menu-item menu-item-live" data-open-view="pdfSplit" href="/tools/split-pdf/"><span><b>Split PDF</b><small>Separate pages into new files</small></span><em aria-label="Open tool">→</em></a>
                     </div>
                 </div>
             </section>
         </div>
 
         <div class="tools-menu-foot">
-            <span>More tools are already being mapped for AuraStudio.</span>
+            <span>Need guidance or want to browse everything?</span>
+            <div class="tools-menu-foot-actions">
+                <a class="menu-foot-link" data-open-view="tools" href="/tools/">All Tools <b aria-hidden="true">→</b></a>
+                <a class="menu-foot-link menu-foot-link-primary" data-open-view="help" href="/help/">Help Center <b aria-hidden="true">→</b></a>
+            </div>
         </div>
     </aside>
 
@@ -119,23 +154,19 @@
             </section>
 
             <section class="tools-section home-tools-section">
-                <div class="section-top reveal"><div><span class="section-label">START HERE</span><h2>The tools people reach for first.</h2></div><p>Four high-demand tools are ready now. Open any one and start working immediately.</p></div>
+                <div class="section-top reveal"><div><span class="section-label">MOST WANTED</span><h2>The premium tools everyone comes back for.</h2></div></div>
                 <div class="tools-grid tools-grid-featured">
-                    <button class="tool-card reveal reveal-delay-1" type="button" data-open-view="compressor"><div class="tool-card-top"><div class="tool-icon">🗜️</div><span class="tool-number">01</span></div><div class="tool-card-bottom"><div><h3>Compress</h3><p>Make image files lighter.</p></div><span class="tool-arrow">→</span></div></button>
-                    <button class="tool-card reveal reveal-delay-2" type="button" data-open-view="converter"><div class="tool-card-top"><div class="tool-icon">↔</div><span class="tool-number">02</span></div><div class="tool-card-bottom"><div><h3>Convert</h3><p>Choose the format you need.</p></div><span class="tool-arrow">→</span></div></button>
-                    <button class="tool-card reveal reveal-delay-3" type="button" data-open-view="pdfMerge"><div class="tool-card-top"><div class="tool-icon">📄</div><span class="tool-number">03</span></div><div class="tool-card-bottom"><div><h3>Merge PDF</h3><p>Combine documents in your order.</p></div><span class="tool-arrow">→</span></div></button>
-                    <button class="tool-card reveal reveal-delay-1" type="button" data-open-view="pdfToImages"><div class="tool-card-top"><div class="tool-icon">▣</div><span class="tool-number">04</span></div><div class="tool-card-bottom"><div><h3>PDF to Images</h3><p>Turn pages into image files.</p></div><span class="tool-arrow">→</span></div></button>
-                    <button class="tool-card reveal reveal-delay-2" type="button" data-open-view="imagesToPdf"><div class="tool-card-top"><div class="tool-icon">📎</div><span class="tool-number">05</span></div><div class="tool-card-bottom"><div><h3>Images to PDF</h3><p>Combine images into one PDF.</p></div><span class="tool-arrow">→</span></div></button>
+                    <a class="tool-card reveal reveal-delay-1" data-open-view="pdfToImages" href="/tools/pdf-to-images/"><div class="tool-card-top"><div class="tool-icon">▣</div><span class="tool-number">01</span></div><div class="tool-card-bottom"><div><h3>PDF to Images</h3><p>Turn pages into image files.</p></div><span class="tool-arrow">→</span></div></a>
+                    <a class="tool-card reveal reveal-delay-2" data-open-view="imagesToPdf" href="/tools/images-to-pdf/"><div class="tool-card-top"><div class="tool-icon">📎</div><span class="tool-number">02</span></div><div class="tool-card-bottom"><div><h3>Images to PDF</h3><p>Combine images into one PDF.</p></div><span class="tool-arrow">→</span></div></a>
+                    <a class="tool-card reveal reveal-delay-3" data-open-view="pdfMerge" href="/tools/merge-pdf/"><div class="tool-card-top"><div class="tool-icon">📄</div><span class="tool-number">03</span></div><div class="tool-card-bottom"><div><h3>Merge PDF</h3><p>Combine documents in your order.</p></div><span class="tool-arrow">→</span></div></a>
                 </div>
             </section>
 
             <section class="feature-discovery">
-                <div class="feature-discovery-intro reveal"><span class="section-label">EXPLORE THE WORKSPACE</span><h2>What do you want to do next?</h2><p>These are the next tools being shaped for AuraStudio. Pick what catches your eye and keep the idea on your radar.</p></div>
+                <div class="feature-discovery-intro reveal"><span class="section-label">WHAT'S NEXT?</span><h2>There’s more you can do from here</h2><p>Choose the tool that fits your next task and get started</p></div>
                 <div class="discovery-grid">
-                    <button type="button" class="discovery-card reveal reveal-delay-1" data-open-view="resize"><span class="discovery-index">01</span><span class="discovery-icon">↔</span><h3>Resize Images</h3><p>Need a specific width, height or platform-ready size?</p><span class="discovery-question">Open tool <b>→</b></span></button>
-                    <button type="button" class="discovery-card reveal reveal-delay-2" data-open-view="cropRotate"><span class="discovery-index">02</span><span class="discovery-icon">✂</span><h3>Crop & Rotate</h3><p>Fix framing, orientation and unwanted edges in one workspace.</p><span class="discovery-question">Open tool <b>→</b></span></button>
-                    <button type="button" class="discovery-card reveal reveal-delay-3" data-open-view="pdfSplit"><span class="discovery-index">03</span><span class="discovery-icon">⇄</span><h3>Split PDF</h3><p>Separate selected pages when one document contains too much.</p><span class="discovery-question">Open tool <b>→</b></span></button>
-                    <button type="button" class="discovery-card reveal reveal-delay-1" data-open-view="pdfToImages"><span class="discovery-index">04</span><span class="discovery-icon">▣</span><h3>PDF to Images</h3><p>Turn document pages into image files without a complicated workflow.</p><span class="discovery-question">Open tool <b>→</b></span></button>
+                    <a class="discovery-card reveal reveal-delay-1" data-open-view="resize" href="/tools/resize-images/"><span class="discovery-index">01</span><span class="discovery-icon">↔</span><h3>Resize Images</h3><p>Need a specific width, height or platform-ready size?</p><span class="discovery-question">Open tool <b>→</b></span></a>
+                    <a class="discovery-card reveal reveal-delay-2" data-open-view="cropRotate" href="/tools/crop-rotate/"><span class="discovery-index">02</span><span class="discovery-icon">✂</span><h3>Crop & Rotate</h3><p>Fix framing, orientation and unwanted edges in one workspace.</p><span class="discovery-question">Open tool <b>→</b></span></a>
                 </div>
                 <div class="discovery-footer reveal"><span>More tools are organized inside the menu.</span><button type="button" class="discovery-menu-link" data-open-menu>Browse tool categories <b>☰</b></button></div>
             </section>
@@ -147,7 +178,7 @@
 
             <section class="feature-intro">
                 <div class="feature-intro-left reveal"><span class="section-label">ONE CLEAN WORKFLOW</span><h2>Less friction.<br><span>More control.</span></h2></div>
-                <div class="feature-intro-right reveal reveal-delay-1"><p class="large-copy">AuraStudio keeps file tasks focused. Choose a tool, upload what you need and finish the job without jumping between cluttered pages.</p><div class="feature-points"><div class="feature-point"><span>01</span><p>Choose the tool that matches the task you want to finish.</p></div><div class="feature-point"><span>02</span><p>Adjust the settings that matter and keep the workflow simple.</p></div><div class="feature-point"><span>03</span><p>Download your completed files and move on to the next task.</p></div></div></div>
+                <div class="feature-intro-right reveal reveal-delay-1"><p class="large-copy">AuraStudio keeps file tasks focused. Choose the file task you need, make the changes that matter, download the result when you're done.</p><div class="feature-points"><div class="feature-point"><span>01</span><p>Pick the tool for what you need to get done.</p></div><div class="feature-point"><span>02</span><p>Set things your way, then let the work move forward.</p></div><div class="feature-point"><span>03</span><p>Get your finished file and move on to what’s next.</p></div></div></div>
             </section>
 
             <section class="info-section reveal">
@@ -155,9 +186,9 @@
                 <div class="faq-item"><button class="faq-question" type="button" aria-expanded="false">How many images can I upload?<span>+</span></button><div class="faq-answer"><p>You can process up to 100 supported images in one batch, with a 100 MB per-file limit and a 500 MB total batch safety cap.</p></div></div>
                 <div class="faq-item"><button class="faq-question" type="button" aria-expanded="false">Which image formats are supported?<span>+</span></button><div class="faq-answer"><p>JPG, JPEG, PNG and WebP are supported for compress and convert. Other formats are shown in the converter and stay locked until their engine is added.</p></div></div>
                 <div class="faq-item"><button class="faq-question" type="button" aria-expanded="false">How does PDF merge work?<span>+</span></button><div class="faq-answer"><p>Upload 2 to 20 PDFs, drag them into order, then merge. The batch can be up to 250 MB and 500 pages. Password-protected PDFs are not supported.</p></div></div>
-                <div class="faq-item"><button class="faq-question" type="button" aria-expanded="false">How does PDF to Images work?<span>+</span></button><div class="faq-answer"><p>Upload up to 10 PDFs at a time (100 MB each, 250 MB total, 100 pages per batch). Choose PNG or JPG, convert in your browser, then download images one by one or as a ZIP. Password-protected PDFs are not supported.</p></div></div>
-                <div class="faq-item"><button class="faq-question" type="button" aria-expanded="false">How does Images to PDF work?<span>+</span></button><div class="faq-answer"><p>Upload up to 30 JPG, PNG or WebP images (100 MB each, 250 MB total). Reorder them, choose Fit to image, A4 or Letter pages, then create a single PDF in your browser. Large images are safely resized for mobile devices.</p></div></div>
-                <div class="faq-item"><button class="faq-question" type="button" aria-expanded="false">Do my files leave this device?<span>+</span></button><div class="faq-answer"><p>No. Compress, convert, PDF merge and PDF to Images all run in your browser. Files are not uploaded to a server.</p></div></div>
+                <div class="faq-item"><button class="faq-question" type="button" aria-expanded="false">How does PDF to Images work?<span>+</span></button><div class="faq-answer"><p>Upload up to 10 PDFs at a time (100 MB each, 250 MB total, 100 pages per batch). Choose PNG or JPG, convert, then download images one by one or as a ZIP. Password-protected PDFs are not supported.</p></div></div>
+                <div class="faq-item"><button class="faq-question" type="button" aria-expanded="false">How does Images to PDF work?<span>+</span></button><div class="faq-answer"><p>Upload up to 30 JPG, PNG or WebP images (100 MB each, 250 MB total). Reorder them, choose Fit to image, A4 or Letter pages, then create a single PDF. Large images may be safely resized when needed to complete the workflow.</p></div></div>
+                <div class="faq-item"><button class="faq-question" type="button" aria-expanded="false">How are my files handled?<span>+</span></button><div class="faq-answer"><p>Files are used to provide the tool workflow you choose. For details about how AuraStudio handles information as the service evolves, review the Privacy page.</p></div></div>
                 <div class="faq-item"><button class="faq-question" type="button" aria-expanded="false">Can I use AuraStudio on mobile?<span>+</span></button><div class="faq-answer"><p>Yes. The interface is responsive and the tools can be used on supported mobile and desktop browsers.</p></div></div>
             </section>
         </section>
@@ -592,7 +623,7 @@
                 <span class="section-label">PDF TOOLS</span>
                 <h2>Merge PDF Files</h2>
                 <p>
-                    Combine 2 to 20 PDFs into one document. Reorder pages, then merge everything in your browser.
+                    Combine 2 to 20 PDFs into one document. Reorder pages, then merge everything in one workflow.
                 </p>
             </div>
 
@@ -613,7 +644,7 @@
                 <div class="pdf-upload-limits">
                     2–20 PDFs • Max 100 MB each • 250 MB total • 500 pages
                 </div>
-                <p class="pdf-upload-privacy">Files stay on this device. Nothing is uploaded to a server.</p>
+                <p class="pdf-upload-privacy">Your files are used only for the workflow you choose.</p>
             </section>
             <input
                 type="file"
@@ -680,7 +711,7 @@
                     <div>
                         <span class="section-label">OUTPUT</span>
                         <h3>Name your merged PDF</h3>
-                        <p>Original files stay unchanged on your device.</p>
+                        <p>Original files stay unchanged.</p>
                     </div>
 
                     <label class="pdf-output-field">
@@ -817,7 +848,7 @@
                 <div class="pdf-upload-limits">
                     Up to 10 PDFs at a time • Max 100 MB each • 250 MB total • 100 pages per batch
                 </div>
-                <p class="pdf-upload-privacy">Files stay on this device. Nothing is uploaded to a server.</p>
+                <p class="pdf-upload-privacy">Your files are used only for the workflow you choose.</p>
             </section>
             <input
                 type="file"
@@ -954,7 +985,7 @@
                 <div class="pdf-upload-limits">
                     Up to 30 images · Max 100 MB each · 250 MB total · JPG / PNG / WebP
                 </div>
-                <p class="pdf-upload-privacy">Files stay on this device. Nothing is uploaded to a server.</p>
+                <p class="pdf-upload-privacy">Your files are used only for the workflow you choose.</p>
             </section>
             <input type="file" id="i2pFileInput" multiple accept="image/jpeg,image/jpg,image/png,image/webp,.jpg,.jpeg,.png,.webp" hidden>
 
@@ -1069,7 +1100,7 @@
                 <div class="pdf-upload-limits">
                     1 PDF · Max 100 MB · Max 500 pages
                 </div>
-                <p class="pdf-upload-privacy">Files stay on this device. Nothing is uploaded to a server.</p>
+                <p class="pdf-upload-privacy">Your files are used only for the workflow you choose.</p>
             </section>
             <input type="file" id="splitFileInput" accept="application/pdf,.pdf" hidden>
 
@@ -1177,7 +1208,6 @@
                 </div>
             </section>
         </section>
-
 
         <!-- =========================
              RESIZE IMAGES
@@ -1334,7 +1364,7 @@
             <div class="workspace-header">
                 <span class="section-label">IMAGE TOOLS</span>
                 <h2>Crop &amp; Rotate</h2>
-                <p>Frame one image at a time. Crop, rotate or flip on this device, then export.</p>
+                <p>Frame one image at a time. Crop, rotate or flip, then export.</p>
             </div>
 
             <div class="upload-box" id="crDropZone" role="button" tabindex="0" aria-label="Upload an image to crop or rotate">
@@ -1455,11 +1485,15 @@
     ========================== -->
 
     <footer class="footer">
-
-        <p>
-            © 2026 AuraStudio. All rights reserved.
-        </p>
-
+        <div class="footer-inner">
+            <p>© 2026 AuraStudio. All rights reserved.</p>
+            <nav class="footer-links" aria-label="AuraStudio information">
+                <a data-open-view="about" href="/about/">About</a>
+                <a data-open-view="contact" href="/contact/">Contact</a>
+                <a data-open-view="privacy" href="/privacy/">Privacy</a>
+                <a data-open-view="terms" href="/terms/">Terms</a>
+            </nav>
+        </div>
     </footer>
 
 
@@ -1518,6 +1552,11 @@
     </script>
     <!-- UI + features first (local, instant). CDN libs async in background. -->
     <script src="./dialog.js"></script>
+    <script src="./core/processing-manager.js"></script>
+    <script src="./core/router.js"></script>
+    <script src="./data/tool-registry.js"></script>
+    <script src="./data/seo-registry.js"></script>
+    <script src="./modules/public-views.js"></script>
     <script src="./app.js"></script>
     <script src="./compressor.js"></script>
     <script src="./resize.js"></script>

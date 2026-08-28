@@ -64,6 +64,26 @@
     let targetFormat = "image/webp";
     let jpgBackground = "#ffffff";
     let processing = false;
+    let processingOperationId = null;
+
+    function syncProcessingManager(active) {
+        const manager = window.AuraProcessingManager;
+        if (!manager) {
+            window.__auraProcessing = !!active;
+            return;
+        }
+
+        if (active) {
+            const started = manager.start("converter");
+            if (started && started.ok) {
+                processingOperationId = started.operationId;
+            }
+        } else if (processingOperationId) {
+            manager.finish(processingOperationId);
+            processingOperationId = null;
+        }
+    }
+
     let addChain = Promise.resolve();
 
     function dialog() {
@@ -178,6 +198,7 @@
 
     function setProcessingState(active) {
         processing = active;
+        syncProcessingManager(active);
         window.__auraProcessing = !!active;
         el.start.disabled = active || files.length === 0;
         el.clearButton.disabled = active;
@@ -291,7 +312,7 @@
         if (!skipConfirm && files.length > 0) {
             const confirmed = await popupConfirm(
                 "Clear converted files?",
-                "This clears the current image list. Original files on your device stay unchanged."
+                "This clears the current image list. Original files stay unchanged."
             );
             if (!confirmed) return;
         }
@@ -467,14 +488,14 @@
                 pixels > MAX_PIXELS ||
                 Math.max(bitmap.width, bitmap.height) > MAX_DIMENSION
             ) {
-                throw new Error("Image resolution is too large for safe browser-side conversion on this device.");
+                throw new Error("Image resolution is too large for the current safe processing limits.");
             }
 
             canvas = document.createElement("canvas");
             canvas.width = bitmap.width;
             canvas.height = bitmap.height;
             const context = canvas.getContext("2d", { alpha: format !== "image/jpeg" });
-            if (!context) throw new Error("Canvas processing is unavailable in this browser.");
+            if (!context) throw new Error("The required image processing capability is unavailable for this operation.");
 
             if (format === "image/jpeg") {
                 context.fillStyle = background || "#ffffff";

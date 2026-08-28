@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://aurastudiofiles.vercel.app/sitemap.xml

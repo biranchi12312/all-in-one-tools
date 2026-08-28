@@ -45,6 +45,26 @@
 
     let files = [];
     let processing = false;
+    let processingOperationId = null;
+
+    function syncProcessingManager(active) {
+        const manager = window.AuraProcessingManager;
+        if (!manager) {
+            window.__auraProcessing = !!active;
+            return;
+        }
+
+        if (active) {
+            const started = manager.start("images-to-pdf");
+            if (started && started.ok) {
+                processingOperationId = started.operationId;
+            }
+        } else if (processingOperationId) {
+            manager.finish(processingOperationId);
+            processingOperationId = null;
+        }
+    }
+
     let addChain = Promise.resolve();
     let resultUrl = null;
     let resultBlob = null;
@@ -373,6 +393,8 @@
     function resetAll(clearFiles) {
         if (clearFiles !== false) files = [];
         processing = false;
+        syncProcessingManager(false);
+        window.__auraProcessing = false;
         if (resultUrl) {
             URL.revokeObjectURL(resultUrl);
             resultUrl = null;
@@ -401,7 +423,7 @@
                 pixels > MAX_PIXELS ||
                 Math.max(bitmap.width, bitmap.height) > MAX_SOURCE_DIMENSION
             ) {
-                throw new Error("Image resolution is too large for safe processing on this device.");
+                throw new Error("Image resolution is too large for the current safe processing limits.");
             }
 
             let width = bitmap.width;
@@ -474,6 +496,8 @@
         }
 
         processing = true;
+        syncProcessingManager(true);
+        window.__auraProcessing = true;
         if (el.startBtn) el.startBtn.disabled = true;
         if (el.dropZone) el.dropZone.hidden = true;
         if (el.queuePanel) el.queuePanel.hidden = true;
@@ -577,6 +601,8 @@
             updateSummary();
         } finally {
             processing = false;
+            syncProcessingManager(false);
+            window.__auraProcessing = false;
         }
     }
 
@@ -647,7 +673,7 @@
         if (processing || !files.length) return;
         const confirmed = await popupConfirm(
             "Clear all images?",
-            "This removes the current list. Your original files on the device stay unchanged."
+            "This removes the current list. Your original files stay unchanged."
         );
         if (confirmed) resetAll(true);
     });
@@ -662,7 +688,7 @@
         if (files.length > 0 || resultBlob) {
             const confirmed = await popupConfirm(
                 "Create another PDF?",
-                "This clears the current list and result. Original files on your device stay unchanged."
+                "This clears the current list and result. Original files stay unchanged."
             );
             if (!confirmed) return;
         }

@@ -52,6 +52,26 @@
     let files = [];
     let processed = [];
     let processing = false;
+    let processingOperationId = null;
+
+    function syncProcessingManager(active) {
+        const manager = window.AuraProcessingManager;
+        if (!manager) {
+            window.__auraProcessing = !!active;
+            return;
+        }
+
+        if (active) {
+            const started = manager.start("resize");
+            if (started && started.ok) {
+                processingOperationId = started.operationId;
+            }
+        } else if (processingOperationId) {
+            manager.finish(processingOperationId);
+            processingOperationId = null;
+        }
+    }
+
     let addChain = Promise.resolve();
     let lastEditedDim = "width";
 
@@ -262,6 +282,7 @@
 
     function setProcessingState(active) {
         processing = active;
+        syncProcessingManager(active);
         window.__auraProcessing = !!active;
         if (el.dropZone) {
             el.dropZone.classList.toggle("is-disabled", active);
@@ -417,7 +438,7 @@
             canvas.width = target.width;
             canvas.height = target.height;
             const ctx = canvas.getContext("2d");
-            if (!ctx) throw new Error("Canvas unavailable on this device.");
+            if (!ctx) throw new Error("The required image processing capability is unavailable for this operation.");
             ctx.imageSmoothingEnabled = true;
             ctx.imageSmoothingQuality = "high";
             // PNG transparency: clear; JPEG fill white if needed handled by browser encode
@@ -494,7 +515,7 @@
         if (!skipConfirm && files.length > 0) {
             const ok = await popupConfirm(
                 "Clear images?",
-                "This clears the current list and results. Original files on your device stay unchanged."
+                "This clears the current list and results. Original files stay unchanged."
             );
             if (!ok) return;
         }

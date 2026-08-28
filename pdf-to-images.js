@@ -50,6 +50,26 @@
     let files = [];
     let results = [];
     let processing = false;
+    let processingOperationId = null;
+
+    function syncProcessingManager(active) {
+        const manager = window.AuraProcessingManager;
+        if (!manager) {
+            window.__auraProcessing = !!active;
+            return;
+        }
+
+        if (active) {
+            const started = manager.start("pdf-to-images");
+            if (started && started.ok) {
+                processingOperationId = started.operationId;
+            }
+        } else if (processingOperationId) {
+            manager.finish(processingOperationId);
+            processingOperationId = null;
+        }
+    }
+
     let addChain = Promise.resolve();
 
     function dialog() {
@@ -413,6 +433,8 @@
         });
         results = [];
         processing = false;
+        syncProcessingManager(false);
+        window.__auraProcessing = false;
         if (el.fileInput) el.fileInput.value = "";
         if (el.resultGrid) el.resultGrid.innerHTML = "";
         if (el.dropZone) {
@@ -450,7 +472,7 @@
         ) {
             if (page.cleanup) page.cleanup();
             throw new Error(
-                `Page ${pageNumber} is too large to render safely on this device.`
+                `Page ${pageNumber} is too large for the current safe processing limits.`
             );
         }
         const context = canvas.getContext("2d", { alpha: false });
@@ -498,6 +520,8 @@
         }
 
         processing = true;
+        syncProcessingManager(true);
+        window.__auraProcessing = true;
         if (el.startBtn) el.startBtn.disabled = true;
         if (el.dropZone) el.dropZone.hidden = true;
         if (el.queuePanel) el.queuePanel.hidden = true;
@@ -585,6 +609,8 @@
             updateSummary();
         } finally {
             processing = false;
+            syncProcessingManager(false);
+            window.__auraProcessing = false;
         }
     }
 
@@ -726,7 +752,7 @@
             if (processing || !files.length) return;
             const confirmed = await popupConfirm(
                 "Clear all PDFs?",
-                "This removes the current list. Your original files on the device stay unchanged."
+                "This removes the current list. Your original files stay unchanged."
             );
             if (confirmed) resetToUpload(true);
         });
@@ -747,7 +773,7 @@
             if (files.length > 0 || results.length > 0) {
                 const confirmed = await popupConfirm(
                     "Convert more PDFs?",
-                    "This clears the current list and results. Original files on your device stay unchanged."
+                    "This clears the current list and results. Original files stay unchanged."
                 );
                 if (!confirmed) return;
             }

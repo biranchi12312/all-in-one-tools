@@ -76,6 +76,26 @@ function popupError(title, message) {
     return Promise.resolve();
 }
 
+let processingOperationId = null;
+
+function syncProcessingManager(active) {
+    const manager = window.AuraProcessingManager;
+    if (!manager) {
+        window.__auraProcessing = !!active;
+        return;
+    }
+
+    if (active) {
+        const started = manager.start("crop-rotate");
+        if (started && started.ok) {
+            processingOperationId = started.operationId;
+        }
+    } else if (processingOperationId) {
+        manager.finish(processingOperationId);
+        processingOperationId = null;
+    }
+}
+
 async function popupConfirm(title, message) {
     const ui = dialog();
     if (ui) return ui.confirm(title, message);
@@ -134,6 +154,7 @@ function setStatus(text) {
 
 function setProcessing(on) {
     state.processing = on;
+    syncProcessingManager(on);
     window.__auraProcessing = !!on;
     [el.exportBtn, el.reset, el.another, el.rotLeft, el.rotRight, el.flipH, el.flipV].forEach(btn => {
         if (btn) btn.disabled = on;
@@ -482,7 +503,7 @@ async function exportImage() {
         temp.width = t.w;
         temp.height = t.h;
         const ctx = temp.getContext("2d");
-        if (!ctx) throw new Error("Canvas is unavailable on this device.");
+        if (!ctx) throw new Error("The required image processing capability is unavailable for this operation.");
 
         ctx.save();
         ctx.translate(t.w / 2, t.h / 2);
@@ -512,7 +533,7 @@ async function exportImage() {
         out.width = ow;
         out.height = oh;
         const octx = out.getContext("2d");
-        if (!octx) throw new Error("Canvas is unavailable on this device.");
+        if (!octx) throw new Error("The required image processing capability is unavailable for this operation.");
         const type = guessType(state.file) || "image/jpeg";
         if (type === "image/jpeg") {
             octx.fillStyle = "#ffffff";
@@ -625,7 +646,7 @@ el.another?.addEventListener("click", async () => {
     if (state.file) {
         const ok = await popupConfirm(
             "Edit another image?",
-            "This clears the current image and result. Original files on your device stay unchanged."
+            "This clears the current image and result. Original files stay unchanged."
         );
         if (!ok) return;
     }

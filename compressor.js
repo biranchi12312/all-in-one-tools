@@ -160,14 +160,43 @@
         }
     }
 
+    let processingOperationId = null;
+
     function setProcessingState(active) {
         processing = active;
-        window.__auraProcessing = !!active;
+
+        const manager = window.AuraProcessingManager;
+
+        if (manager) {
+            if (active) {
+                const started = manager.start("compressor", {
+                    canCancel: false,
+                    metadata: {
+                        fileCount: files.length
+                    }
+                });
+
+                if (!started.ok) {
+                    processing = false;
+                    return false;
+                }
+
+                processingOperationId = started.operationId;
+            } else if (processingOperationId) {
+                manager.finish(processingOperationId);
+                processingOperationId = null;
+            }
+        } else {
+            window.__auraProcessing = !!active;
+        }
+
         el.start.disabled = active || files.length === 0;
         el.clearButton.disabled = active;
         el.input.disabled = active;
         el.quality.disabled = active;
         el.dropZone.classList.toggle("is-disabled", active);
+
+        return true;
     }
 
     function renderQueue() {
@@ -304,7 +333,7 @@
                 pixels > MAX_PIXELS ||
                 Math.max(bitmap.width, bitmap.height) > MAX_SOURCE_DIMENSION
             ) {
-                throw new Error("Image resolution is too large for safe browser-side compression on this device.");
+                throw new Error("Image resolution is too large for the current safe processing limits.");
             }
 
             let width = bitmap.width;
@@ -322,7 +351,7 @@
             canvas.width = width;
             canvas.height = height;
             const context = canvas.getContext("2d", { alpha: true });
-            if (!context) throw new Error("Canvas processing is unavailable in this browser.");
+            if (!context) throw new Error("The required image processing capability is unavailable for this operation.");
             context.drawImage(bitmap, 0, 0, width, height);
 
             const outputType = type === "image/jpg" ? "image/jpeg" : type;
@@ -377,7 +406,7 @@
         if (!skipConfirm && files.length > 0) {
             const confirmed = await popupConfirm(
                 "Clear compressed files?",
-                "This clears the current image list. Original files on your device stay unchanged."
+                "This clears the current image list. Original files stay unchanged."
             );
             if (!confirmed) return;
         }
@@ -450,7 +479,16 @@
         el.results.hidden = false;
         el.zip.hidden = true;
         el.start.textContent = "Compressing...";
-        setProcessingState(true);
+
+        if (!setProcessingState(true)) {
+            el.start.textContent = "Compress Images";
+            await popupWarning(
+                "Please wait",
+                "Another file operation is already in progress. Wait for it to finish before starting compression."
+            );
+            return;
+        }
+
         setProgress(0, snapshot.length, "Starting compression");
 
         try {
@@ -531,7 +569,7 @@
             }
 
             const notices = [];
-            if (resizedCount) notices.push(`${resizedCount} image${resizedCount === 1 ? " was" : "s were"} resized to a 4096px max edge so this browser can process them safely.`);
+            if (resizedCount) notices.push(`${resizedCount} image${resizedCount === 1 ? " was" : "s were"} resized to a 4096px max edge so AuraStudio can process them safely.`);
             if (keptOriginalCount) notices.push(`${keptOriginalCount} image${keptOriginalCount === 1 ? "" : "s"} stayed original because compression did not reduce the file size.`);
             if (notices.length) {
                 await popupWarning("Compression notes", notices.join(" "), []);

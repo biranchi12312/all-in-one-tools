@@ -15,7 +15,21 @@
         pdfSplit: document.getElementById("pdfSplitView")
     };
 
-    let currentView = "dashboard";
+    const mainHost = document.querySelector("main.container");
+    if (!window.AuraPublicViews || typeof window.AuraPublicViews.mount !== "function") {
+        throw new Error("[AuraStudio] Public Views foundation failed to load.");
+    }
+    Object.assign(views, window.AuraPublicViews.mount(mainHost));
+
+    function showProcessingWarning() {
+        const ui = window.AuraDialog;
+        if (ui) {
+            ui.warning(
+                "Please wait",
+                "A file is still processing. Finish or wait for it to complete before leaving this tool."
+            );
+        }
+    }
 
     function setToolsMenu(open) {
         if (typeof window.__auraSetMenu === "function") {
@@ -46,13 +60,16 @@
             viewName === "dashboard"
         );
 
+        // Keep a lightweight route context on <body> so shared UI layers can
+        // style public/tool states without duplicating route-specific markup.
+        document.body.dataset.activeView = viewName;
+
         window.scrollTo(0, 0);
 
         if (viewName === "dashboard") {
             requestAnimationFrame(() => initScrollAnimations());
         }
 
-        currentView = viewName;
         window.dispatchEvent(
             new CustomEvent("aurastudio:viewchange", {
                 detail: { view: viewName }
@@ -60,98 +77,88 @@
         );
     }
 
-    function switchView(viewName, pushHistory = true) {
-        if (!views[viewName]) return;
-        if (window.__auraProcessing && viewName !== currentView) {
-            const ui = window.AuraDialog;
-            if (ui) {
-                ui.warning(
-                    "Please wait",
-                    "A file is still processing. Finish or wait for it to complete before switching tools."
-                );
-            }
+    if (!window.AuraRouter || typeof window.AuraRouter.createRouter !== "function") {
+        throw new Error("[AuraStudio] Router foundation failed to load.");
+    }
+
+    const router = window.AuraRouter.createRouter({
+        defaultRoute: "dashboard",
+        getView: viewName => views[viewName],
+        renderRoute: viewName => renderView(viewName),
+        onBlocked: showProcessingWarning,
+        onUnknown: () => {
+            router.navigate("notFound", {
+                history: "replace",
+                source: "unknown-route"
+            });
+        }
+    });
+
+    // Register the stable dashboard separately, then derive all tool routes
+    // from the central metadata registry. This keeps route/view metadata in one place.
+    router.register({
+        id: "dashboard",
+        type: "public",
+        path: "/",
+        viewId: views.dashboard ? views.dashboard.id : null,
+        lifecycle: {}
+    });
+
+    window.AuraPublicViews.getDefinitions().forEach(view => {
+        router.register({
+            id: view.id,
+            type: view.id === "notFound" ? "recovery" : "public",
+            path: view.path || null,
+            viewId: views[view.id] ? views[view.id].id : null,
+            lifecycle: {}
+        });
+    });
+
+    const toolRegistry = window.AuraToolRegistry;
+
+    if (!toolRegistry || typeof toolRegistry.getAll !== "function") {
+        throw new Error("[AuraStudio] Tool Registry failed to load.");
+    }
+
+    toolRegistry.getAll().forEach(tool => {
+        if (!views[tool.route]) {
+            console.warn(`[AuraStudio] Registered tool view not found: ${tool.route}`);
             return;
         }
+
+        router.register({
+            id: tool.route,
+            type: "tool",
+            viewId: tool.viewId,
+            metadata: tool,
+            path: tool.seoPath || null,
+            legacyHashes: [tool.route],
+            lifecycle: {}
+        });
+    });
+
+    function switchView(viewName, pushHistory = true) {
         setToolsMenu(false);
-        renderView(viewName);
-
-        if (!pushHistory) return;
-
-        const currentState = history.state;
-        if (!currentState || currentState.view !== viewName) {
-            history.pushState(
-                { view: viewName },
-                "",
-                viewName === "dashboard"
-                    ? location.pathname + location.search
-                    : `#${viewName}`
-            );
-        }
+        return router.navigate(viewName, {
+            history: pushHistory ? "push" : "none",
+            source: "ui"
+        });
     }
 
     function getViewFromHash() {
-        const hash = window.location.hash.replace("#", "");
-        if (
-            hash === "dashboard" ||
-            hash === "compressor" ||
-            hash === "resize" ||
-            hash === "cropRotate" ||
-            hash === "converter" ||
-            hash === "pdfMerge" ||
-            hash === "pdfToImages" ||
-            hash === "imagesToPdf" ||
-            hash === "pdfSplit"
-        ) {
-            return hash;
-        }
-        return "dashboard";
+        return router.getRouteFromLocation() || "dashboard";
     }
 
     function backToDashboard() {
-        // Always stay inside the app. Never history.back() here —
-        // deep-links (#compressor etc.) may have no prior dashboard
-        // entry, and history.back() would exit the site.
         setToolsMenu(false);
-        if (getViewFromHash() === "dashboard") {
-            renderView("dashboard");
-            return;
-        }
-        renderView("dashboard");
-        try {
-            history.pushState(
-                { view: "dashboard" },
-                "",
-                location.pathname + location.search
-            );
-        } catch (_) {
-            try {
-                history.replaceState(
-                    { view: "dashboard" },
-                    "",
-                    location.pathname + location.search
-                );
-            } catch (__) {}
-        }
+        return router.navigate("dashboard", {
+            history: "push",
+            source: "back-control"
+        });
     }
 
-    // ---- Routing init ----
-    const initialView = getViewFromHash();
-    try {
-        history.replaceState(
-            { view: initialView },
-            "",
-            initialView === "dashboard"
-                ? location.pathname + location.search
-                : `#${initialView}`
-        );
-    } catch (_) {}
-    renderView(initialView);
+    router.init();
 
-    window.addEventListener("popstate", event => {
-        renderView(event.state?.view || getViewFromHash());
-    });
-
-    // ---- Preview toast ----
     const previewFeatureToast = document.getElementById("previewFeatureToast");
     let previewFeatureToastTimer;
 
@@ -173,14 +180,14 @@
         }, 2600);
     }
 
-    // ---- Direct listeners (most reliable on mobile) ----
-    document.querySelectorAll("[data-open-view]").forEach(button => {
-        button.addEventListener("click", event => {
-            event.preventDefault();
-            event.stopPropagation();
-            const viewName = button.getAttribute("data-open-view");
-            if (viewName) switchView(viewName);
-        });
+    document.addEventListener("click", event => {
+        const button = event.target.closest("[data-open-view]");
+        if (!button) return;
+        if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        event.preventDefault();
+        event.stopPropagation();
+        const viewName = button.getAttribute("data-open-view");
+        if (viewName) switchView(viewName);
     });
 
     document.querySelectorAll("[data-back-dashboard]").forEach(button => {
@@ -191,8 +198,9 @@
     });
 
     document.getElementById("logoBtn")?.addEventListener("click", event => {
+        if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
         event.preventDefault();
-        if (getViewFromHash() === "dashboard") {
+        if (router.getCurrentRoute() === "dashboard") {
             renderView("dashboard");
             setToolsMenu(false);
             return;
@@ -214,7 +222,6 @@
         });
     });
 
-    // FAQ accordion
     document.querySelectorAll(".faq-question").forEach(button => {
         if (!button.hasAttribute("aria-expanded")) {
             button.setAttribute("aria-expanded", "false");
@@ -252,7 +259,6 @@
         if (event.key === "Escape") setToolsMenu(false);
     });
 
-    // ---- Soft scroll reveal (below-fold only, ~0.25s) ----
     let revealObserver = null;
 
     function prefersReducedMotion() {
@@ -278,7 +284,6 @@
         const revealElements = Array.from(document.querySelectorAll(".reveal"));
         if (!revealElements.length) return;
 
-        // Above fold: show immediately, no pending state
         revealElements.forEach(el => {
             el.classList.remove("is-pending");
             const rect = el.getBoundingClientRect();
@@ -322,8 +327,8 @@
         renderView,
         getViewFromHash,
         backToDashboard,
-        setToolsMenu
+        setToolsMenu,
+        router
     };
-
 
 })();
