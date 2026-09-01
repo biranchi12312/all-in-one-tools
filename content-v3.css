@@ -1,0 +1,56 @@
+body.content-v3{background:#070709;color:#f5f5f5;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.content-v3 .site-header{position:sticky;top:0;z-index:1000;border-bottom:1px solid rgba(255,255,255,.11);background:rgba(7,7,9,.9);backdrop-filter:blur(18px)}.content-v3 .container{width:min(calc(100% - 56px),1040px);margin:auto}.content-v3 .header{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}.content-v3 .brand{font-family:Georgia,serif;font-size:31px;color:#f5f5f5;text-decoration:none}.content-v3 .nav{display:flex;gap:22px}.content-v3 .nav a,.content-v3 .footer a{color:#9699a1;text-decoration:none;font-size:13px}.content-v3 .nav a:hover,.content-v3 .footer a:hover{color:#fff}.content-v3 .menu-btn{border:1px solid rgba(255,255,255,.11);border-radius:13px;background:#121217;color:#fff;padding:10px 14px}.content-v3 .mobile-menu{display:none;padding:12px 0 18px}.content-v3 .mobile-menu[data-open="true"]{display:grid;gap:8px}.content-v3 .mobile-menu a{padding:13px;border:1px solid rgba(255,255,255,.11);border-radius:12px;background:#121217;color:#fff;text-decoration:none}.content-v3 main{padding:64px 0 104px}.content-v3 .eyebrow{display:inline-flex;padding:8px 12px;border:1px solid rgba(255,255,255,.11);border-radius:999px;color:#d9ff45;font-size:10px;font-weight:800;letter-spacing:1.4px}.content-v3 h1{margin:20px 0 14px;font-family:Georgia,serif;font-size:clamp(46px,7vw,76px);line-height:.96;font-weight:400;letter-spacing:-.04em}.content-v3 .lead{max-width:760px;color:#9699a1;font-size:17px;line-height:1.8}.content-v3 .content-grid{display:grid;gap:18px;margin-top:38px}.content-v3 .card{padding:25px;border:1px solid rgba(255,255,255,.11);border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.025),transparent 60%),#121217}.content-v3 .card h2{margin:0 0 10px;font-family:Georgia,serif;font-size:28px;font-weight:400}.content-v3 .card h3{margin:0 0 7px;font-size:16px}.content-v3 .card p,.content-v3 .card li{color:#9699a1;line-height:1.75;font-size:14px}.content-v3 .card ul,.content-v3 .card ol{margin:10px 0 0;padding-left:20px}.content-v3 .two{grid-template-columns:repeat(2,minmax(0,1fr))}.content-v3 .three{grid-template-columns:repeat(3,minmax(0,1fr))}.content-v3 .guide-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.content-v3 .guide-link{padding:20px;border:1px solid rgba(255,255,255,.11);border-radius:18px;background:#0d0e12;color:#fff;text-decoration:none}.content-v3 .guide-link span{display:block;color:#9699a1;font-size:13px;line-height:1.6;margin-top:7px}.content-v3 .guide-link .guide-action{color:#d9ff45;font-size:13px;font-weight:700;line-height:1.4;margin-top:14px}.content-v3 .step{display:grid;grid-template-columns:42px 1fr;gap:16px}.content-v3 .step b{display:grid;place-items:center;width:42px;height:42px;border:1px solid rgba(217,255,69,.3);border-radius:13px;color:#d9ff45}.content-v3 .cta{display:flex;align-items:center;justify-content:space-between;gap:20px}.content-v3 .btn{display:inline-block;padding:12px 18px;border-radius:999px;background:#d9ff45;color:#111;text-decoration:none;font-weight:800;font-size:13px}.content-v3 .footer{border-top:1px solid rgba(255,255,255,.11);padding:44px 0 26px}.content-v3 .footer-brand{font-family:Georgia,serif;font-size:28px}.content-v3 .footer-links{display:flex;gap:60px;margin-top:26px}.content-v3 .footer h2{font-size:11px;letter-spacing:1.4px;color:#9699a1;text-transform:uppercase}.content-v3 .footer a{display:block;margin:10px 0}.content-v3 .copyright{margin-top:30px;padding-top:20px;border-top:1px solid rgba(255,255,255,.11);color:#9699a1;font-size:12px}@media(max-width:760px){.content-v3 .container{width:min(calc(100% - 32px),1040px)}.content-v3 .nav{display:none}.content-v3 .two,.content-v3 .three,.content-v3 .guide-links{grid-template-columns:1fr}.content-v3 .cta{align-items:flex-start;flex-direction:column}.content-v3 .footer-links{gap:28px}}
+
+/* V62.9 — homepage menu presentation matched exactly on non-home pages. */
+.content-v3 .site-header{position:sticky;top:0;z-index:1000;overflow:visible}
+.content-v3 .mobile-menu{
+  position:absolute;top:100%;left:0;right:0;z-index:1001;width:auto;box-sizing:border-box;
+  min-height:calc(100vh - 76px);max-height:calc(100vh - 76px);overflow:auto;margin:0;padding:28px 16px;
+  display:grid;grid-template-columns:1fr;align-content:start;gap:10px;
+  border-top:1px solid rgba(255,255,255,.11);background:rgba(7,7,9,.97);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  opacity:0;visibility:hidden;pointer-events:none;
+  transform:translateY(-6px);transform-origin:top center;
+  transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s;
+}
+.content-v3 .mobile-menu[data-open="true"]{
+  opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0);
+  transition:opacity .2s ease,transform .2s ease,visibility 0s linear 0s;
+}
+.content-v3 .mobile-menu a{
+  display:block;width:min(100%,560px);margin:0 auto;box-sizing:border-box;
+  padding:18px 20px;border:1px solid rgba(255,255,255,.11);border-radius:18px;
+  background:#121217;color:#f5f5f5;text-decoration:none;font-size:18px;
+  transition:transform .2s ease,border-color .2s ease,background .2s ease;
+}
+.content-v3 .mobile-menu a:hover{transform:translateY(-1px);border-color:rgba(217,255,69,.35);background:#181820}
+body.content-v3:has(.mobile-menu[data-open="true"]){overflow:hidden}
+@media(max-width:760px){.content-v3 .mobile-menu{min-height:calc(100vh - 68px);max-height:calc(100vh - 68px)}}
+
+
+/* v68 footer implementation: derived from the index footer's visual system.
+   Footer-only rules; no header, hero, workspace, card, or navigation styling is changed. */
+.content-v3 .footer{border-top:1px solid rgba(255,255,255,.11);background:#09090c;margin-top:5rem;padding:0;text-align:center}
+.content-v3 .footer .container{width:min(calc(100% - 56px),1180px);margin:auto}
+.content-v3 .footer-brand{display:flex;justify-content:center;width:100%;margin:0;padding:56px 0 30px;font-family:Georgia,"Times New Roman",serif;font-size:31px;font-weight:400;color:#f5f5f5}
+.content-v3 .footer-brand span{color:#d9ff45}
+.content-v3 .footer-links{display:grid;grid-template-columns:1fr;justify-items:center;gap:30px;margin:0;padding:0 0 38px}
+.content-v3 .footer-links section{text-align:center}
+.content-v3 .footer h2{margin:0 0 16px;color:#8d9199;font-size:12px;text-transform:uppercase;letter-spacing:1.5px}
+.content-v3 .footer a{display:block;width:max-content;max-width:100%;margin:0 auto 12px;color:#f5f5f5;text-decoration:none;font-size:14px}
+.content-v3 .footer a:hover{color:#f5f5f5}
+.content-v3 .copyright{margin:0;padding:20px 0 28px;border-top:1px solid rgba(255,255,255,.11);color:#8d9199;font-size:12px;text-align:center}
+@media(max-width:560px){.content-v3 .footer .container{width:min(calc(100% - 32px),1180px)}.content-v3 .footer-brand{padding:46px 0 30px}.content-v3 .footer-links{grid-template-columns:1fr;gap:30px;padding-bottom:38px}}
+
+/* v70 contact-page card spacing + contact form page styles. Scoped to the contact surfaces only. */
+.content-v3 .contact-form-cta,.content-v3 .contact-help-cta{margin-top:18px}
+.content-v3 .contact-form-page{max-width:760px;margin:38px auto 0}
+.content-v3 .contact-form-page .card{padding:28px}
+.content-v3 .contact-form-page form{display:grid;gap:18px}
+.content-v3 .contact-form-page .field{display:grid;gap:8px}
+.content-v3 .contact-form-page label{font-size:13px;font-weight:700;color:#f5f5f5}
+.content-v3 .contact-form-page input,.content-v3 .contact-form-page select,.content-v3 .contact-form-page textarea{width:100%;box-sizing:border-box;border:1px solid rgba(255,255,255,.11);border-radius:14px;background:#0d0e12;color:#f5f5f5;padding:13px 14px;font:inherit;font-size:14px;outline:none}
+.content-v3 .contact-form-page textarea{min-height:150px;resize:vertical}
+.content-v3 .contact-form-page input:focus,.content-v3 .contact-form-page select:focus,.content-v3 .contact-form-page textarea:focus{border-color:rgba(217,255,69,.55)}
+.content-v3 .contact-form-page .form-note{margin:0;color:#9699a1;font-size:13px;line-height:1.65}
+.content-v3 .contact-form-page .form-submit{justify-self:start;border:0;cursor:pointer}
+@media(max-width:760px){.content-v3 .contact-form-page{margin-top:32px}.content-v3 .contact-form-page .card{padding:22px}}

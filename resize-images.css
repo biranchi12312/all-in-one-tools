@@ -1,0 +1,997 @@
+/* OrivaStudio v36: isolated stylesheet for resize-images. Loaded only by this tool page. */
+:root{--tv-bg:#070709;--tv-panel:#121217;--tv-panel-2:#181820;--tv-text:#f5f5f5;--tv-muted:#8d9199;--tv-line:rgba(255,255,255,.11);--tv-accent:#d9ff45;--tv-indigo:#818cf8}
+body.tool-v2[data-tool-page="resize-images"]{background:var(--tv-bg);color:var(--tv-text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.tool-v2[data-tool-page="resize-images"] .site-header{position:sticky;top:0;z-index:1000;border-bottom:1px solid var(--tv-line);background:rgba(7,7,9,.9);backdrop-filter:blur(18px)}
+.tool-v2[data-tool-page="resize-images"] .site-header .container{width:min(calc(100% - 56px),1180px);margin:auto}
+.tool-v2[data-tool-page="resize-images"] .header{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.tool-v2[data-tool-page="resize-images"] .brand{font-family:Georgia,"Times New Roman",serif;font-size:31px;letter-spacing:.4px;color:var(--tv-text)}
+.tool-v2[data-tool-page="resize-images"] .brand::first-letter{color:var(--tv-text)}
+.tool-v2[data-tool-page="resize-images"] .nav{display:flex;gap:22px}.tool-v2[data-tool-page="resize-images"] .nav a{font-size:13px;color:var(--tv-muted);text-decoration:none}.tool-v2[data-tool-page="resize-images"] .nav a:hover{color:var(--tv-text)}
+.tool-v2[data-tool-page="resize-images"] .menu-btn{border:1px solid var(--tv-line);border-radius:13px;background:var(--tv-panel);color:var(--tv-text);padding:10px 14px}
+.tool-v2[data-tool-page="resize-images"] .mobile-menu{display:none;padding:12px 0 18px}.tool-v2[data-tool-page="resize-images"] .mobile-menu[data-open="true"]{display:grid;gap:8px}.tool-v2[data-tool-page="resize-images"] .mobile-menu a{padding:13px;border:1px solid var(--tv-line);border-radius:12px;background:var(--tv-panel);color:var(--tv-text);text-decoration:none}
+.tool-v2[data-tool-page="resize-images"] .site-main{padding:56px 0 100px}.tool-v2[data-tool-page="resize-images"] .section,.tool-v2[data-tool-page="resize-images"] .container{width:min(calc(100% - 56px),1180px);margin-inline:auto}
+.tool-v2[data-tool-page="resize-images"] .tool-intro{max-width:820px;margin:0 0 34px}.tool-v2[data-tool-page="resize-images"] .tool-kicker{display:inline-flex;padding:8px 12px;border:1px solid var(--tv-line);border-radius:999px;color:var(--tv-accent);font-size:10px;font-weight:800;letter-spacing:1.5px}
+.tool-v2[data-tool-page="resize-images"] .tool-intro h1{margin:18px 0 12px;font-family:Georgia,"Times New Roman",serif;font-size:clamp(48px,6vw,76px);font-weight:400;line-height:.96;letter-spacing:-.04em}
+.tool-v2[data-tool-page="resize-images"] .tool-intro p{max-width:720px;margin:0;color:var(--tv-muted);font-size:16px;line-height:1.75}
+.tool-v2[data-tool-page="resize-images"] .workspace{display:grid;gap:18px}
+.tool-v2[data-tool-page="resize-images"] .tool-panel,.tool-v2[data-tool-page="resize-images"] .setting-card,.tool-v2[data-tool-page="resize-images"] .tool-status,.tool-v2[data-tool-page="resize-images"] .result-list,.tool-v2[data-tool-page="resize-images"] .file-list{border:1px solid var(--tv-line);border-radius:24px;background:linear-gradient(145deg,rgba(255,255,255,.025),transparent 55%),var(--tv-panel)}
+.tool-v2[data-tool-page="resize-images"] .tool-panel{padding:22px}.tool-v2[data-tool-page="resize-images"] .file-input{display:none}
+.tool-v2[data-tool-page="resize-images"] .drop-zone{min-height:220px;display:grid;place-items:center;text-align:center;border:1px dashed rgba(255,255,255,.18);border-radius:18px;background:rgba(7,7,9,.38);transition:.25s ease}
+.tool-v2[data-tool-page="resize-images"] .drop-zone[data-active="true"]{border-color:var(--tv-accent);background:rgba(217,255,69,.05)}
+.tool-v2[data-tool-page="resize-images"] .drop-zone>div{padding:30px}.tool-v2[data-tool-page="resize-images"] .chip{display:grid;place-items:center;width:48px;height:48px;margin:0 auto 16px;border:1px solid var(--tv-line);border-radius:14px;color:var(--tv-accent);font-size:26px}
+.tool-v2[data-tool-page="resize-images"] .drop-zone h2,.tool-v2[data-tool-page="resize-images"] .setting-card h2{margin:0 0 8px;font-family:Georgia,"Times New Roman",serif;font-weight:400}.tool-v2[data-tool-page="resize-images"] .drop-zone h2{font-size:30px}
+.tool-v2[data-tool-page="resize-images"] .drop-zone p,.tool-v2[data-tool-page="resize-images"] .setting-card p{margin:0;color:var(--tv-muted);font-size:13px;line-height:1.7}.tool-v2[data-tool-page="resize-images"] .actions{margin-top:18px}
+.tool-v2[data-tool-page="resize-images"] .btn{border-radius:999px;padding:12px 18px;font-weight:800}.tool-v2[data-tool-page="resize-images"] .btn.primary{border:0;background:var(--tv-accent);color:#111}.tool-v2[data-tool-page="resize-images"] .btn.secondary{border:1px solid var(--tv-line);background:transparent;color:var(--tv-text)}
+.tool-v2[data-tool-page="resize-images"] .image-settings,.tool-v2[data-tool-page="resize-images"] .pdf-settings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.tool-v2[data-tool-page="resize-images"] .setting-card{padding:24px}.tool-v2[data-tool-page="resize-images"] .setting-card.full{grid-column:1/-1}
+.tool-v2[data-tool-page="resize-images"] .field{display:grid;gap:8px;margin-top:16px;color:var(--tv-muted);font-size:12px;font-weight:800}.tool-v2[data-tool-page="resize-images"] input,.tool-v2[data-tool-page="resize-images"] select{width:100%;box-sizing:border-box;padding:12px;border:1px solid var(--tv-line);border-radius:12px;background:#0b0b0f;color:var(--tv-text)}
+.tool-v2[data-tool-page="resize-images"] .range-row{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;margin-top:16px}.tool-v2[data-tool-page="resize-images"] output{min-width:54px;text-align:center;padding:9px;border:1px solid var(--tv-line);border-radius:10px;color:var(--tv-accent)}
+.tool-v2[data-tool-page="resize-images"] .choice-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}.tool-v2[data-tool-page="resize-images"] .choice-row label{display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--tv-line);border-radius:999px;color:var(--tv-muted);font-size:13px}
+.tool-v2[data-tool-page="resize-images"] .choice-row input{width:auto}
+.tool-v2[data-tool-page="resize-images"] .file-list,.tool-v2[data-tool-page="resize-images"] .result-list{overflow:hidden}.tool-v2[data-tool-page="resize-images"] .file-row,.tool-v2[data-tool-page="resize-images"] .result-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 18px;border-bottom:1px solid var(--tv-line)}.tool-v2[data-tool-page="resize-images"] .file-row:last-child,.tool-v2[data-tool-page="resize-images"] .result-row:last-child{border-bottom:0}
+.tool-v2[data-tool-page="resize-images"] .file-name,.tool-v2[data-tool-page="resize-images"] .result-name{font-weight:800;overflow-wrap:anywhere}.tool-v2[data-tool-page="resize-images"] .file-size,.tool-v2[data-tool-page="resize-images"] .result-meta{margin-top:4px;color:var(--tv-muted);font-size:12px}.tool-v2[data-tool-page="resize-images"] .remove-file{border:1px solid var(--tv-line);border-radius:999px;background:transparent;color:var(--tv-text);padding:8px 11px}
+.tool-v2[data-tool-page="resize-images"] .empty-state{padding:22px;color:var(--tv-muted);font-size:13px}.tool-v2[data-tool-page="resize-images"] .tool-status{padding:14px 18px;color:var(--tv-muted);font-size:13px}.tool-v2[data-tool-page="resize-images"] .tool-status[data-kind="success"]{border-color:rgba(74,222,128,.4);color:#b7f7c6}.tool-v2[data-tool-page="resize-images"] .tool-status[data-kind="error"]{border-color:rgba(248,113,113,.45);color:#fecaca}.tool-v2[data-tool-page="resize-images"] .tool-status[data-kind="working"]{color:var(--tv-accent)}
+.tool-v2[data-tool-page="resize-images"] .tool-actions{display:flex;justify-content:flex-end;gap:12px}.tool-v2[data-tool-page="resize-images"] [data-processing="true"]{pointer-events:none;opacity:.72}
+.tool-v2[data-tool-page="resize-images"] .workspace-note{padding:16px 18px;border-left:2px solid var(--tv-accent);color:var(--tv-muted);font-size:13px;line-height:1.7;background:rgba(255,255,255,.02)}
+.tool-v2[data-tool-page="resize-images"] .footer{border-top:1px solid var(--tv-line);background:#09090c}.tool-v2[data-tool-page="resize-images"] .footer .container{width:min(calc(100% - 56px),1180px);margin:auto;padding:44px 0 26px}.tool-v2[data-tool-page="resize-images"] .footer-brand{font-family:Georgia,"Times New Roman",serif;font-size:28px}.tool-v2[data-tool-page="resize-images"] .footer-links{display:flex;gap:60px;margin-top:26px}.tool-v2[data-tool-page="resize-images"] .footer h2{font-size:11px;letter-spacing:1.4px;color:var(--tv-muted);text-transform:uppercase}.tool-v2[data-tool-page="resize-images"] .footer a{display:block;margin:10px 0;color:var(--tv-text);text-decoration:none;font-size:13px}.tool-v2[data-tool-page="resize-images"] .copyright{margin-top:30px;padding-top:20px;border-top:1px solid var(--tv-line);color:var(--tv-muted);font-size:12px}
+@media(max-width:800px){.tool-v2[data-tool-page="resize-images"] .site-header .container,.tool-v2[data-tool-page="resize-images"] .section,.tool-v2[data-tool-page="resize-images"] .container{width:min(calc(100% - 32px),1180px)}.tool-v2[data-tool-page="resize-images"] .nav{display:none}.tool-v2[data-tool-page="resize-images"] .image-settings,.tool-v2[data-tool-page="resize-images"] .pdf-settings{grid-template-columns:1fr}.tool-v2[data-tool-page="resize-images"] .tool-actions{justify-content:stretch}.tool-v2[data-tool-page="resize-images"] .tool-actions .btn{flex:1}.tool-v2[data-tool-page="resize-images"] .footer-links{gap:28px}}
+@media(max-width:520px){.tool-v2[data-tool-page="resize-images"] .header{min-height:68px}.tool-v2[data-tool-page="resize-images"] .tool-intro h1{font-size:48px}.tool-v2[data-tool-page="resize-images"] .site-main{padding-top:38px}.tool-v2[data-tool-page="resize-images"] .file-row,.tool-v2[data-tool-page="resize-images"] .result-row{align-items:flex-start;flex-direction:column}.tool-v2[data-tool-page="resize-images"] .remove-file{align-self:stretch}.tool-v2[data-tool-page="resize-images"] .footer-links{display:grid;grid-template-columns:1fr 1fr}}
+
+
+/* Strict progressive tool workflow. Initial state is declared in HTML to avoid a first-paint flash. */
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase] [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase] [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase] [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase] [data-step="status"],
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase] [data-step="results"],
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase] [data-step="actions"] {
+  display: none !important;
+}
+
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="settings"] [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="settings"] [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="settings"] [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="settings"] [data-step="status"],
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="settings"] [data-step="actions"],
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="processing"] [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="processing"] [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="processing"] [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="processing"] [data-step="status"],
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="processing"] [data-step="actions"],
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="results"] [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="results"] .tool-status[data-tool-status],
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="results"] [data-step="results"],
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="results"] [data-step="actions"] {
+  display: block !important;
+}
+
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="settings"] [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="processing"] [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="results"] [data-step="files"] {
+  display: block !important;
+}
+
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="settings"] [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="processing"] [data-step="settings"] {
+  display: grid !important;
+}
+
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="settings"] [data-step="actions"],
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="processing"] [data-step="actions"],
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="results"] [data-step="actions"] {
+  display: flex !important;
+}
+
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="results"] [data-step="results"] {
+  display: block !important;
+}
+
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="upload"][data-status-visible="true"] [data-step="status"] {
+  display: block !important;
+}
+
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="upload"] [data-step="status"] {
+  margin-top: 16px;
+}
+
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="settings"] [data-step="status"],
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="processing"] [data-step="status"],
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="results"] [data-step="status"] {
+  margin-top: 0;
+}
+
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="upload"] [data-step="upload"] {
+  display: block !important;
+}
+
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="processing"] [data-step="upload"] {
+  opacity: .72;
+}
+
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="results"] [data-step="upload"] {
+  display: none !important;
+}
+
+.tool-v2[data-tool-page="resize-images"] .workspace[data-processing="true"] [data-step="upload"],
+.tool-v2[data-tool-page="resize-images"] .workspace[data-processing="true"] [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .workspace[data-processing="true"] [data-step="actions"] {
+  pointer-events: none;
+}
+
+.tool-v2[data-tool-page="resize-images"] .workspace [data-step] {
+  animation: toolStepIn .2s ease both;
+}
+
+@keyframes toolStepIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+/* v8: tool-only file preview and action layout.
+   These rules intentionally override generic site controls without relying on global variables. */
+.tool-v2[data-tool-page="resize-images"] .file-meta {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.tool-v2[data-tool-page="resize-images"] .file-text-meta {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.tool-v2[data-tool-page="resize-images"] .pdf-file-preview {
+  flex: 0 0 88px;
+  width: 88px;
+  height: 112px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 14px;
+  background:
+    linear-gradient(145deg, rgba(217,255,69,.10), rgba(255,255,255,.02) 58%),
+    #15151b;
+  color: #a9adb7;
+  font-weight: 800;
+  letter-spacing: .08em;
+}
+
+.tool-v2[data-tool-page="resize-images"] .pdf-file-preview img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #fff;
+}
+
+/* Normal-flow action panel: never fixed or sticky. */
+.tool-v2[data-tool-page="resize-images"] .workspace > .tool-actions[data-step="actions"] {
+  position: static !important;
+  inset: auto !important;
+  z-index: auto !important;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 8px 0 0;
+  padding: 16px;
+  align-items: stretch;
+  justify-content: stretch;
+  gap: 12px;
+  overflow: visible;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.028), rgba(255,255,255,.012) 62%),
+    #111116 !important;
+  border: 1px solid rgba(255,255,255,.12) !important;
+  border-radius: 22px;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  transform: none !important;
+}
+
+.tool-v2[data-tool-page="resize-images"] .workspace > .tool-actions[data-step="actions"]::before,
+.tool-v2[data-tool-page="resize-images"] .workspace > .tool-actions[data-step="actions"]::after {
+  content: none !important;
+  display: none !important;
+}
+
+.tool-v2[data-tool-page="resize-images"] .workspace > .tool-actions[data-step="actions"] .btn {
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 56px;
+  flex: 1 1 0;
+  margin: 0 !important;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  white-space: normal;
+}
+
+.tool-v2[data-tool-page="resize-images"] .workspace > .tool-actions[data-step="actions"] .btn.secondary {
+  background: #17171e !important;
+  border: 1px solid rgba(255,255,255,.14) !important;
+  color: #f2f3f5 !important;
+}
+
+.tool-v2[data-tool-page="resize-images"] .workspace > .tool-actions[data-step="actions"] .btn.primary {
+  background: #d9ff45 !important;
+  border: 1px solid #d9ff45 !important;
+  color: #11120d !important;
+  box-shadow: none !important;
+}
+
+.tool-v2[data-tool-page="resize-images"] .workspace[data-processing="true"] > .tool-actions[data-step="actions"] {
+  opacity: .72;
+}
+
+@media (max-width: 720px) {
+  .tool-v2[data-tool-page="resize-images"] .workspace > .tool-actions[data-step="actions"] {
+    grid-template-columns: 1fr;
+    padding: 14px;
+    gap: 10px;
+    border-radius: 20px;
+  }
+
+  .tool-v2[data-tool-page="resize-images"] .workspace > .tool-actions[data-step="actions"] .btn {
+    width: 100%;
+    min-height: 56px;
+  }
+}
+
+@media (max-width: 520px) {
+  .tool-v2[data-tool-page="resize-images"] .file-meta {
+    gap: 14px;
+  }
+
+  .tool-v2[data-tool-page="resize-images"] .pdf-file-preview {
+    flex-basis: 76px;
+    width: 76px;
+    height: 98px;
+    border-radius: 12px;
+  }
+}
+
+
+/* v9 workflow authority.
+   Visibility belongs only to the workflow phase, never to the action-panel
+   visual styling. This prevents the process card from appearing on first load. */
+.tool-v2[data-tool-page="resize-images"] .workspace[data-phase="upload"] > .tool-actions[data-step="actions"] {
+  display: none !important;
+}
+
+.tool-v2[data-tool-page="resize-images"] .workspace:not(.i2p-workspace)[data-phase="settings"] > .tool-actions[data-step="actions"],
+.tool-v2[data-tool-page="resize-images"] .workspace:not(.i2p-workspace)[data-phase="processing"] > .tool-actions[data-step="actions"],
+.tool-v2[data-tool-page="resize-images"] .workspace:not(.i2p-workspace)[data-phase="results"] > .tool-actions[data-step="actions"] {
+  display: flex !important;
+}
+
+@media (max-width: 720px) {
+  .tool-v2[data-tool-page="resize-images"] .workspace[data-phase="upload"] > .tool-actions[data-step="actions"] {
+    display: none !important;
+  }
+
+  .tool-v2[data-tool-page="resize-images"] .workspace:not(.i2p-workspace)[data-phase="settings"] > .tool-actions[data-step="actions"],
+  .tool-v2[data-tool-page="resize-images"] .workspace:not(.i2p-workspace)[data-phase="processing"] > .tool-actions[data-step="actions"],
+  .tool-v2[data-tool-page="resize-images"] .workspace:not(.i2p-workspace)[data-phase="results"] > .tool-actions[data-step="actions"] {
+    display: grid !important;
+    grid-template-columns: 1fr;
+  }
+}
+
+/* v10 full tool workflow additions */
+.tool-v2[data-tool-page="resize-images"] .tool-progress{padding:14px 18px;border:1px solid var(--tv-line);border-radius:18px;background:var(--tv-panel);color:var(--tv-muted);font-size:12px}
+.tool-v2[data-tool-page="resize-images"] .tool-progress>div{height:8px;margin-top:9px;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.08)}
+.tool-v2[data-tool-page="resize-images"] .tool-progress i{display:block;width:0;height:100%;border-radius:inherit;background:var(--tv-accent);transition:width .18s ease}
+.tool-v2[data-tool-page="resize-images"] .file-controls{display:flex;align-items:center;gap:8px;flex:0 0 auto}.tool-v2[data-tool-page="resize-images"] .icon-btn{width:34px;height:34px;border:1px solid var(--tv-line);border-radius:10px;background:#17171e;color:var(--tv-text)}.tool-v2[data-tool-page="resize-images"] .icon-btn:disabled{opacity:.35}
+.tool-v2[data-tool-page="resize-images"] .file-row[data-drag-over="true"]{outline:1px solid var(--tv-accent);outline-offset:-1px;background:rgba(217,255,69,.035)}
+.tool-v2[data-tool-page="resize-images"] .image-file-preview{flex:0 0 88px;width:88px;height:88px;overflow:hidden;border:1px solid var(--tv-line);border-radius:14px;background:#111116}.tool-v2[data-tool-page="resize-images"] .image-file-preview img{display:block;width:100%;height:100%;object-fit:cover}
+.tool-v2[data-tool-page="resize-images"] .download-all{justify-self:start;margin-top:2px}
+.tool-v2[data-tool-page="resize-images"] .crop-canvas{display:block;width:100%;max-height:560px;object-fit:contain;border:1px solid var(--tv-line);border-radius:16px;background:#09090c;touch-action:none;cursor:crosshair;margin-top:16px}.tool-v2[data-tool-page="resize-images"] .crop-toolbar .btn,.tool-v2[data-tool-page="resize-images"] .crop-ratios .btn{padding:9px 12px;font-size:12px}.tool-v2[data-tool-page="resize-images"] .crop-ratios .btn.is-active{border-color:var(--tv-accent);color:var(--tv-accent)}
+@media(max-width:520px){.tool-v2[data-tool-page="resize-images"] .file-controls{width:100%;display:grid;grid-template-columns:repeat(3,1fr)}.tool-v2[data-tool-page="resize-images"] .file-controls .remove-file{grid-column:1/-1}.tool-v2[data-tool-page="resize-images"] .image-file-preview{flex-basis:72px;width:72px;height:72px}.tool-v2[data-tool-page="resize-images"] .download-all{width:100%}}
+
+/* v11 PDF to Images dedicated workflow: behavior-specific rules stay scoped to this tool. */
+.tool-v2[data-tool-page="resize-images"] .p2i-workspace .p2i-upload-limits{margin:16px auto 0;max-width:620px;color:var(--tv-muted);font-size:11px;line-height:1.6}
+.tool-v2[data-tool-page="resize-images"] .p2i-batch-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;overflow:hidden;border:1px solid var(--tv-line);border-radius:20px;background:var(--tv-line)}
+.tool-v2[data-tool-page="resize-images"] .p2i-batch-summary>div{padding:18px;background:var(--tv-panel)}
+.tool-v2[data-tool-page="resize-images"] .p2i-batch-summary span,.tool-v2[data-tool-page="resize-images"] .p2i-setting-label{display:block;color:var(--tv-muted);font-size:10px;font-weight:800;letter-spacing:1.2px}
+.tool-v2[data-tool-page="resize-images"] .p2i-batch-summary strong{display:block;margin-top:8px;font-size:20px}
+.tool-v2[data-tool-page="resize-images"] .p2i-batch-summary p{grid-column:1/-1;margin:0;padding:12px 18px;background:#0f0f14;color:var(--tv-muted);font-size:12px}
+.tool-v2[data-tool-page="resize-images"] .p2i-ready-copy{padding:14px 18px;border:1px solid rgba(74,222,128,.32);border-radius:18px;background:rgba(74,222,128,.035);color:#c6f4d0;font-size:13px}
+.tool-v2[data-tool-page="resize-images"] .p2i-results-shell{display:grid;gap:18px}.tool-v2[data-tool-page="resize-images"] .p2i-results-head h2{margin:8px 0 6px;font-family:Georgia,"Times New Roman",serif;font-size:34px;font-weight:400}.tool-v2[data-tool-page="resize-images"] .p2i-results-head p{margin:0;color:var(--tv-muted);line-height:1.65}
+.tool-v2[data-tool-page="resize-images"] .p2i-result-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;padding:14px;background:transparent;border:0;border-radius:0;overflow:visible}
+.tool-v2[data-tool-page="resize-images"] .p2i-result-card{display:grid;gap:12px;padding:12px;border:1px solid var(--tv-line);border-radius:18px;background:var(--tv-panel)}
+.tool-v2[data-tool-page="resize-images"] .p2i-result-thumb{display:block;width:100%;aspect-ratio:4/5;object-fit:contain;border:1px solid var(--tv-line);border-radius:12px;background:#fff}
+.tool-v2[data-tool-page="resize-images"] .p2i-result-meta{min-width:0}.tool-v2[data-tool-page="resize-images"] .p2i-result-card .btn{width:100%;justify-content:center}
+.tool-v2[data-tool-page="resize-images"] .p2i-workspace[data-phase="processing"] [data-step="upload"],
+.tool-v2[data-tool-page="resize-images"] .p2i-workspace[data-phase="processing"] [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .p2i-workspace[data-phase="processing"] [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .p2i-workspace[data-phase="processing"] [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .p2i-workspace[data-phase="processing"] .p2i-ready-copy,
+.tool-v2[data-tool-page="resize-images"] .p2i-workspace[data-phase="processing"] [data-step="actions"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .p2i-workspace[data-phase="results"] [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .p2i-workspace[data-phase="results"] [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .p2i-workspace[data-phase="results"] [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .p2i-workspace[data-phase="results"] .p2i-ready-copy,
+.tool-v2[data-tool-page="resize-images"] .p2i-workspace[data-phase="results"] [data-step="actions"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .p2i-workspace[data-phase="processing"] [data-step="status"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .p2i-workspace[data-phase="results"] [data-step="results"]{display:grid!important}
+.tool-v2[data-tool-page="resize-images"] .p2i-workspace[data-phase="results"] .tool-status[data-tool-status]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .p2i-workspace[data-phase="results"] [data-progress-wrap]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .p2i-workspace[data-phase="upload"] .p2i-ready-copy{display:none!important}
+@media(max-width:720px){.tool-v2[data-tool-page="resize-images"] .p2i-batch-summary{grid-template-columns:1fr}.tool-v2[data-tool-page="resize-images"] .p2i-batch-summary p{grid-column:auto}.tool-v2[data-tool-page="resize-images"] .p2i-result-grid{grid-template-columns:1fr}.tool-v2[data-tool-page="resize-images"] .p2i-result-thumb{aspect-ratio:16/10}}
+
+/* v14 Images to PDF dedicated workflow, derived from the v76 behavior but scoped to the v13 UI. */
+.tool-v2[data-tool-page="resize-images"] .i2p-upload-limits{margin:16px auto 0;max-width:620px;color:var(--tv-muted);font-size:11px;line-height:1.6}
+.tool-v2[data-tool-page="resize-images"] .i2p-batch-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;overflow:hidden;border:1px solid var(--tv-line);border-radius:20px;background:var(--tv-line)}
+.tool-v2[data-tool-page="resize-images"] .i2p-batch-summary>div{padding:18px;background:var(--tv-panel)}
+.tool-v2[data-tool-page="resize-images"] .i2p-batch-summary span{display:block;color:var(--tv-muted);font-size:10px;font-weight:800;letter-spacing:1.2px}
+.tool-v2[data-tool-page="resize-images"] .i2p-batch-summary strong{display:block;margin-top:8px;font-size:20px}
+.tool-v2[data-tool-page="resize-images"] .i2p-batch-summary p{grid-column:1/-1;margin:0;padding:12px 18px;background:#0f0f14;color:var(--tv-muted);font-size:12px}
+.tool-v2[data-tool-page="resize-images"] .i2p-ready-copy{padding:14px 18px;border:1px solid rgba(74,222,128,.32);border-radius:18px;background:rgba(74,222,128,.035);color:#c6f4d0;font-size:13px}
+.tool-v2[data-tool-page="resize-images"] .i2p-result-shell{padding:0;background:transparent;border:0;overflow:visible}
+.tool-v2[data-tool-page="resize-images"] .i2p-result-card{display:grid;gap:12px;padding:24px;border:1px solid var(--tv-line);border-radius:24px;background:linear-gradient(145deg,rgba(255,255,255,.025),transparent 55%),var(--tv-panel)}
+.tool-v2[data-tool-page="resize-images"] .i2p-result-card h2{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:34px;font-weight:400}
+.tool-v2[data-tool-page="resize-images"] .i2p-result-card p{margin:0;color:var(--tv-muted);line-height:1.65}
+.tool-v2[data-tool-page="resize-images"] .i2p-result-card .result-actions{display:flex;gap:12px;margin-top:4px}.tool-v2[data-tool-page="resize-images"] .i2p-result-card .btn{flex:1;text-align:center}
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="processing"] [data-step="upload"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="processing"] [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="processing"] [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="processing"] [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="processing"] .i2p-ready-copy,
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="processing"] [data-step="actions"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="processing"] [data-step="status"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="processing"] [data-progress-wrap]:not([hidden]){display:block!important}
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="results"] [data-step="upload"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="results"] [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="results"] [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="results"] [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="results"] .i2p-ready-copy,
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="results"] [data-step="actions"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="results"] [data-step="results"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="results"] .tool-status[data-tool-status]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="results"] [data-progress-wrap]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="upload"] .i2p-ready-copy{display:none!important}
+@media(max-width:720px){.tool-v2[data-tool-page="resize-images"] .i2p-batch-summary{grid-template-columns:1fr}.tool-v2[data-tool-page="resize-images"] .i2p-batch-summary p{grid-column:auto}.tool-v2[data-tool-page="resize-images"] .i2p-result-card .result-actions{flex-direction:column}}
+
+/* v15 Images to PDF parity hardening */
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace .drop-zone[data-reading="true"]{opacity:.72;pointer-events:none}
+.tool-v2[data-tool-page="resize-images"] .i2p-result-size{font-size:12px;color:var(--tv-muted)}
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace .file-row.is-dragging{opacity:.58}
+
+/* v16 Images to PDF workflow visibility authority.
+   The progress UI is a processing-only surface. In v15 it shared data-step="status",
+   so the generic settings-phase rule forced display:block!important and overrode the
+   native hidden attribute. Keep progress on its own step and let JS control hidden. */
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace [data-progress-wrap][hidden]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="processing"] [data-progress-wrap]:not([hidden]){display:block!important}
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="upload"] [data-progress-wrap],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="settings"] [data-progress-wrap],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="results"] [data-progress-wrap]{display:none!important}
+
+/* v16 Images to PDF — final workflow authority.
+   The action card belongs only to the editable READY phase. Completion owns the
+   screen after PDF generation, so no Clear All/Create PDF controls can remain. */
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace > [data-step][hidden]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="upload"] > [data-step="upload"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="upload"] > [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="upload"] > [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="upload"] > [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="upload"] > [data-step="results"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="upload"] > [data-step="actions"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="upload"] > [data-step="progress"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="settings"] > [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="settings"] > [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="settings"] > [data-step="status"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="settings"] > [data-step="settings"]{display:grid!important}
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="settings"] > .i2p-action-card[data-step="actions"]{display:flex!important}
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="settings"] > [data-step="upload"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="settings"] > [data-step="results"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="settings"] > [data-step="progress"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="processing"] > [data-step="upload"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="processing"] > [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="processing"] > [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="processing"] > [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="processing"] > [data-step="actions"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="processing"] > [data-step="results"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="processing"] > [data-step="status"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="processing"] > [data-step="progress"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="results"] > [data-step="upload"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="results"] > [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="results"] > [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="results"] > [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="results"] > [data-step="status"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="results"] > [data-step="progress"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="results"] > [data-step="actions"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="results"] > [data-step="results"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .i2p-action-card{padding:18px;border:1px solid var(--tv-line);border-radius:24px;background:linear-gradient(145deg,rgba(255,255,255,.025),transparent 55%),var(--tv-panel)}
+.tool-v2[data-tool-page="resize-images"] .i2p-action-card .btn{flex:1;min-height:52px}
+@media(max-width:720px){.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="settings"] > .i2p-action-card[data-step="actions"]{display:grid!important;grid-template-columns:1fr}.tool-v2[data-tool-page="resize-images"] .i2p-action-card{padding:16px}}
+
+
+/* v17 Images to PDF action/result isolation.
+   The legacy shared workflow rules are intentionally excluded above for this tool.
+   Keep a second, direct ownership guard so completion can never expose the editable
+   Clear All / Create PDF card, even if shared CSS is expanded later. */
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="processing"] > .tool-actions.i2p-action-card[data-step="actions"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="results"] > .tool-actions.i2p-action-card[data-step="actions"],
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace > .tool-actions.i2p-action-card[data-step="actions"][hidden]{
+  display:none!important;
+}
+.tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="settings"] > .tool-actions.i2p-action-card[data-step="actions"]:not([hidden]){
+  display:flex!important;
+}
+@media(max-width:720px){
+  .tool-v2[data-tool-page="resize-images"] .i2p-workspace[data-phase="settings"] > .tool-actions.i2p-action-card[data-step="actions"]:not([hidden]){
+    display:grid!important;
+    grid-template-columns:1fr;
+  }
+}
+
+
+/* Merge PDF — dedicated workflow ownership and v76 functional parity. */
+.tool-v2[data-tool-page="resize-images"] .merge-upload-limits{margin:16px auto 0;max-width:620px;color:var(--tv-muted);font-size:11px;line-height:1.6}
+.tool-v2[data-tool-page="resize-images"] .merge-batch-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;overflow:hidden;border:1px solid var(--tv-line);border-radius:24px;background:var(--tv-line)}
+.tool-v2[data-tool-page="resize-images"] .merge-batch-summary>div{min-height:96px;padding:18px;background:var(--tv-panel);display:grid;align-content:center;gap:7px}.tool-v2[data-tool-page="resize-images"] .merge-batch-summary span,.tool-v2[data-tool-page="resize-images"] .merge-result-stats span{font-size:10px;letter-spacing:1.3px;font-weight:800;color:var(--tv-muted)}.tool-v2[data-tool-page="resize-images"] .merge-batch-summary strong{font-size:24px}.tool-v2[data-tool-page="resize-images"] .merge-batch-summary p{grid-column:1/-1;margin:0;padding:14px 18px;background:var(--tv-panel);border-top:1px solid var(--tv-line);color:var(--tv-muted);font-size:12px}
+.tool-v2[data-tool-page="resize-images"] .merge-warning{display:flex;align-items:flex-start;gap:10px;padding:14px 16px;border:1px solid rgba(245,158,11,.42);border-radius:18px;background:rgba(245,158,11,.06);color:#fcd34d}.tool-v2[data-tool-page="resize-images"] .merge-warning strong{display:block;font-size:12px;white-space:nowrap}.tool-v2[data-tool-page="resize-images"] .merge-warning span{color:#f7d58b;font-size:12px;line-height:1.55;flex:1}.tool-v2[data-tool-page="resize-images"] .merge-warning button{margin-left:auto;border:0;background:transparent;color:inherit;font-size:22px;line-height:1;cursor:pointer}
+.tool-v2[data-tool-page="resize-images"] .merge-ready-copy{padding:16px 18px;border:1px solid rgba(74,222,128,.35);border-radius:20px;background:rgba(74,222,128,.035);color:#b7f7c6;font-size:13px}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace .drop-zone[data-reading="true"]{opacity:.72;pointer-events:none}.tool-v2[data-tool-page="resize-images"] .merge-file-row.is-dragging{opacity:.58}.tool-v2[data-tool-page="resize-images"] .merge-workspace .file-row[data-drag-over="true"]{outline:1px solid var(--tv-accent);outline-offset:-1px;background:rgba(217,255,69,.035)}
+.tool-v2[data-tool-page="resize-images"] .merge-result-shell{border:0;background:transparent;overflow:visible}.tool-v2[data-tool-page="resize-images"] .merge-result-card{display:grid;gap:18px;padding:28px;border:1px solid var(--tv-line);border-radius:28px;background:linear-gradient(145deg,rgba(255,255,255,.025),transparent 55%),var(--tv-panel)}.tool-v2[data-tool-page="resize-images"] .merge-result-card h2{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:42px;font-weight:400}.tool-v2[data-tool-page="resize-images"] .merge-result-card>p{margin:0;color:var(--tv-muted);line-height:1.7}.tool-v2[data-tool-page="resize-images"] .merge-result-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;border:1px solid var(--tv-line);border-radius:18px;overflow:hidden;background:var(--tv-line)}.tool-v2[data-tool-page="resize-images"] .merge-result-stats>div{padding:16px;background:var(--tv-panel-2);display:grid;gap:8px}.tool-v2[data-tool-page="resize-images"] .merge-result-stats strong{font-size:22px}.tool-v2[data-tool-page="resize-images"] .merge-result-card .result-actions{display:flex;gap:12px}.tool-v2[data-tool-page="resize-images"] .merge-result-card .result-actions .btn{flex:1}
+.tool-v2[data-tool-page="resize-images"] .merge-action-card{padding:16px;border:1px solid var(--tv-line);border-radius:24px;background:linear-gradient(145deg,rgba(255,255,255,.025),transparent 55%),var(--tv-panel);justify-content:stretch}.tool-v2[data-tool-page="resize-images"] .merge-action-card .btn{flex:1;min-height:58px}
+/* The generic workflow CSS must never own this tool's completion surfaces. */
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="processing"] [data-step="upload"],.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="processing"] [data-step="files"],.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="processing"] [data-step="settings"],.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="processing"] [data-step="safety"],.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="processing"] [data-step="warning"],.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="processing"] .merge-ready-copy,.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="processing"] [data-step="actions"],.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="processing"] [data-step="results"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="processing"] [data-step="status"]{display:block!important}.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="processing"] [data-step="progress"]:not([hidden]){display:block!important}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="results"] [data-step="upload"],.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="results"] [data-step="files"],.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="results"] [data-step="settings"],.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="results"] [data-step="safety"],.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="results"] [data-step="warning"],.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="results"] .merge-ready-copy,.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="results"] [data-step="status"],.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="results"] [data-step="progress"],.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="results"] [data-step="actions"]{display:none!important}.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="results"] [data-step="results"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="settings"] [data-step="files"],.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="settings"] [data-step="safety"],.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="settings"] [data-step="status"],.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="settings"] .merge-ready-copy{display:block!important}.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="settings"] [data-step="settings"]{display:grid!important}.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="settings"] > .merge-action-card[data-step="actions"]{display:flex!important}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="upload"] [data-step="files"],.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="upload"] [data-step="settings"],.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="upload"] [data-step="safety"],.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="upload"] [data-step="warning"],.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="upload"] .merge-ready-copy,.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="upload"] [data-step="actions"],.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="upload"] [data-step="results"],.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="upload"] [data-step="progress"]{display:none!important}.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="upload"] [data-step="upload"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="processing"] > .merge-action-card[data-step="actions"],.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="results"] > .merge-action-card[data-step="actions"],.tool-v2[data-tool-page="resize-images"] .merge-workspace > .merge-action-card[data-step="actions"][hidden]{display:none!important}
+@media(max-width:720px){.tool-v2[data-tool-page="resize-images"] .merge-batch-summary,.tool-v2[data-tool-page="resize-images"] .merge-result-stats{grid-template-columns:1fr}.tool-v2[data-tool-page="resize-images"] .merge-batch-summary p{grid-column:auto}.tool-v2[data-tool-page="resize-images"] .merge-result-card{padding:22px}.tool-v2[data-tool-page="resize-images"] .merge-result-card h2{font-size:36px}.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="settings"] > .merge-action-card[data-step="actions"]{display:grid!important;grid-template-columns:1fr}.tool-v2[data-tool-page="resize-images"] .merge-warning{flex-wrap:wrap}.tool-v2[data-tool-page="resize-images"] .merge-warning strong{white-space:normal}}
+
+/* v19 Merge PDF workflow: explicit review phase, incremental uploads and mobile reordering. */
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] > [data-step="upload"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] > [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] > [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] > [data-step="status"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] > .merge-ready-copy{
+  display:block!important;
+}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] > [data-step="settings"]{
+  display:grid!important;
+}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] > .merge-action-card[data-step="actions"]:not([hidden]){
+  display:flex!important;
+}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] > [data-step="results"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] > [data-step="progress"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] > [data-step="warning"][hidden]{
+  display:none!important;
+}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] > [data-step="warning"]:not([hidden]){
+  display:flex!important;
+}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] > .tool-panel[data-step="upload"]{
+  opacity:1!important;
+  pointer-events:auto!important;
+}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace .merge-file-row{position:relative;gap:14px}
+.tool-v2[data-tool-page="resize-images"] .merge-order-badge{display:grid;place-items:center;width:34px;height:34px;flex:0 0 34px;border:1px solid var(--tv-line);border-radius:10px;background:var(--tv-panel-2);color:var(--tv-accent);font-size:11px;font-weight:800;letter-spacing:.08em}
+.tool-v2[data-tool-page="resize-images"] .merge-uploaded-tick{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:rgba(74,222,128,.11);border:1px solid rgba(74,222,128,.32);color:#b7f7c6;font-size:13px;font-weight:900}
+.tool-v2[data-tool-page="resize-images"] .merge-drag-handle{width:34px;height:34px;border:1px dashed var(--tv-line);border-radius:10px;background:transparent;color:var(--tv-muted);cursor:grab;touch-action:none;letter-spacing:-2px;font-size:16px;line-height:1}
+.tool-v2[data-tool-page="resize-images"] .merge-drag-handle:active{cursor:grabbing}.tool-v2[data-tool-page="resize-images"] .merge-drag-handle:disabled{opacity:.35;cursor:default}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace .merge-file-row.is-dragging{opacity:.55;outline:1px solid var(--tv-accent);outline-offset:-1px}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace .merge-file-row[data-drag-over="true"]{outline:1px solid var(--tv-accent);outline-offset:-1px;background:rgba(217,255,69,.05)}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="processing"] > .merge-action-card[data-step="actions"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="results"] > .merge-action-card[data-step="actions"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace > .merge-action-card[data-step="actions"][hidden]{display:none!important}
+@media(max-width:720px){
+  .tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] > .merge-action-card[data-step="actions"]:not([hidden]){display:grid!important;grid-template-columns:1fr}
+  .tool-v2[data-tool-page="resize-images"] .merge-file-controls{width:100%;display:grid;grid-template-columns:auto 1fr 1fr 1fr auto;align-items:center}
+  .tool-v2[data-tool-page="resize-images"] .merge-file-controls .remove-file{align-self:auto}
+}
+
+
+/* v20 Merge PDF workflow ownership: explicit review phase prevents generic
+   progressive rules from hiding the queue/settings/action card after upload. */
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="upload"] [data-step="upload"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] [data-step="upload"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] [data-step="status"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] [data-step="actions"]{display:flex!important}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="processing"] [data-step="upload"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="processing"] [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="processing"] [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="processing"] [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="processing"] [data-step="actions"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="processing"] [data-step="results"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="processing"] [data-step="status"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="processing"] [data-step="progress"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="results"] [data-step="upload"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="results"] [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="results"] [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="results"] [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="results"] [data-step="status"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="results"] [data-step="progress"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="results"] [data-step="actions"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="results"] [data-step="results"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .merge-reorder-hint{margin:4px 0 10px;color:var(--tv-muted);font-size:13px;line-height:1.55}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace .drop-zone[data-reading="true"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace .drop-zone[data-disabled="true"]{pointer-events:none;opacity:.7}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace .merge-file-row[data-drag-over="true"]{border-color:rgba(217,255,69,.55);transform:translateY(-1px)}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace .merge-file-row.is-dragging{opacity:.58}
+.oriva-modal-icon{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;margin-bottom:.7rem;background:rgba(248,113,113,.14);color:#f87171;font-weight:900}
+dialog.oriva-modal[data-variant="warning"] .oriva-modal-icon{background:rgba(251,191,36,.14);color:#fbbf24}
+dialog.oriva-modal[data-variant="confirm"] .oriva-modal-icon{background:rgba(129,140,248,.14);color:#a5b4fc}
+dialog.oriva-modal[data-variant="success"] .oriva-modal-icon{background:rgba(74,222,128,.14);color:#86efac}
+.oriva-modal-list{margin:.8rem 0 0;padding-left:1.1rem;color:var(--muted);max-height:220px;overflow:auto}
+.oriva-modal-list li+li{margin-top:.35rem}
+@media(max-width:520px){.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] [data-step="actions"]{display:grid!important;grid-template-columns:1fr}.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] [data-step="actions"] .btn{width:100%}.tool-v2[data-tool-page="resize-images"] .merge-result-card .result-actions{display:grid;grid-template-columns:1fr}.tool-v2[data-tool-page="resize-images"] .merge-result-card .result-actions .btn{width:100%}}
+
+/* v21 Merge PDF state authority.
+   Merge owns one action surface per workflow state. These direct-child rules intentionally
+   override earlier progressive merge selectors so hidden attributes cannot be resurrected. */
+.tool-v2[data-tool-page="resize-images"] .merge-workspace > [data-step][hidden]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="upload"] > [data-step="upload"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="upload"] > [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="upload"] > [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="upload"] > [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="upload"] > [data-step="status"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="upload"] > [data-step="progress"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="upload"] > [data-step="results"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="upload"] > .merge-action-card[data-step="actions"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] > [data-step="upload"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] > [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] > [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] > [data-step="status"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] > [data-step="settings"]{display:grid!important}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] > .merge-action-card[data-step="actions"]:not([hidden]){display:flex!important}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] > [data-step="progress"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] > [data-step="results"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="processing"] > [data-step="upload"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="processing"] > [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="processing"] > [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="processing"] > [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="processing"] > .merge-action-card[data-step="actions"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="processing"] > [data-step="results"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="processing"] > [data-step="status"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="processing"] > [data-step="progress"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="results"] > [data-step="upload"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="results"] > [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="results"] > [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="results"] > [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="results"] > [data-step="status"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="results"] > [data-step="progress"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="results"] > .merge-action-card[data-step="actions"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="results"] > [data-step="results"]{display:block!important}
+@media(max-width:520px){
+  .tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"] > .merge-action-card[data-step="actions"]:not([hidden]){display:grid!important;grid-template-columns:1fr}
+}
+
+
+/* v23 Merge PDF lifecycle parity: one valid PDF stays queued, but the merge action phase
+   is unlocked only when the second valid PDF has been added. */
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="collecting"] > [data-step="upload"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="collecting"] > [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="collecting"] > [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="collecting"] > [data-step="status"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="collecting"] > [data-step="settings"]{display:grid!important}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="collecting"] > [data-step="progress"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="collecting"] > [data-step="results"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="collecting"] > .merge-action-card[data-step="actions"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .merge-reorder-hint{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.tool-v2[data-tool-page="resize-images"] .merge-inline-clear{min-height:36px;padding:0 14px;white-space:nowrap}
+.tool-v2[data-tool-page="resize-images"] .merge-inline-clear[hidden]{display:none!important}
+@media(max-width:520px){.tool-v2[data-tool-page="resize-images"] .merge-reorder-hint{align-items:flex-start;flex-direction:column}.tool-v2[data-tool-page="resize-images"] .merge-inline-clear{width:100%}}
+
+
+/* v24.1 Merge PDF action-surface root fix.
+   The previous collecting rule forced every [data-step="status"] node to display,
+   including the intentionally hidden empty .tool-status element. That produced the
+   blank rounded card below the 1-PDF guidance. Also, the editable action card is now
+   explicitly owned by REVIEW through a root class, so it cannot reappear after results. */
+.tool-v2[data-tool-page="resize-images"] .merge-workspace:not(.merge-actions-active) > .merge-action-card[data-step="actions"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="collecting"] > .merge-ready-copy[data-step="status"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="collecting"] > .tool-status[data-step="status"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="collecting"] > .tool-status[data-step="status"][hidden]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="review"].merge-actions-active > .merge-action-card[data-step="actions"][hidden]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="results"] > .merge-action-card[data-step="actions"],
+.tool-v2[data-tool-page="resize-images"] .merge-workspace[data-phase="processing"] > .merge-action-card[data-step="actions"]{display:none!important}
+
+
+/* v26 Resize Images: dedicated lifecycle authority.
+   Resize does not use the generic progressive action visibility. The action card
+   is structurally detached outside SETTINGS, so stale display rules cannot revive it. */
+.tool-v2[data-tool-page="resize-images"] .resize-workspace [data-step="progress"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="processing"] [data-step="progress"]:not([hidden]){display:block!important}
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="processing"] [data-step="status"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="upload"] [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="upload"] [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="upload"] [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="upload"] [data-step="status"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="upload"] [data-step="progress"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="upload"] [data-step="results"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="settings"] [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="settings"] [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="settings"] [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="settings"] [data-step="status"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="settings"] [data-step="progress"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="settings"] [data-step="results"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="processing"] [data-step="upload"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="processing"] [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="processing"] [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="processing"] [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="processing"] [data-step="results"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="results"] [data-step="upload"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="results"] [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="results"] [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="results"] [data-step="progress"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="results"] [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="results"] [data-step="status"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="results"] [data-step="results"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .resize-workspace .resize-action-card[hidden]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .resize-workspace .resize-results-shell{display:grid!important;gap:18px;padding:22px;border:1px solid var(--tv-line);border-radius:22px;background:var(--tv-panel)}
+.tool-v2[data-tool-page="resize-images"] .resize-workspace .resize-results-shell[hidden]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .resize-workspace .resize-results-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px}
+.tool-v2[data-tool-page="resize-images"] .resize-workspace .resize-results-head h2{margin:0 0 6px;font-family:Georgia,"Times New Roman",serif;font-size:34px;font-weight:400}
+.tool-v2[data-tool-page="resize-images"] .resize-workspace .resize-results-head p{margin:0;color:var(--tv-muted);line-height:1.6}
+.tool-v2[data-tool-page="resize-images"] .resize-workspace .resize-complete-badge{padding:8px 11px;border:1px solid rgba(74,222,128,.32);border-radius:999px;background:rgba(74,222,128,.06);color:#c6f4d0;font-size:12px;font-weight:800;white-space:nowrap}
+.tool-v2[data-tool-page="resize-images"] .resize-workspace .resize-result-actions{display:flex;gap:12px;flex-wrap:wrap}
+.tool-v2[data-tool-page="resize-images"] .resize-workspace .resize-result-actions .download-all{margin:0;justify-self:auto}
+.tool-v2[data-tool-page="resize-images"] .resize-workspace .result-row.is-failed{border-color:rgba(239,68,68,.4)}
+.tool-v2[data-tool-page="resize-images"] .resize-workspace .result-row.is-failed .result-meta{color:#fca5a5}
+.tool-v2[data-tool-page="resize-images"] .resize-workspace [data-drop-zone].is-disabled{opacity:.58;pointer-events:none}
+@media(max-width:620px){.tool-v2[data-tool-page="resize-images"] .resize-workspace .resize-results-head{display:grid}.tool-v2[data-tool-page="resize-images"] .resize-workspace .resize-result-actions{display:grid;grid-template-columns:1fr}.tool-v2[data-tool-page="resize-images"] .resize-workspace .resize-result-actions .btn{width:100%}}
+
+/* v28 Resize Images parity: explicit lifecycle, no structural action detachment and no forced empty status surface. */
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="upload"] > [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="upload"] > [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="upload"] > [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="upload"] > [data-step="status"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="upload"] > [data-step="progress"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="upload"] > [data-step="results"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="upload"] > .resize-action-card[data-step="actions"] { display:none!important; }
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="upload"] > [data-step="upload"] { display:block!important; }
+
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="settings"] > [data-step="upload"] { display:block!important; }
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="settings"] > [data-step="files"] { display:block!important; }
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="settings"] > [data-step="settings"] { display:grid!important; }
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="settings"] > [data-step="safety"] { display:block!important; }
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="settings"] > [data-step="status"][hidden] { display:none!important; }
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="settings"] > [data-step="status"]:not([hidden]) { display:block!important; }
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="settings"] > [data-step="progress"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="settings"] > [data-step="results"] { display:none!important; }
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="settings"] > .resize-action-card[data-step="actions"] { display:flex!important; }
+
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="processing"] > [data-step="upload"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="processing"] > [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="processing"] > [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="processing"] > [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="processing"] > [data-step="results"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="processing"] > .resize-action-card[data-step="actions"] { display:none!important; }
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="processing"] > [data-step="status"]:not([hidden]),
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="processing"] > [data-step="progress"]:not([hidden]) { display:block!important; }
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="processing"] > [data-step="status"][hidden],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="processing"] > [data-step="progress"][hidden] { display:none!important; }
+
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="results"] > [data-step="upload"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="results"] > [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="results"] > [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="results"] > [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="results"] > [data-step="status"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="results"] > [data-step="progress"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="results"] > .resize-action-card[data-step="actions"] { display:none!important; }
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="results"] > [data-step="results"] { display:grid!important; }
+@media(max-width:720px){
+  .tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="settings"] > .resize-action-card[data-step="actions"] { display:grid!important; grid-template-columns:1fr; }
+}
+
+/* ================================================================
+   RESIZE IMAGES v29 — STATE / VISIBILITY ROOT FIX
+   Keep this block LAST. Generic .field/.choice-row display rules use
+   display:grid/flex and therefore override the browser [hidden] rule.
+   Mode-specific controls must have explicit, scoped hidden ownership.
+   ================================================================ */
+.tool-v2[data-tool-page="resize-images"] .resize-workspace .field[hidden],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace .choice-row > label[hidden],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace .range-row[hidden]{display:none!important}
+
+/* One authoritative phase contract for Resize Images. */
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="upload"] > [data-step="upload"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="upload"] > [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="upload"] > [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="upload"] > [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="upload"] > [data-step="status"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="upload"] > [data-step="progress"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="upload"] > [data-step="results"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="upload"] > .resize-action-card[data-step="actions"]{display:none!important}
+
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="settings"] > [data-step="upload"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="settings"] > [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="settings"] > [data-step="safety"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="settings"] > [data-step="settings"]{display:grid!important}
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="settings"] > [data-step="status"][hidden],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="settings"] > [data-step="progress"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="settings"] > [data-step="results"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="settings"] > [data-step="status"]:not([hidden]){display:block!important}
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="settings"] > .resize-action-card[data-step="actions"]{display:flex!important}
+
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="processing"] > [data-step="upload"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="processing"] > [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="processing"] > [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="processing"] > [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="processing"] > [data-step="results"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="processing"] > .resize-action-card[data-step="actions"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="processing"] > [data-step="status"][hidden],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="processing"] > [data-step="progress"][hidden]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="processing"] > [data-step="status"]:not([hidden]),
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="processing"] > [data-step="progress"]:not([hidden]){display:block!important}
+
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="results"] > [data-step="upload"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="results"] > [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="results"] > [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="results"] > [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="results"] > [data-step="status"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="results"] > [data-step="progress"],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="results"] > .resize-action-card[data-step="actions"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="results"] > [data-step="results"]{display:grid!important}
+
+/* Hidden is always authoritative, including result and progress surfaces. */
+.tool-v2[data-tool-page="resize-images"] .resize-workspace > [data-step][hidden],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace .resize-results-shell[hidden],
+.tool-v2[data-tool-page="resize-images"] .resize-workspace .resize-action-card[hidden]{display:none!important}
+
+@media(max-width:620px){
+  .tool-v2[data-tool-page="resize-images"] .resize-workspace[data-phase="settings"] > .resize-action-card[data-step="actions"]{display:grid!important;grid-template-columns:1fr}
+}
+
+
+
+/* v30 Resize Images hard-stop fallback. JS physically detaches the action card outside
+   SETTINGS, but these direct rules also suppress stale phase surfaces if CSS from an
+   earlier bundle is present. */
+.resize-workspace[data-phase="results"] > .resize-action-card[data-step="actions"],
+.resize-workspace[data-phase="processing"] > .resize-action-card[data-step="actions"]{display:none!important}
+.resize-workspace [data-step="progress"][hidden],
+.resize-workspace [data-step="status"][hidden]{display:none!important}
+
+/* ================================================================
+   CROP & ROTATE v30 — isolated lifecycle and editor surface.
+   This block is intentionally LAST: generic workflow selectors from
+   earlier tools must not own Crop & Rotate visibility or hidden state.
+   ================================================================ */
+.tool-v2[data-tool-page="resize-images"] .crop-workspace > [data-step][hidden],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace [hidden]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="upload"] > [data-step="upload"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="upload"] > [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="upload"] > [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="upload"] > [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="upload"] > [data-step="status"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="upload"] > [data-step="progress"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="upload"] > [data-step="results"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="upload"] > .crop-action-card[data-step="actions"]{display:none!important}
+
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="settings"] > [data-step="upload"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="settings"] > [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="settings"] > [data-step="safety"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="settings"] > [data-step="settings"]{display:grid!important}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="settings"] > [data-step="status"]:not([hidden]){display:block!important}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="settings"] > [data-step="status"][hidden],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="settings"] > [data-step="progress"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="settings"] > [data-step="results"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="settings"] > .crop-action-card[data-step="actions"]{display:flex!important}
+
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="processing"] > [data-step="upload"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="processing"] > [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="processing"] > [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="processing"] > [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="processing"] > [data-step="results"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="processing"] > .crop-action-card[data-step="actions"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="processing"] > [data-step="status"]:not([hidden]),
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="processing"] > [data-step="progress"]:not([hidden]){display:block!important}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="processing"] > [data-step="status"][hidden],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="processing"] > [data-step="progress"][hidden]{display:none!important}
+
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="results"] > [data-step="upload"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="results"] > [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="results"] > [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="results"] > [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="results"] > [data-step="status"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="results"] > [data-step="progress"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="results"] > .crop-action-card[data-step="actions"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="results"] > [data-step="results"]{display:block!important}
+
+.tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-upload-limits{margin-top:8px;font-size:11px;color:var(--tv-muted)}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-settings{align-items:stretch}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-editor-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:16px}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-editor-head h2{margin-bottom:6px}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-dimensions{margin:0;white-space:nowrap;padding:8px 10px;border:1px solid var(--tv-line);border-radius:999px;font-size:12px;color:var(--tv-accent)}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-canvas-wrap{display:grid;place-items:center;min-height:260px;padding:14px;border:1px solid var(--tv-line);border-radius:18px;background:#0a0a0e;overflow:hidden}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-canvas{display:block;max-width:100%;width:100%;height:auto;touch-action:none;cursor:crosshair;border-radius:10px;background:#101014;box-shadow:0 0 0 1px rgba(255,255,255,.04)}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-toolbar{margin-top:14px}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-toolbar .btn,.tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-ratios .btn{padding:10px 13px;font-size:12px}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-ratios .is-active{border-color:rgba(217,255,69,.75);background:rgba(217,255,69,.08);color:var(--tv-accent)}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-action-card{padding:12px;border:1px solid var(--tv-line);border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.025),transparent 55%),var(--tv-panel);gap:12px}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-action-card .btn{flex:1;min-height:52px}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-progress{padding:16px 18px;border:1px solid var(--tv-line);border-radius:18px;background:var(--tv-panel)}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-progress>span{display:block;margin-bottom:9px;color:var(--tv-muted);font-size:12px}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-progress>div{height:6px;border-radius:999px;background:rgba(255,255,255,.09);overflow:hidden}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-progress i{display:block;height:100%;width:0;background:var(--tv-accent);border-radius:inherit;transition:width .2s ease}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-results-shell{display:grid;gap:0;padding:0;overflow:hidden}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-results-shell .result-row{padding:20px}
+@media(max-width:720px){
+  .tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-editor-head{display:grid}
+  .tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-dimensions{justify-self:start}
+  .tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-action-card{display:grid!important;grid-template-columns:1fr}
+  .tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-canvas-wrap{min-height:180px;padding:8px}
+}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-result-clear{padding:0 20px 20px;display:flex}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-result-clear .btn{width:100%;min-height:48px}
+
+/* v31 Crop & Rotate stability isolation: progress only exists during an actual export,
+   and the canvas layout is not driven by script-written aspect ratios. */
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="upload"] [data-step="progress"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="settings"] [data-step="progress"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="results"] [data-step="progress"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="processing"] [data-step="progress"]:not([hidden]){display:block!important}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-canvas{aspect-ratio:auto!important}
+
+/* v33 Crop & Rotate: dedicated lifecycle and editor isolation. */
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="upload"] > [data-step="upload"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="upload"] > [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="upload"] > [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="upload"] > [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="upload"] > [data-step="status"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="upload"] > [data-step="progress"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="upload"] > [data-step="results"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="upload"] > [data-step="actions"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="settings"] > [data-step="upload"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="settings"] > [data-step="progress"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="settings"] > [data-step="results"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="settings"] > [data-step="files"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="settings"] > [data-step="settings"]{display:grid!important}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="settings"] > [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="settings"] > [data-step="status"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="settings"] > .crop-action-card[data-step="actions"]{display:flex!important}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="processing"] > [data-step="upload"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="processing"] > [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="processing"] > [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="processing"] > [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="processing"] > [data-step="actions"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="processing"] > [data-step="results"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="processing"] > [data-step="status"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="processing"] > [data-step="progress"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="results"] > [data-step="upload"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="results"] > [data-step="files"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="results"] > [data-step="settings"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="results"] > [data-step="safety"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="results"] > [data-step="status"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="results"] > [data-step="progress"],
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="results"] > [data-step="actions"]{display:none!important}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="results"] > [data-step="results"]{display:block!important}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-canvas-wrap{min-height:320px;display:grid;place-items:center;padding:18px;border:1px solid var(--tv-line);border-radius:16px;background:#09090c;overflow:hidden}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-canvas{display:block;width:auto;max-width:100%;height:auto;max-height:min(58vh,650px);margin:0;border:0;border-radius:0;touch-action:none;cursor:crosshair;box-sizing:border-box}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-toolbar .btn.is-active{border-color:var(--tv-accent);color:var(--tv-accent);background:rgba(217,255,69,.06)}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace .setting-card.is-disabled{opacity:.55}.tool-v2[data-tool-page="resize-images"] .crop-workspace .setting-card.is-disabled input{cursor:not-allowed}
+.tool-v2[data-tool-page="resize-images"] .crop-result-card{display:grid;gap:16px;padding:18px;border:1px solid var(--tv-line);border-radius:24px;background:linear-gradient(145deg,rgba(255,255,255,.025),transparent 55%),var(--tv-panel)}
+.tool-v2[data-tool-page="resize-images"] .crop-result-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}.tool-v2[data-tool-page="resize-images"] .crop-result-head h2{margin:0 0 6px;font-family:Georgia,"Times New Roman",serif;font-size:30px;font-weight:400}.tool-v2[data-tool-page="resize-images"] .crop-result-head p{margin:0;color:var(--tv-muted);font-size:13px}.tool-v2[data-tool-page="resize-images"] .complete-badge{display:inline-flex;align-items:center;gap:6px;padding:8px 11px;border:1px solid rgba(74,222,128,.3);border-radius:999px;color:#b7f7c6;font-size:11px;font-weight:800;white-space:nowrap}.tool-v2[data-tool-page="resize-images"] .crop-result-actions{display:flex;gap:10px;justify-content:flex-start}
+@media(max-width:720px){.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="settings"] > .crop-action-card[data-step="actions"]{display:grid!important;grid-template-columns:1fr}.tool-v2[data-tool-page="resize-images"] .crop-workspace[data-phase="settings"] > .crop-action-card .btn{width:100%}.tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-canvas-wrap{min-height:280px;padding:10px}.tool-v2[data-tool-page="resize-images"] .crop-result-head{align-items:flex-start}.tool-v2[data-tool-page="resize-images"] .crop-result-actions{display:grid;grid-template-columns:1fr}.tool-v2[data-tool-page="resize-images"] .crop-result-actions .btn{width:100%}}
+
+
+/* v34 Crop & Rotate result-state isolation.
+   The generic workflow CSS predates the dedicated crop runtime and can override
+   hidden status/action surfaces in results. Crop results therefore own their
+   result layout completely. */
+.tool-v2[data-tool-page="resize-images"] .workspace.crop-workspace[data-phase="results"] > .tool-status[data-tool-status][data-step="status"] {
+  display:none !important;
+}
+.tool-v2[data-tool-page="resize-images"] .workspace.crop-workspace[data-phase="results"] > .tool-actions.crop-action-card[data-step="actions"] {
+  display:none !important;
+}
+.tool-v2[data-tool-page="resize-images"] .workspace.crop-workspace[data-phase="results"] > .crop-results-shell[data-step="results"] {
+  display:block !important;
+  padding:0 !important;
+  overflow:visible !important;
+  border:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+}
+.tool-v2[data-tool-page="resize-images"] .workspace.crop-workspace[data-phase="results"] > .crop-results-shell[data-step="results"]::before {
+  content:none !important;
+  display:none !important;
+}
+.tool-v2[data-tool-page="resize-images"] .crop-workspace .crop-result-card {
+  margin:0;
+}
+@media (max-width:720px) {
+  .tool-v2[data-tool-page="resize-images"] .workspace.crop-workspace[data-phase="results"] > .tool-actions.crop-action-card[data-step="actions"] {
+    display:none !important;
+  }
+}
+
+/* V62.5 UI-only footer correction: keep footer at viewport bottom and center all footer content. */
+body.tool-v2 {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+body.tool-v2 > .site-main {
+  flex: 1 0 auto;
+  width: 100%;
+}
+body.tool-v2 > .footer {
+  flex: 0 0 auto;
+  margin-top: 0;
+  width: 100%;
+  text-align: center;
+}
+body.tool-v2 > .footer .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+body.tool-v2 > .footer .footer-brand {
+  text-align: center;
+}
+body.tool-v2 > .footer .footer-brand span {
+  color: var(--tv-accent, #d9ff45);
+}
+body.tool-v2 > .footer .footer-links {
+  justify-content: center;
+  align-items: flex-start;
+}
+body.tool-v2 > .footer .footer-links section {
+  min-width: 120px;
+  text-align: center;
+}
+body.tool-v2 > .footer .copyright {
+  width: 100%;
+  text-align: center;
+}
+@media (max-width: 520px) {
+  body.tool-v2 > .footer .footer-links {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* V62.9 — homepage menu presentation matched on this dedicated tool stylesheet. */
+.tool-v2[data-tool-page="resize-images"] .site-header{position:sticky;top:0;z-index:1000;overflow:visible}
+.tool-v2[data-tool-page="resize-images"] .mobile-menu{
+  position:absolute;top:100%;left:0;right:0;z-index:1001;width:auto;box-sizing:border-box;
+  min-height:calc(100vh - 76px);max-height:calc(100vh - 76px);overflow:auto;margin:0;padding:28px 16px;
+  display:grid;grid-template-columns:1fr;align-content:start;gap:10px;
+  border-top:1px solid var(--tv-line);background:rgba(7,7,9,.97);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  opacity:0;visibility:hidden;pointer-events:none;
+  transform:translateY(-6px);transform-origin:top center;
+  transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s;
+}
+.tool-v2[data-tool-page="resize-images"] .mobile-menu[data-open="true"]{
+  opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0);
+  transition:opacity .2s ease,transform .2s ease,visibility 0s linear 0s;
+}
+.tool-v2[data-tool-page="resize-images"] .mobile-menu a{
+  display:block;width:min(100%,560px);margin:0 auto;box-sizing:border-box;
+  padding:18px 20px;border:1px solid var(--tv-line);border-radius:18px;
+  background:var(--tv-panel);color:var(--tv-text);text-decoration:none;font-size:18px;
+  transition:transform .2s ease,border-color .2s ease,background .2s ease;
+}
+.tool-v2[data-tool-page="resize-images"] .mobile-menu a:hover{transform:translateY(-1px);border-color:rgba(217,255,69,.35);background:var(--tv-panel-2)}
+body.tool-v2[data-tool-page="resize-images"]:has(.mobile-menu[data-open="true"] ){overflow:hidden}
+@media(max-width:520px){.tool-v2[data-tool-page="resize-images"] .mobile-menu{min-height:calc(100vh - 68px);max-height:calc(100vh - 68px)}}
+
+
+/* v68 footer implementation: footer-only parity with the index footer composition. */
+.tool-v2 .footer{border-top:1px solid rgba(255,255,255,.11);background:#09090c;margin-top:5rem;padding:0;text-align:center;color:#f5f5f5}
+.tool-v2 .footer .container{width:min(calc(100% - 56px),1180px);margin:auto;padding:0}
+.tool-v2 .footer-brand{display:flex;justify-content:center;width:100%;margin:0;padding:56px 0 30px;font-family:Georgia,"Times New Roman",serif;font-size:31px;font-weight:400;color:#f5f5f5}
+.tool-v2 .footer-brand span{color:#d9ff45}
+.tool-v2 .footer-links{display:grid;grid-template-columns:1fr;justify-items:center;gap:30px;margin:0;padding:0 0 38px}
+.tool-v2 .footer-links section{text-align:center}
+.tool-v2 .footer h2{margin:0 0 16px;color:#8d9199;font-size:12px;text-transform:uppercase;letter-spacing:1.5px}
+.tool-v2 .footer a{display:block;width:max-content;max-width:100%;margin:0 auto 12px;color:#f5f5f5;text-decoration:none;font-size:14px}
+.tool-v2 .footer a:hover{color:#f5f5f5}
+.tool-v2 .copyright{margin:0;padding:20px 0 28px;border-top:1px solid rgba(255,255,255,.11);color:#8d9199;font-size:12px;text-align:center}
+@media(max-width:560px){.tool-v2 .footer .container{width:min(calc(100% - 32px),1180px)}.tool-v2 .footer-brand{padding:46px 0 30px}.tool-v2 .footer-links{grid-template-columns:1fr;gap:30px;padding-bottom:38px}}

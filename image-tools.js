@@ -1,0 +1,3 @@
+import { initRuntime } from "./tool-runtime.js";
+const root=document.querySelector("[data-image-tool]");
+if(root){const engine=root.dataset.imageTool;root.dataset.engine=engine;initRuntime({root,input:root.querySelector("[data-image-input]"),drop:root.querySelector("[data-drop-zone]"),browse:root.querySelector("[data-browse]"),start:root.querySelector("[data-start]"),reset:root.querySelector("[data-reset]"),status:root.querySelector("[data-tool-status]"),list:root.querySelector("[data-file-list]"),results:root.querySelector("[data-result-list]"),maxFiles:engine==="crop-rotate"?1:100,maxBytes:100*1024*1024,maxTotal:250*1024*1024,minFiles:1,orderable:false});}

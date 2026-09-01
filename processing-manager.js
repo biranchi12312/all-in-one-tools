@@ -43,13 +43,13 @@
         const snapshot = cloneState();
         listeners.forEach(listener => {
             try { listener(snapshot); }
-            catch (error) { console.error("[AuraStudio ProcessingManager] Listener error:", error); }
+            catch (error) { console.error("[Oriva Studio ProcessingManager] Listener error:", error); }
         });
     }
 
     function start(toolId, options = {}) {
         if (!toolId || typeof toolId !== "string") {
-            throw new Error("[AuraStudio ProcessingManager] A valid toolId is required.");
+            throw new Error("[Oriva Studio ProcessingManager] A valid toolId is required.");
         }
         if (currentOperation && currentOperation.state === STATES.PROCESSING) {
             return { ok: false, reason: "already-processing", operationId: currentOperation.id, operation: cloneState() };
@@ -107,7 +107,7 @@
 
     function subscribe(listener) {
         if (typeof listener !== "function") {
-            throw new Error("[AuraStudio ProcessingManager] Listener must be a function.");
+            throw new Error("[Oriva Studio ProcessingManager] Listener must be a function.");
         }
         listeners.add(listener);
         return () => listeners.delete(listener);

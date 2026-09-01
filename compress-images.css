@@ -1,0 +1,243 @@
+/* Dedicated, self-contained Compress Images surface. No selectors from other tools. */
+:root{--ci-bg:#070709;--ci-panel:#121217;--ci-panel-2:#181820;--ci-text:#f5f5f5;--ci-muted:#8d9199;--ci-line:rgba(255,255,255,.11);--ci-accent:#d9ff45}
+body.tool-v2[data-tool-page="compress-images"]{background:var(--ci-bg);color:var(--ci-text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.tool-v2[data-tool-page="compress-images"] .site-header{position:sticky;top:0;z-index:1000;border-bottom:1px solid var(--ci-line);background:rgba(7,7,9,.9);backdrop-filter:blur(18px)}.tool-v2[data-tool-page="compress-images"] .container,.tool-v2[data-tool-page="compress-images"] .section{width:min(calc(100% - 56px),1180px);margin-inline:auto}.tool-v2[data-tool-page="compress-images"] .header{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}.tool-v2[data-tool-page="compress-images"] .brand{font-family:Georgia,"Times New Roman",serif;font-size:31px;color:var(--ci-text);text-decoration:none}.tool-v2[data-tool-page="compress-images"] .nav{display:flex;gap:22px}.tool-v2[data-tool-page="compress-images"] .nav a{font-size:13px;color:var(--ci-muted);text-decoration:none}.tool-v2[data-tool-page="compress-images"] .menu-btn{border:1px solid var(--ci-line);border-radius:13px;background:var(--ci-panel);color:var(--ci-text);padding:10px 14px}.tool-v2[data-tool-page="compress-images"] .mobile-menu{display:none;padding:12px 0 18px}.tool-v2[data-tool-page="compress-images"] .mobile-menu[data-open="true"]{display:grid;gap:8px}.tool-v2[data-tool-page="compress-images"] .mobile-menu a{padding:13px;border:1px solid var(--ci-line);border-radius:12px;background:var(--ci-panel);color:var(--ci-text);text-decoration:none}.tool-v2[data-tool-page="compress-images"] .site-main{padding:56px 0 100px}.tool-v2[data-tool-page="compress-images"] .tool-intro{max-width:820px;margin-bottom:34px}.tool-v2[data-tool-page="compress-images"] .tool-kicker{display:inline-flex;padding:8px 12px;border:1px solid var(--ci-line);border-radius:999px;color:var(--ci-accent);font-size:10px;font-weight:800;letter-spacing:1.5px}.tool-v2[data-tool-page="compress-images"] .tool-intro h1{margin:18px 0 12px;font-family:Georgia,"Times New Roman",serif;font-size:clamp(48px,6vw,76px);font-weight:400;line-height:.96}.tool-v2[data-tool-page="compress-images"] .tool-intro p{margin:0;color:var(--ci-muted);font-size:16px;line-height:1.75}.tool-v2[data-tool-page="compress-images"] .workspace{display:grid;gap:18px}.tool-v2[data-tool-page="compress-images"] .tool-panel,.tool-v2[data-tool-page="compress-images"] .file-list,.tool-v2[data-tool-page="compress-images"] .setting-card,.tool-v2[data-tool-page="compress-images"] .tool-status,.tool-v2[data-tool-page="compress-images"] .tool-progress,.tool-v2[data-tool-page="compress-images"] .result-list{border:1px solid var(--ci-line);border-radius:24px;background:linear-gradient(145deg,rgba(255,255,255,.025),transparent 55%),var(--ci-panel)}.tool-v2[data-tool-page="compress-images"] .tool-panel{padding:22px}.tool-v2[data-tool-page="compress-images"] .file-input{display:none!important}.tool-v2[data-tool-page="compress-images"] .drop-zone{min-height:220px;display:grid;place-items:center;text-align:center;border:1px dashed rgba(255,255,255,.18);border-radius:18px;background:rgba(7,7,9,.38);transition:.25s ease}.tool-v2[data-tool-page="compress-images"] .drop-zone[data-active="true"]{border-color:var(--ci-accent);background:rgba(217,255,69,.05)}.tool-v2[data-tool-page="compress-images"] .drop-zone>div{padding:30px}.tool-v2[data-tool-page="compress-images"] .chip{display:grid;place-items:center;width:48px;height:48px;margin:0 auto 16px;border:1px solid var(--ci-line);border-radius:14px;color:var(--ci-accent);font-size:26px}.tool-v2[data-tool-page="compress-images"] .drop-zone h2,.tool-v2[data-tool-page="compress-images"] .setting-card h2{margin:0 0 8px;font-family:Georgia,"Times New Roman",serif;font-weight:400}.tool-v2[data-tool-page="compress-images"] .drop-zone h2{font-size:30px}.tool-v2[data-tool-page="compress-images"] .drop-zone p,.tool-v2[data-tool-page="compress-images"] .setting-card p{margin:0;color:var(--ci-muted);font-size:13px;line-height:1.7}.tool-v2[data-tool-page="compress-images"] .actions{margin-top:18px}.tool-v2[data-tool-page="compress-images"] .btn{border-radius:999px;padding:12px 18px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}.tool-v2[data-tool-page="compress-images"] .btn.primary{border:0;background:var(--ci-accent);color:#111}.tool-v2[data-tool-page="compress-images"] .btn.secondary{border:1px solid var(--ci-line);background:transparent;color:var(--ci-text)}.tool-v2[data-tool-page="compress-images"] .btn:disabled{opacity:.5;cursor:not-allowed}.tool-v2[data-tool-page="compress-images"] .image-settings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.tool-v2[data-tool-page="compress-images"] .setting-card{padding:24px}.tool-v2[data-tool-page="compress-images"] .field{display:grid;gap:8px;margin-top:16px;color:var(--ci-muted);font-size:12px;font-weight:800}.tool-v2[data-tool-page="compress-images"] select,.tool-v2[data-tool-page="compress-images"] input{box-sizing:border-box}.tool-v2[data-tool-page="compress-images"] select{padding:13px;border:1px solid var(--ci-line);border-radius:13px;background:#0d0d12;color:var(--ci-text)}.tool-v2[data-tool-page="compress-images"] .range-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;margin-top:18px}.tool-v2[data-tool-page="compress-images"] input[type=range]{accent-color:var(--ci-accent)}.tool-v2[data-tool-page="compress-images"] output{color:var(--ci-accent);font-weight:800}.tool-v2[data-tool-page="compress-images"] .workspace-note{padding:16px 18px;border-left:2px solid var(--ci-accent);color:var(--ci-muted);font-size:13px;line-height:1.7;background:rgba(255,255,255,.02)}.tool-v2[data-tool-page="compress-images"] .tool-status{padding:14px 18px;color:var(--ci-muted);font-size:13px}.tool-v2[data-tool-page="compress-images"] .tool-status[data-kind=success]{border-color:rgba(74,222,128,.4);color:#b7f7c6}.tool-v2[data-tool-page="compress-images"] .tool-status[data-kind=error]{border-color:rgba(248,113,113,.45);color:#fecaca}.tool-v2[data-tool-page="compress-images"] .tool-status[data-kind=working]{color:var(--ci-accent)}.tool-v2[data-tool-page="compress-images"] .tool-progress{padding:16px 18px}.tool-v2[data-tool-page="compress-images"] .progress-head{display:flex;justify-content:space-between;gap:16px}.tool-v2[data-tool-page="compress-images"] .progress-head span{color:var(--ci-accent);font-weight:800}.tool-v2[data-tool-page="compress-images"] .tool-progress p{margin:8px 0;color:var(--ci-muted);font-size:12px}.tool-v2[data-tool-page="compress-images"] .progress-track{height:8px;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.08)}.tool-v2[data-tool-page="compress-images"] .progress-track i{display:block;width:0;height:100%;border-radius:inherit;background:var(--ci-accent);transition:width .18s ease}.tool-v2[data-tool-page="compress-images"] .batch-summary{padding:13px 18px;border-bottom:1px solid var(--ci-line);color:var(--ci-muted);font-size:12px}.tool-v2[data-tool-page="compress-images"] .file-row,.tool-v2[data-tool-page="compress-images"] .result-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 18px;border-bottom:1px solid var(--ci-line)}.tool-v2[data-tool-page="compress-images"] .file-row:last-child,.tool-v2[data-tool-page="compress-images"] .result-row:last-child{border-bottom:0}.tool-v2[data-tool-page="compress-images"] .file-meta{display:flex;align-items:center;gap:14px;min-width:0;flex:1}.tool-v2[data-tool-page="compress-images"] .image-file-preview{flex:0 0 72px;width:72px;height:72px;overflow:hidden;border:1px solid var(--ci-line);border-radius:14px;background:#111116}.tool-v2[data-tool-page="compress-images"] .image-file-preview img{display:block;width:100%;height:100%;object-fit:cover}.tool-v2[data-tool-page="compress-images"] .file-text-meta{min-width:0}.tool-v2[data-tool-page="compress-images"] .file-name,.tool-v2[data-tool-page="compress-images"] .result-name{font-weight:800;overflow-wrap:anywhere}.tool-v2[data-tool-page="compress-images"] .file-size,.tool-v2[data-tool-page="compress-images"] .result-meta{margin-top:4px;color:var(--ci-muted);font-size:12px}.tool-v2[data-tool-page="compress-images"] .upload-status{margin-top:7px;color:#b7f7c6;font-size:12px}.tool-v2[data-tool-page="compress-images"] .remove-file{border:1px solid var(--ci-line);border-radius:999px;background:transparent;color:var(--ci-text);padding:8px 11px;cursor:pointer}.tool-v2[data-tool-page="compress-images"] .is-failed{background:rgba(248,113,113,.04)}.tool-v2[data-tool-page="compress-images"] .is-failed .result-meta{color:#fecaca}.tool-v2[data-tool-page="compress-images"] .tool-actions,.tool-v2[data-tool-page="compress-images"] .result-actions{display:flex;justify-content:flex-end;gap:12px}.tool-v2[data-tool-page="compress-images"] .result-actions{justify-content:flex-start}
+@media(max-width:800px){.tool-v2[data-tool-page="compress-images"] .container,.tool-v2[data-tool-page="compress-images"] .section{width:min(calc(100% - 32px),1180px)}.tool-v2[data-tool-page="compress-images"] .nav{display:none}.tool-v2[data-tool-page="compress-images"] .image-settings{grid-template-columns:1fr}.tool-v2[data-tool-page="compress-images"] .tool-actions .btn,.tool-v2[data-tool-page="compress-images"] .result-actions .btn{flex:1}}@media(max-width:520px){.tool-v2[data-tool-page="compress-images"] .site-main{padding-top:38px}.tool-v2[data-tool-page="compress-images"] .tool-intro h1{font-size:48px}.tool-v2[data-tool-page="compress-images"] .file-row,.tool-v2[data-tool-page="compress-images"] .result-row{align-items:flex-start;flex-direction:column}.tool-v2[data-tool-page="compress-images"] .remove-file,.tool-v2[data-tool-page="compress-images"] .result-row .btn{align-self:stretch}.tool-v2[data-tool-page="compress-images"] .tool-actions,.tool-v2[data-tool-page="compress-images"] .result-actions{flex-direction:column}.tool-v2[data-tool-page="compress-images"] .file-meta{width:100%}}
+/* v48 compressor workflow hardening */
+body.tool-v2[data-tool-page="compress-images"] .workspace[data-processing="true"] .tool-status{border-color:rgba(217,255,69,.32)}
+body.tool-v2[data-tool-page="compress-images"] .processing-row{opacity:.82}
+
+/* v48: visibility is owned by controller state + [hidden], not broad phase CSS. */
+body.tool-v2[data-tool-page="compress-images"] .workspace[data-processing="true"] .drop-zone{opacity:.58;cursor:wait;pointer-events:none}
+body.tool-v2[data-tool-page="compress-images"] .workspace[data-processing="true"] .remove-file{pointer-events:none;opacity:.5}
+body.tool-v2[data-tool-page="compress-images"] .result-row{align-items:center}
+body.tool-v2[data-tool-page="compress-images"] .result-row .file-text-meta{flex:1}
+body.tool-v2[data-tool-page="compress-images"] .result-preview{flex:0 0 72px}
+body.tool-v2[data-tool-page="compress-images"] .result-actions[hidden]{display:none!important}
+body.tool-v2[data-tool-page="compress-images"] [hidden]{display:none!important}
+
+/* v49: self-contained compressor dialog surface.
+   The shared dialog runtime appends the modal to <body>, while this tool loads
+   only base.css + its own page CSS. Without these rules the browser's default
+   <dialog> rendering leaked through as the white rectangular popup seen in V48. */
+dialog.oriva-modal{
+  width:min(92vw,520px);
+  max-width:calc(100vw - 32px);
+  border:0;
+  padding:0;
+  margin:auto;
+  color:var(--ci-text);
+  background:transparent;
+  overflow:visible;
+  border-radius:24px;
+  box-shadow:none;
+}
+dialog.oriva-modal::backdrop{background:rgba(2,2,5,.74);backdrop-filter:blur(3px)}
+dialog.oriva-modal .oriva-modal-card{
+  position:relative;
+  background:linear-gradient(145deg,rgba(255,255,255,.035),transparent 48%),var(--ci-panel-2);
+  color:var(--ci-text);
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:24px;
+  padding:22px;
+  box-shadow:0 28px 90px rgba(0,0,0,.55);
+}
+dialog.oriva-modal .oriva-modal-icon{
+  display:grid;
+  place-items:center;
+  width:42px;
+  height:42px;
+  margin:0 0 15px;
+  border-radius:14px;
+  border:1px solid rgba(248,113,113,.24);
+  background:rgba(248,113,113,.12);
+  color:#fecaca;
+  font-size:20px;
+  font-weight:900;
+  line-height:1;
+}
+dialog.oriva-modal[data-variant="warning"] .oriva-modal-icon{border-color:rgba(251,191,36,.28);background:rgba(251,191,36,.12);color:#fde68a}
+dialog.oriva-modal[data-variant="success"] .oriva-modal-icon{border-color:rgba(74,222,128,.28);background:rgba(74,222,128,.12);color:#bbf7d0}
+dialog.oriva-modal[data-variant="confirm"] .oriva-modal-icon{border-color:rgba(217,255,69,.28);background:rgba(217,255,69,.10);color:var(--ci-accent)}
+dialog.oriva-modal .oriva-modal-card h2{margin:0 0 9px;color:var(--ci-text);font-size:22px;line-height:1.25}
+dialog.oriva-modal .oriva-modal-card p{margin:0;color:var(--ci-muted);font-size:14px;line-height:1.7}
+dialog.oriva-modal .oriva-modal-list{margin:14px 0 0;padding:0;list-style:none;max-height:220px;overflow:auto;border-top:1px solid var(--ci-line)}
+dialog.oriva-modal .oriva-modal-list li{padding:10px 0;border-bottom:1px solid var(--ci-line);color:#f7d0d0;font-size:13px;line-height:1.55;overflow-wrap:anywhere}
+dialog.oriva-modal[data-variant="warning"] .oriva-modal-list li{color:#fde9b2}
+dialog.oriva-modal .oriva-modal-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-top:20px}
+dialog.oriva-modal .oriva-modal-actions .btn{min-height:44px;border-radius:999px;padding:11px 19px;font-weight:800}
+dialog.oriva-modal .oriva-modal-actions .btn.primary{border:0;background:var(--ci-accent);color:#10110b}
+dialog.oriva-modal .oriva-modal-actions .btn.secondary{border:1px solid var(--ci-line);background:transparent;color:var(--ci-text)}
+@media(max-width:520px){
+  dialog.oriva-modal{max-width:calc(100vw - 24px)}
+  dialog.oriva-modal .oriva-modal-card{padding:19px}
+  dialog.oriva-modal .oriva-modal-card h2{font-size:20px}
+  dialog.oriva-modal .oriva-modal-actions{display:grid;grid-template-columns:1fr}
+  dialog.oriva-modal .oriva-modal-actions .btn{width:100%}
+}
+
+/* v50: dedicated compressor prompt surface.
+   This follows the V76 interaction structure (overlay section + explicit backdrop,
+   58px icon, 460px card, stacked issue list and equal-width actions) without
+   reusing V76 source or changing other tools' dialog implementation. */
+
+/* V62.5 UI-only footer correction: keep footer at viewport bottom and center all footer content. */
+body.tool-v2 {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+body.tool-v2 > .site-main {
+  flex: 1 0 auto;
+  width: 100%;
+}
+body.tool-v2 > .footer {
+  flex: 0 0 auto;
+  margin-top: 0;
+  width: 100%;
+  text-align: center;
+}
+body.tool-v2 > .footer .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+body.tool-v2 > .footer .footer-brand {
+  text-align: center;
+}
+body.tool-v2 > .footer .footer-brand span {
+  color: var(--tv-accent, #d9ff45);
+}
+body.tool-v2 > .footer .footer-links {
+  justify-content: center;
+  align-items: flex-start;
+}
+body.tool-v2 > .footer .footer-links section {
+  min-width: 120px;
+  text-align: center;
+}
+body.tool-v2 > .footer .copyright {
+  width: 100%;
+  text-align: center;
+}
+@media (max-width: 520px) {
+  body.tool-v2 > .footer .footer-links {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* V62.5 UI-only footer correction for the standalone compressor stylesheet. */
+body.tool-v2[data-tool-page="compress-images"] {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+body.tool-v2[data-tool-page="compress-images"] > .site-main {
+  flex: 1 0 auto;
+  width: 100%;
+}
+body.tool-v2[data-tool-page="compress-images"] > .footer {
+  flex: 0 0 auto;
+  width: 100%;
+  margin-top: 0;
+  padding: 0;
+  border-top: 1px solid var(--ci-line);
+  background: #09090c;
+  text-align: center;
+}
+body.tool-v2[data-tool-page="compress-images"] > .footer .container {
+  width: min(calc(100% - 56px),1180px);
+  margin-inline: auto;
+  padding: 44px 0 26px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+body.tool-v2[data-tool-page="compress-images"] > .footer .footer-brand {
+  font-family: Georgia,"Times New Roman",serif;
+  font-size: 28px;
+  text-align: center;
+}
+body.tool-v2[data-tool-page="compress-images"] > .footer .footer-brand span {
+  color: var(--ci-accent);
+}
+body.tool-v2[data-tool-page="compress-images"] > .footer .footer-links {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 60px;
+  width: auto;
+  margin-top: 26px;
+}
+body.tool-v2[data-tool-page="compress-images"] > .footer .footer-links section {
+  min-width: 120px;
+  text-align: center;
+}
+body.tool-v2[data-tool-page="compress-images"] > .footer h2 {
+  font-size: 11px;
+  letter-spacing: 1.4px;
+  color: var(--ci-muted);
+  text-transform: uppercase;
+}
+body.tool-v2[data-tool-page="compress-images"] > .footer a {
+  display: block;
+  margin: 10px 0;
+  color: var(--ci-text);
+  text-decoration: none;
+  font-size: 13px;
+}
+body.tool-v2[data-tool-page="compress-images"] > .footer .copyright {
+  width: 100%;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid var(--ci-line);
+  color: var(--ci-muted);
+  font-size: 12px;
+  text-align: center;
+}
+@media(max-width:520px){
+  body.tool-v2[data-tool-page="compress-images"] > .footer .container{width:min(calc(100% - 32px),1180px)}
+  body.tool-v2[data-tool-page="compress-images"] > .footer .footer-links{display:grid;grid-template-columns:1fr 1fr;gap:28px;width:100%}
+}
+
+/* V62.9 — homepage menu presentation matched on this dedicated tool stylesheet. */
+.tool-v2[data-tool-page="compress-images"] .site-header{position:sticky;top:0;z-index:1000;overflow:visible}
+.tool-v2[data-tool-page="compress-images"] .mobile-menu{
+  position:absolute;top:100%;left:0;right:0;z-index:1001;width:auto;box-sizing:border-box;
+  min-height:calc(100vh - 76px);max-height:calc(100vh - 76px);overflow:auto;margin:0;padding:28px 16px;
+  display:grid;grid-template-columns:1fr;align-content:start;gap:10px;
+  border-top:1px solid var(--ci-line);background:rgba(7,7,9,.97);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  opacity:0;visibility:hidden;pointer-events:none;
+  transform:translateY(-6px);transform-origin:top center;
+  transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s;
+}
+.tool-v2[data-tool-page="compress-images"] .mobile-menu[data-open="true"]{
+  opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0);
+  transition:opacity .2s ease,transform .2s ease,visibility 0s linear 0s;
+}
+.tool-v2[data-tool-page="compress-images"] .mobile-menu a{
+  display:block;width:min(100%,560px);margin:0 auto;box-sizing:border-box;
+  padding:18px 20px;border:1px solid var(--ci-line);border-radius:18px;
+  background:var(--ci-panel);color:var(--ci-text);text-decoration:none;font-size:18px;
+  transition:transform .2s ease,border-color .2s ease,background .2s ease;
+}
+.tool-v2[data-tool-page="compress-images"] .mobile-menu a:hover{transform:translateY(-1px);border-color:rgba(217,255,69,.35);background:var(--ci-panel)}
+body.tool-v2[data-tool-page="compress-images"]:has(.mobile-menu[data-open="true"] ){overflow:hidden}
+@media(max-width:520px){.tool-v2[data-tool-page="compress-images"] .mobile-menu{min-height:calc(100vh - 68px);max-height:calc(100vh - 68px)}}
+
+
+/* v68 footer implementation: footer-only parity with the index footer composition. */
+.tool-v2 .footer{border-top:1px solid rgba(255,255,255,.11);background:#09090c;margin-top:5rem;padding:0;text-align:center;color:#f5f5f5}
+.tool-v2 .footer .container{width:min(calc(100% - 56px),1180px);margin:auto;padding:0}
+.tool-v2 .footer-brand{display:flex;justify-content:center;width:100%;margin:0;padding:56px 0 30px;font-family:Georgia,"Times New Roman",serif;font-size:31px;font-weight:400;color:#f5f5f5}
+.tool-v2 .footer-brand span{color:#d9ff45}
+.tool-v2 .footer-links{display:grid;grid-template-columns:1fr;justify-items:center;gap:30px;margin:0;padding:0 0 38px}
+.tool-v2 .footer-links section{text-align:center}
+.tool-v2 .footer h2{margin:0 0 16px;color:#8d9199;font-size:12px;text-transform:uppercase;letter-spacing:1.5px}
+.tool-v2 .footer a{display:block;width:max-content;max-width:100%;margin:0 auto 12px;color:#f5f5f5;text-decoration:none;font-size:14px}
+.tool-v2 .footer a:hover{color:#f5f5f5}
+.tool-v2 .copyright{margin:0;padding:20px 0 28px;border-top:1px solid rgba(255,255,255,.11);color:#8d9199;font-size:12px;text-align:center}
+@media(max-width:560px){.tool-v2 .footer .container{width:min(calc(100% - 32px),1180px)}.tool-v2 .footer-brand{padding:46px 0 30px}.tool-v2 .footer-links{grid-template-columns:1fr;gap:30px;padding-bottom:38px}}

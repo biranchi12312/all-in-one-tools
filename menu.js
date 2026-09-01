@@ -1,0 +1,1 @@
+document.querySelectorAll('[data-menu]').forEach(b=>{const m=document.getElementById(b.getAttribute('aria-controls'));if(!m)return;b.addEventListener('click',()=>{const open=b.getAttribute('aria-expanded')==='true';b.setAttribute('aria-expanded',String(!open));m.dataset.open=String(!open)});});

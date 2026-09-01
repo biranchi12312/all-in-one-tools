@@ -1,168 +1,85 @@
-(() => {
-    "use strict";
+let dialogQueue = Promise.resolve();
 
-    const root = document.getElementById("appDialog");
-    if (!root) return;
+function ensureDialog(){
+  let dialog=document.getElementById("oriva-modal");
+  if(dialog) return dialog;
+  dialog=document.createElement("dialog");
+  dialog.id="oriva-modal";
+  dialog.className="oriva-modal";
+  dialog.innerHTML=`<div class="oriva-modal-card" role="document">
+    <span class="oriva-modal-icon" data-dialog-icon aria-hidden="true">!</span>
+    <h2 data-dialog-title></h2><p data-dialog-message></p>
+    <ul class="oriva-modal-list" data-dialog-list hidden></ul>
+    <div class="oriva-modal-actions">
+      <button class="btn secondary" type="button" data-dialog-cancel hidden>Cancel</button>
+      <button class="btn primary" type="button" data-dialog-confirm>OK</button>
+    </div>
+  </div>`;
+  document.body.append(dialog);
+  return dialog;
+}
 
-    const titleEl = document.getElementById("appDialogTitle");
-    const textEl = document.getElementById("appDialogText");
-    const listEl = document.getElementById("appDialogList");
-    const actionEl = document.getElementById("appDialogAction");
-    const cancelEl = document.getElementById("appDialogCancel");
-    const backdrop = document.getElementById("appDialogBackdrop");
-    const iconEl = document.getElementById("appDialogIcon");
-    const panel = root.querySelector(".app-dialog-panel");
+function runDialog(options={}){
+  const {title="Notice",message="",confirmText="OK",confirmLabel,cancelText=null,cancelLabel,items=[],variant="error"}=options;
+  const dialog=ensureDialog();
+  const titleNode=dialog.querySelector("[data-dialog-title]");
+  const messageNode=dialog.querySelector("[data-dialog-message]");
+  const list=dialog.querySelector("[data-dialog-list]");
+  const icon=dialog.querySelector("[data-dialog-icon]");
+  const confirm=dialog.querySelector("[data-dialog-confirm]");
+  const cancel=dialog.querySelector("[data-dialog-cancel]");
+  titleNode.textContent=title;
+  messageNode.textContent=message;
+  messageNode.hidden=!message;
+  list.replaceChildren();
+  (Array.isArray(items)?items:[]).forEach(item=>{const li=document.createElement("li");li.textContent=String(item);list.append(li);});
+  list.hidden=!list.childElementCount;
+  dialog.dataset.variant=variant;
+  icon.textContent=variant==="success"?"✓":variant==="warning"?"!":variant==="confirm"?"?":"!";
+  confirm.textContent=confirmLabel||confirmText||"OK";
+  const cancelValue=cancelLabel||cancelText;
+  cancel.hidden=!cancelValue;
+  if(cancelValue) cancel.textContent=cancelValue;
 
-    let lastFocus = null;
-    let resolver = null;
-
-    function close(result) {
-        root.hidden = true;
-        document.body.classList.remove("dialog-open");
-        const resolve = resolver;
-        resolver = null;
-        if (lastFocus && typeof lastFocus.focus === "function") {
-            try { lastFocus.focus(); } catch (_) {}
-        }
-        if (resolve) resolve(result);
-    }
-
-    function setItems(items) {
-        listEl.innerHTML = "";
-        if (!items || !items.length) {
-            listEl.hidden = true;
-            return;
-        }
-        listEl.hidden = false;
-        items.forEach(item => {
-            const li = document.createElement("li");
-            li.textContent = String(item);
-            listEl.appendChild(li);
-        });
-    }
-
-    function focusableElements() {
-        return Array.from(
-            root.querySelectorAll(
-                "button:not([hidden]):not([disabled]), [href], input:not([hidden]):not([disabled]), select:not([hidden]):not([disabled]), textarea:not([hidden]):not([disabled]), [tabindex]:not([tabindex='-1'])"
-            )
-        ).filter(el => {
-            if (el.hidden) return false;
-            if (el === backdrop) return false;
-            const style = window.getComputedStyle(el);
-            return style.display !== "none" && style.visibility !== "hidden";
-        });
-    }
-
-    function open(options) {
-        const opts = options || {};
-
-        // If a dialog is already open, settle the previous promise so callers
-        // never hang forever when a second open() arrives (shared AuraDialog).
-        if (resolver) {
-            const previous = resolver;
-            resolver = null;
-            try {
-                previous(false);
-            } catch (_) {}
-        }
-
-        lastFocus = document.activeElement;
-        titleEl.textContent = opts.title || "Notice";
-        textEl.textContent = opts.message || "";
-        textEl.hidden = !opts.message;
-
-        const allowed = { error: true, warning: true, success: true, confirm: true };
-        const variant = allowed[opts.variant] ? opts.variant : "error";
-        root.dataset.variant = variant;
-        iconEl.textContent =
-            variant === "success" ? "✓" :
-            variant === "warning" ? "!" :
-            variant === "confirm" ? "?" : "!";
-
-        setItems(opts.items);
-        actionEl.textContent = opts.confirmLabel || "OK";
-
-        if (opts.cancelLabel) {
-            cancelEl.hidden = false;
-            cancelEl.textContent = opts.cancelLabel;
-        } else {
-            cancelEl.hidden = true;
-        }
-
-        root.hidden = false;
-        document.body.classList.add("dialog-open");
-        actionEl.focus();
-
-        return new Promise(resolve => {
-            resolver = resolve;
-        });
-    }
-
-    actionEl.addEventListener("click", () => close(true));
-    cancelEl.addEventListener("click", () => close(false));
-    backdrop.addEventListener("click", () => close(false));
-
-    document.addEventListener("keydown", event => {
-        if (root.hidden) return;
-
-        if (event.key === "Escape") {
-            event.preventDefault();
-            close(false);
-            return;
-        }
-
-        if (event.key !== "Tab") return;
-
-        const items = focusableElements();
-        if (!items.length) {
-            event.preventDefault();
-            if (panel) panel.focus();
-            return;
-        }
-
-        const first = items[0];
-        const last = items[items.length - 1];
-        const active = document.activeElement;
-
-        if (event.shiftKey) {
-            if (active === first || !root.contains(active)) {
-                event.preventDefault();
-                last.focus();
-            }
-        } else if (active === last || !root.contains(active)) {
-            event.preventDefault();
-            first.focus();
-        }
-    });
-
-    if (panel && !panel.hasAttribute("tabindex")) {
-        panel.setAttribute("tabindex", "-1");
-    }
-
-    window.addEventListener("popstate", () => {
-        if (!root.hidden) close(false);
-    });
-
-    window.AuraDialog = {
-        open,
-        error(title, message, items) {
-            return open({ title, message, items, variant: "error" });
-        },
-        warning(title, message, items) {
-            return open({ title, message, items, variant: "warning" });
-        },
-        success(title, message) {
-            return open({ title, message, variant: "success" });
-        },
-        confirm(title, message) {
-            return open({
-                title,
-                message,
-                variant: "confirm",
-                confirmLabel: "Yes, continue",
-                cancelLabel: "Cancel"
-            });
-        }
+  return new Promise(resolve=>{
+    let settled=false;
+    const finish=value=>{
+      if(settled) return;
+      settled=true;
+      confirm.onclick=null; cancel.onclick=null; dialog.oncancel=null;
+      dialog.removeEventListener("click",backdropHandler);
+      if(dialog.open) dialog.close();
+      resolve(value);
     };
-})();
+    const backdropHandler=event=>{ if(event.target===dialog) finish(false); };
+    confirm.onclick=()=>finish(true);
+    cancel.onclick=()=>finish(false);
+    dialog.oncancel=event=>{event.preventDefault();finish(false);};
+    dialog.addEventListener("click",backdropHandler);
+    if(typeof dialog.showModal==="function"){
+      try{ dialog.showModal(); }catch(error){
+        dialog.removeEventListener("click",backdropHandler);
+        confirm.onclick=null; cancel.onclick=null; dialog.oncancel=null;
+        resolve(false); return;
+      }
+    }else{
+      window.alert(`${title}\n\n${message}`); resolve(true); return;
+    }
+    queueMicrotask(()=>{try{confirm.focus();}catch(_){}});
+  });
+}
+
+function openDialog(options={}){
+  const task=dialogQueue.then(()=>runDialog(options),()=>runDialog(options));
+  dialogQueue=task.catch(()=>false);
+  return task;
+}
+
+window.OrivaDialog={
+  show:options=>openDialog(options),
+  confirm:options=>openDialog({...options,variant:"confirm"}),
+  error:options=>openDialog({...options,variant:"error"}),
+  warning:options=>openDialog({...options,variant:"warning"}),
+  success:options=>openDialog({...options,variant:"success"})
+};
+export {openDialog};

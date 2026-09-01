@@ -1,0 +1,27 @@
+:root{color-scheme:light}
+html{min-width:320px;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{min-width:320px;overflow-x:hidden}
+.site-header,.footer{contain:layout style}
+.tool-panel,.workspace,.card,.drop-zone,.file-row,.result-row{max-width:100%}
+input,select,textarea,button{font:inherit}
+input,select,textarea{max-width:100%}
+button{min-height:40px}
+a,button,[role="button"]{-webkit-tap-highlight-color:transparent}
+.file-name,.result-name,.head h1,.head p{overflow-wrap:anywhere}
+.tool-status[data-kind="error"]{color:#b42318}
+.tool-status[data-kind="success"]{color:#067647}
+.tool-status[data-kind="working"]{color:var(--text)}
+[data-processing="true"] .remove-file,[data-processing="true"] [data-browse]{pointer-events:none;opacity:.55}
+.js-ready .drop-zone{min-height:160px}
+@media(max-width:480px){
+  .container{width:min(100% - 1.25rem,var(--container,1200px))}
+  .nav{display:none}
+  .header{gap:.7rem}
+  .brand{font-size:1.05rem}
+  .tool-actions{position:sticky;bottom:.5rem;z-index:4;padding:.6rem;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(10px)}
+  .tool-actions .btn{flex:1}
+}
+@media(min-width:769px){
+  .menu-btn{display:none}
+  .mobile-menu{display:none!important}
+}

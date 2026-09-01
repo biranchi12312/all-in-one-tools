@@ -1,195 +1,22 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><title>Crop & Rotate Images Online | AuraStudio</title><meta name="description" content="Crop, rotate and adjust image orientation with AuraStudio's focused image workspace."><meta name="robots" content="index,follow"><meta name="theme-color" content="#0f1115"><link rel="canonical" href="https://aurastudiofiles.vercel.app/crop-rotate.html"><meta property="og:type" content="website"><meta property="og:title" content="Crop & Rotate Images Online | AuraStudio"><meta property="og:description" content="Crop, rotate and adjust image orientation with AuraStudio's focused image workspace."><meta property="og:url" content="https://aurastudiofiles.vercel.app/crop-rotate.html"><link rel="stylesheet" href="/style.css"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"></head><body><header class="navbar">
-<a class="logo" href="/" id="logoBtn">Aura<span>Studio</span></a>
-<div class="nav-status">
-<span class="pulse-dot"></span>
-            Secure Engine Active
-        </div>
-<div class="nav-tools">
-<a aria-label="Open Help Center" class="nav-help-link" data-open-view="help" href="/help.html">
-<span aria-hidden="true">?</span>
-<b>Help</b>
-</a>
-<button aria-controls="toolsMenu" aria-expanded="false" aria-label="Open tools menu" class="menu-toggle" id="menuToggle" onclick="window.__auraToggleMenu&amp;&amp;window.__auraToggleMenu(event)" type="button">
-<span></span><span></span><span></span>
-</button>
-</div>
-</header><div aria-hidden="true" class="menu-backdrop" id="menuBackdrop"></div><aside aria-hidden="true" aria-label="Tool directory" class="tools-menu" id="toolsMenu">
-<div class="tools-menu-head">
-<div>
-<span>TOOL DIRECTORY</span>
-<strong>Find the right tool.</strong>
-<p>Browse by category, then jump straight into the task you want to finish.</p>
-</div>
-<button aria-label="Close tools menu" class="menu-close" id="menuClose" type="button"><span aria-hidden="true"></span></button>
-</div>
-<div class="menu-accordion" id="menuAccordion">
-<section class="menu-category">
-<button aria-expanded="false" class="menu-category-trigger" type="button">
-<span class="menu-category-copy"><b>Image Tools</b><small>Compress, convert and prepare images</small></span>
-<span class="menu-category-meta"><em>4 tools</em><i aria-hidden="true"></i></span>
-</button>
-<div class="menu-category-panel">
-<div class="menu-category-panel-inner">
-<a class="menu-item menu-item-live" data-open-view="compressor" href="/compress-images.html"><span><b>Compress Images</b><small>Reduce file size in batches</small></span><em aria-label="Open tool">→</em></a>
-<a class="menu-item menu-item-live" data-open-view="converter" href="/convert-images.html"><span><b>Convert Images</b><small>Switch between supported formats</small></span><em aria-label="Open tool">→</em></a>
-<a class="menu-item menu-item-live" data-open-view="resize" href="/resize-images.html"><span><b>Resize Images</b><small>Prepare images for any layout</small></span><em aria-label="Open tool">→</em></a>
-<a class="menu-item menu-item-live" data-open-view="cropRotate" href="/crop-rotate.html"><span><b>Crop &amp; Rotate</b><small>Quick framing and orientation tools</small></span><em aria-label="Open tool">→</em></a>
-</div>
-</div>
-</section>
-<section class="menu-category">
-<button aria-expanded="false" class="menu-category-trigger" type="button">
-<span class="menu-category-copy"><b>PDF Tools</b><small>Combine, split and transform documents</small></span>
-<span class="menu-category-meta"><em>4 tools</em><i aria-hidden="true"></i></span>
-</button>
-<div class="menu-category-panel">
-<div class="menu-category-panel-inner">
-<a class="menu-item menu-item-live" data-open-view="pdfMerge" href="/merge-pdf.html"><span><b>Merge PDF</b><small>Combine multiple PDFs into one</small></span><em aria-label="Open tool">→</em></a>
-<a class="menu-item menu-item-live" data-open-view="pdfToImages" href="/pdf-to-images.html"><span><b>PDF to Images</b><small>Turn pages into image files</small></span><em aria-label="Open tool">→</em></a>
-<a class="menu-item menu-item-live" data-open-view="imagesToPdf" href="/images-to-pdf.html"><span><b>Images to PDF</b><small>Combine images into one PDF</small></span><em aria-label="Open tool">→</em></a>
-<a class="menu-item menu-item-live" data-open-view="pdfSplit" href="/split-pdf.html"><span><b>Split PDF</b><small>Separate pages into new files</small></span><em aria-label="Open tool">→</em></a>
-</div>
-</div>
-</section>
-</div>
-<div class="tools-menu-foot">
-<span>Need guidance or want to browse everything?</span>
-<div class="tools-menu-foot-actions">
-<a class="menu-foot-link" data-open-view="tools" href="/tools.html">All Tools <b aria-hidden="true">→</b></a>
-<a class="menu-foot-link menu-foot-link-primary" data-open-view="help" href="/help.html">Help Center <b aria-hidden="true">→</b></a>
-</div>
-</div>
-</aside><main class="container"><section class="view active" id="cropRotateView">
-<button class="back-btn" type="button">← Back to Workshop</button>
-<div class="workspace-header">
-<span class="section-label">IMAGE TOOLS</span>
-<h2>Crop &amp; Rotate</h2>
-<p>Frame one image at a time. Crop, rotate or flip, then export.</p>
-</div>
-<div aria-label="Upload an image to crop or rotate" class="upload-box" id="crDropZone" role="button" tabindex="0">
-<div class="upload-icon-pulse">✂</div>
-<h3>Upload Image</h3>
-<p>Drag &amp; drop one image here or <span>browse files</span></p>
-<div class="upload-limits">1 image · Max 100 MB · JPG, PNG, WebP</div>
-</div>
-<input accept="image/jpeg,image/jpg,image/png,image/webp,.jpg,.jpeg,.png,.webp" hidden="" id="crFileInput" type="file"/>
-<section class="crop-rotate-tool" hidden="" id="crEditor">
-<p class="crop-rotate-meta" id="crFileMeta"></p>
-<div class="crop-rotate-workspace">
-<div class="crop-rotate-stage" id="crStage">
-<div class="crop-rotate-frame" id="crFrame">
-<img alt="Image being edited" class="crop-rotate-image" id="crImage"/>
-<div class="crop-rotate-overlay" id="crOverlay">
-<div class="crop-rotate-selection" id="crBox">
-<span class="crop-rotate-handle" data-cr-handle="nw"></span>
-<span class="crop-rotate-handle" data-cr-handle="n"></span>
-<span class="crop-rotate-handle" data-cr-handle="ne"></span>
-<span class="crop-rotate-handle" data-cr-handle="e"></span>
-<span class="crop-rotate-handle" data-cr-handle="se"></span>
-<span class="crop-rotate-handle" data-cr-handle="s"></span>
-<span class="crop-rotate-handle" data-cr-handle="sw"></span>
-<span class="crop-rotate-handle" data-cr-handle="w"></span>
-</div>
-</div>
-</div>
-</div>
-</div>
-<p aria-live="polite" class="crop-rotate-status" id="crStatus"></p>
-<div class="crop-rotate-toolbar">
-<button aria-label="Rotate left" class="crop-rotate-control" id="crRotLeft" type="button">↶ 90°</button>
-<button aria-label="Rotate right" class="crop-rotate-control" id="crRotRight" type="button">↷ 90°</button>
-<button aria-label="Flip horizontal" class="crop-rotate-control" id="crFlipH" type="button">↔ Flip H</button>
-<button aria-label="Flip vertical" class="crop-rotate-control" id="crFlipV" type="button">↕ Flip V</button>
-</div>
-<div aria-label="Aspect ratio" class="crop-rotate-ratios" id="crRatios" role="group">
-<button class="crop-rotate-ratio is-active" data-cr-ratio="free" type="button">Free</button>
-<button class="crop-rotate-ratio" data-cr-ratio="original" type="button">Original</button>
-<button class="crop-rotate-ratio" data-cr-ratio="1:1" type="button">1:1</button>
-<button class="crop-rotate-ratio" data-cr-ratio="4:5" type="button">4:5</button>
-<button class="crop-rotate-ratio" data-cr-ratio="3:4" type="button">3:4</button>
-<button class="crop-rotate-ratio" data-cr-ratio="16:9" type="button">16:9</button>
-<button class="crop-rotate-ratio" data-cr-ratio="9:16" type="button">9:16</button>
-</div>
-<div class="result-actions crop-rotate-actions">
-<button class="action-btn outline" id="crResetBtn" type="button">Reset</button>
-<button class="action-btn outline" id="crAnotherBtn" type="button">Edit another</button>
-<button class="action-btn" id="crExportBtn" type="button">Export</button>
-</div>
-</section>
-<section class="results-panel crop-rotate-results" hidden="" id="crResults">
-<div class="results-top">
-<div>
-<h3>Export ready</h3>
-<p id="crResultMeta">Your edited image is ready.</p>
-</div>
-<span class="complete-badge">✓ Complete</span>
-</div>
-<div class="crop-rotate-result-preview">
-<img alt="Exported result" id="crResultImg"/>
-</div>
-<div class="result-actions">
-<a class="action-btn" download="" id="crDownloadBtn">Download</a>
-</div>
-</section>
-</section></main><footer class="footer">
-<div class="footer-inner">
-<p>© 2026 AuraStudio. All rights reserved.</p>
-<nav aria-label="AuraStudio information" class="footer-links">
-<a data-open-view="about" href="/about.html">About</a>
-<a data-open-view="contact" href="/contact.html">Contact</a>
-<a data-open-view="privacy" href="/privacy.html">Privacy</a>
-<a data-open-view="terms" href="/terms.html">Terms</a>
-</nav>
-</div>
-</footer><script>
-    (function () {
-        function setOpen(open) {
-            var menu = document.getElementById("toolsMenu");
-            var toggle = document.getElementById("menuToggle");
-            var backdrop = document.getElementById("menuBackdrop");
-            if (!menu || !toggle) return;
-            menu.classList.toggle("open", !!open);
-            toggle.classList.toggle("active", !!open);
-            if (backdrop) backdrop.classList.toggle("open", !!open);
-            document.body.classList.toggle("menu-open", !!open);
-            toggle.setAttribute("aria-expanded", String(!!open));
-            menu.setAttribute("aria-hidden", String(!open));
-            // Categories stay as user left them — no auto-open
-        }
-        window.__auraToggleMenu = function (e) {
-            if (e) { e.preventDefault(); e.stopPropagation(); }
-            var menu = document.getElementById("toolsMenu");
-            if (!menu) return;
-            setOpen(!menu.classList.contains("open"));
-        };
-        window.__auraSetMenu = setOpen;
-        document.addEventListener("click", function (e) {
-            var t = e.target;
-            if (!t || !t.closest) return;
-            if (t.closest("#menuClose") || t.closest("#menuBackdrop")) {
-                setOpen(false);
-                return;
-            }
-            var trigger = t.closest(".menu-category-trigger");
-            if (trigger) {
-                e.preventDefault();
-                e.stopPropagation();
-                var cat = trigger.closest(".menu-category");
-                if (!cat) return;
-                var willOpen = !cat.classList.contains("open");
-                document.querySelectorAll(".menu-category").forEach(function (c) {
-                    c.classList.remove("open");
-                    var tr = c.querySelector(".menu-category-trigger");
-                    if (tr) tr.setAttribute("aria-expanded", "false");
-                });
-                if (willOpen) {
-                    cat.classList.add("open");
-                    trigger.setAttribute("aria-expanded", "true");
-                }
-            }
-        });
-        document.addEventListener("keydown", function (e) {
-            if (e.key === "Escape") setOpen(false);
-        });
-    })();
-    </script><script src="/dialog.js"></script><script src="/core/processing-manager.js"></script><script src="/crop-rotate.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js" defer></script></body></html>
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Crop &amp; Rotate Images | OrivaStudio</title>
+<meta name="description" content="Crop, rotate and flip one image at a time in a focused private browser workspace.">
+<meta name="robots" content="index,follow"><meta name="theme-color" content="#070709">
+<link rel="stylesheet" href="../assets/css/tokens.css"><link rel="stylesheet" href="../assets/css/base.css"><link rel="stylesheet" href="../assets/css/foundation.css"><link rel="manifest" href="../site.webmanifest">
+<link rel="stylesheet" href="../assets/css/tools/pages/crop-rotate.css?v=62.5"></head><body class="tool-v2" data-tool-page="crop-rotate"><a class="skip-link" href="#main-content">Skip to content</a>
+<header class="site-header"><div class="container header"><a class="brand" href="../index.html">Oriva<span style="color:#d9ff45">Studio</span></a><nav class="nav"><a href="../all-tools.html">All Tools</a><a href="../help.html">Help</a><a href="../about.html">About</a></nav><button class="menu-btn" data-menu type="button" aria-controls="mobile-menu" aria-expanded="false">Menu</button></div><div class="container mobile-menu" id="mobile-menu" data-open="false"><a href="../all-tools.html">All Tools</a><a href="../help.html">Help &amp; Guides</a><a href="../about.html">About Oriva Studio</a></div></header>
+<main class="site-main" id="main-content"><section class="section"><div class="tool-intro"><span class="tool-kicker">IMAGE TOOLS</span><h1>Crop &amp; Rotate</h1><p>Frame one image at a time. Crop, rotate or flip, then export.</p></div>
+<div class="workspace image-workspace crop-workspace" data-image-tool="crop-rotate" data-phase="upload" data-processing="false" data-status-visible="false" data-confirm-reset="true" data-error-popup="true" data-result-clear="true">
+  <div class="tool-panel" data-step="upload"><input class="file-input" data-image-input type="file" accept="image/jpeg,image/jpg,image/png,image/webp,.jpg,.jpeg,.png,.webp"><div class="drop-zone" data-drop-zone role="button" tabindex="0" aria-label="Upload an image"><div><span class="chip">✂</span><h2>Upload Image</h2><p>Crop, rotate or flip one image at a time.</p><p class="crop-upload-limits">1 image · Max 100 MB · JPG, PNG, WebP</p><div class="actions"><button class="btn primary" data-browse type="button">Browse Image</button></div></div></div></div>
+  <div class="file-list" data-file-list data-step="files"></div>
+  <div class="image-settings crop-settings" data-step="settings"><section class="setting-card full"><div class="crop-editor-head"><div><h2>Crop workspace</h2><p data-crop-help>Drag the crop area to move it. Drag a handle to resize.</p></div><p class="crop-dimensions" data-crop-dimensions aria-live="polite"></p></div><div class="crop-canvas-wrap"><canvas class="crop-canvas" data-crop-canvas></canvas></div><div class="choice-row crop-toolbar"><button class="btn secondary" data-crop-rotate-left type="button">↶ 90°</button><button class="btn secondary" data-crop-rotate-right type="button">↷ 90°</button><button class="btn secondary" data-crop-flip-x type="button">↔ Flip H</button><button class="btn secondary" data-crop-flip-y type="button">↕ Flip V</button><button class="btn secondary" data-crop-reset type="button">Reset edits</button></div><div class="choice-row crop-ratios" role="group" aria-label="Crop aspect ratio"><button class="btn secondary is-active" data-crop-ratio="free" type="button">Free</button><button class="btn secondary" data-crop-ratio="original" type="button">Original</button><button class="btn secondary" data-crop-ratio="1:1" type="button">1:1</button><button class="btn secondary" data-crop-ratio="4:5" type="button">4:5</button><button class="btn secondary" data-crop-ratio="3:4" type="button">3:4</button><button class="btn secondary" data-crop-ratio="16:9" type="button">16:9</button><button class="btn secondary" data-crop-ratio="9:16" type="button">9:16</button></div></section><section class="setting-card"><h2>Export</h2><label class="field">Output format<select data-output-format><option value="image/jpeg">JPG</option><option value="image/png">PNG</option><option value="image/webp">WebP</option></select></label></section><section class="setting-card"><h2>Quality</h2><div class="range-row"><input data-quality max="95" min="20" type="range" value="90"><output>90%</output></div></section></div>
+  <div class="workspace-note" data-step="safety">Your files stay in this browser for this workflow. Safety limits protect processing and export.</div>
+  <div class="tool-status" data-step="status" data-tool-status aria-live="polite" hidden></div>
+  <div class="tool-progress crop-progress" data-progress-wrap data-step="progress" hidden><span data-progress-text></span><div><i data-progress-fill></i></div></div>
+  <div class="result-list crop-results-shell" data-result-list data-step="results"></div>
+  <div class="tool-actions crop-action-card" data-step="actions"><button class="btn secondary" data-reset type="button">Clear All</button><button class="btn primary" data-start disabled type="button">Export Image</button></div>
+</div></section></main>
+<footer class="footer"><div class="container"><div class="footer-brand">Oriva<span>Studio</span></div><div class="footer-links"><section><h2>Help</h2><a href="../help.html">Help &amp; Guides</a><a href="../contact.html">Contact</a><a href="../about.html">About Oriva Studio</a></section><section><h2>Legal</h2><a href="../privacy.html">Privacy</a><a href="../terms.html">Terms</a></section></div><div class="copyright">© 2026 Oriva Studio. All rights reserved.</div></div></footer>
+<script type="module" src="../assets/js/core/app.js"></script><script type="module" src="../assets/js/ui/menu.js"></script><script type="module" src="../assets/js/ui/dialog.js"></script><script type="module" src="../assets/js/tools/runtimes/crop-rotate.js?v=38"></script><script type="module" src="../assets/js/core/sw-register.js"></script><script type="module" src="../assets/js/core/production.js"></script></body></html>

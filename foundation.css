@@ -1,0 +1,19 @@
+html{scroll-behavior:smooth}
+img,canvas{max-width:100%}
+button,a,input,select{touch-action:manipulation}
+button:disabled{cursor:not-allowed;opacity:.62}
+:focus-visible{outline:3px solid color-mix(in srgb,var(--primary) 45%,transparent);outline-offset:3px}
+.skip-link{position:absolute;left:1rem;top:-5rem;z-index:9999;background:var(--surface);color:var(--text);padding:.7rem 1rem;border-radius:12px;border:1px solid var(--line)}
+.skip-link:focus{top:1rem}
+.site-main{min-height:55vh}
+.loading-bar{position:fixed;top:0;left:0;height:3px;width:0;z-index:99999;background:var(--primary);transition:width .2s ease,opacity .2s ease;pointer-events:none;opacity:0}
+.loading-bar[data-active="true"]{width:72%;opacity:1}
+.loading-bar[data-done="true"]{width:100%;opacity:0}
+.offline-note{position:fixed;left:50%;bottom:1rem;transform:translateX(-50%) translateY(150%);z-index:9998;max-width:min(92vw,520px);padding:.75rem 1rem;border-radius:14px;background:var(--surface);border:1px solid var(--line);box-shadow:0 14px 40px rgba(0,0,0,.12);transition:transform .2s ease}
+.offline-note[data-visible="true"]{transform:translateX(-50%) translateY(0)}
+dialog.oriva-modal{width:min(92vw,480px);border:0;border-radius:20px;padding:0;background:transparent}
+dialog.oriva-modal::backdrop{background:rgba(0,0,0,.45)}
+.oriva-modal-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:1.2rem;box-shadow:0 24px 80px rgba(0,0,0,.2)}
+.oriva-modal-card h2{margin:0 0 .5rem}.oriva-modal-card p{margin:0;color:var(--muted)}
+.oriva-modal-actions{display:flex;justify-content:flex-end;gap:.7rem;margin-top:1.1rem;flex-wrap:wrap}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
