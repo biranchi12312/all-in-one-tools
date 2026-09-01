@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OrivaStudio QA Smoke Test</title>
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/base.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/foundation.css">
+<link rel="stylesheet" href="../assets/css/production.css">
+</head>
+<body>
+<main id="main-content" class="site-main">
+<section class="section"><div class="container">
+<h1>Production Smoke Test</h1>
+<p>Run this page after deployment to confirm that core routes and static assets are reachable.</p>
+<div class="tool-actions"><button class="btn primary" id="run">Run Checks</button></div>
+<div class="result-list" id="results" aria-live="polite"></div>
+</div></section>
+</main>
+<script>
+const routes=[
+"../index.html","../all-tools.html","../about.html","../help.html","../contact.html","../privacy.html","../terms.html",
+"../image-tools/compress-images.html","../image-tools/resize-images.html","../image-tools/convert-images.html","../image-tools/crop-rotate.html",
+"../pdf-tools/images-to-pdf.html","../pdf-tools/merge-pdf.html","../pdf-tools/split-pdf.html","../pdf-tools/pdf-to-images.html",
+"../assets/css/foundation.css","../assets/css/production.css","../assets/css/home-v76-inspired.css","../assets/js/core/app.js","../assets/js/core/production.js","../assets/js/home-v76-inspired.js","../site.webmanifest"
+];
+document.getElementById("run").onclick=async()=>{
+ const box=document.getElementById("results");box.innerHTML="";
+ for(const route of routes){
+   const row=document.createElement("div");row.className="result-row";
+   row.textContent=`Checking ${route}…`;box.append(row);
+   try{
+     const res=await fetch(route,{cache:"no-store"});
+     row.textContent=`${res.ok?"PASS":"FAIL"} — ${route} (${res.status})`;
+     row.dataset.status=res.ok?"pass":"fail";
+   }catch(e){row.textContent=`FAIL — ${route} (network error)`;row.dataset.status="fail";}
+ }
+};
+</script>
+</body></html>

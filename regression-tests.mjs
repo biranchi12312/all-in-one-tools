@@ -1,0 +1,43 @@
+import fs from "node:fs";
+import path from "node:path";
+const root=path.resolve(path.dirname(new URL(import.meta.url).pathname),"..");
+const engineDir=path.join(root,"assets/js/tools/engines");
+const runtime=fs.readFileSync(path.join(root,"assets/js/tools/tool-runtime.js"),"utf8");
+const tools=["compress-images","convert-images","crop-rotate","resize-images","images-to-pdf","merge-pdf","split-pdf","pdf-to-images"];
+const image=new Set(["compress-images","convert-images","crop-rotate","resize-images"]);
+const tests=[];const test=(n,f)=>tests.push({n,f});const assert=(c,m="Assertion failed")=>{if(!c)throw new Error(m)};
+test("All eight independent processing engines export process()",()=>{for(const n of tools){const s=fs.readFileSync(path.join(engineDir,`${n}.js`),"utf8");assert(/export\s+async\s+function\s+process/.test(s),`${n} missing process()`);}});
+test("All tool pages contain every workflow phase",()=>{for(const n of tools){const route=`${image.has(n)?"image-tools":"pdf-tools"}/${n}.html`;const s=fs.readFileSync(path.join(root,route),"utf8");for(const step of ["upload","settings","status","results","actions"])assert(s.includes(`data-step=\"${step}\"`)||s.includes(`data-step="${step}"`),`${n} missing ${step}`);}});
+test("Only the active engine is lazy imported",()=>{assert(runtime.includes('await import(`./engines/${engineName}.js`)'),"lazy import missing");});
+test("Workflow transitions cover upload through results",()=>{for(const phase of ["upload","settings","processing","results"])assert(runtime.includes(`setPhase("${phase}")`),`missing ${phase}`);});
+test("PDF rendering has standard-font and pixel safeguards",()=>{const s=fs.readFileSync(path.join(engineDir,"pdf-to-images.js"),"utf8");assert(s.includes("createPdfDocumentOptions"),"font config missing");assert(s.includes("MAX_RENDER_PIXELS"),"pixel constant missing");assert(s.includes("vp.width*vp.height>MAX_RENDER_PIXELS"),"pixel guard missing");});
+test("Multi-result workflows have ZIP support",()=>{assert(runtime.includes("ZIP_ACTION_LABEL")||runtime.includes("jszip@3.10.1"),"ZIP action support missing");assert(runtime.includes("jszip@3.10.1"),"ZIP loader missing");});
+test("Images to PDF completion cannot reveal the editable action card",()=>{
+  const css=fs.readFileSync(path.join(root,"assets/css/tools/tool-v2.css"),"utf8");
+  const i2p=fs.readFileSync(path.join(root,"assets/js/tools/images-to-pdf-runtime.js"),"utf8");
+  assert(css.includes("workspace:not(.i2p-workspace)[data-phase=\"results\"]"),"shared results action rule still owns Images to PDF");
+  assert(css.includes("i2p-workspace[data-phase=\"results\"] > .tool-actions.i2p-action-card[data-step=\"actions\"]"),"Images to PDF result isolation missing");
+  assert(i2p.includes("actionCard.hidden = phase !== \"settings\""),"runtime action ownership guard missing");
+});
+
+test("Merge PDF v23 preserves v76 minimum-file gating and lifecycle",()=>{
+  const merge=fs.readFileSync(path.join(root,"assets/js/tools/merge-pdf-runtime.js"),"utf8");
+  const css=fs.readFileSync(path.join(root,"assets/css/tools/tool-v2.css"),"utf8");
+  const page=fs.readFileSync(path.join(root,"pdf-tools/merge-pdf.html"),"utf8");
+  assert(merge.includes("maxTotalPages: 500"),"merge page safety limit missing");
+  assert(merge.includes('actionCard: root.querySelector(\'.merge-action-card[data-step="actions"]\')'),"merge action-card selector syntax fix missing");
+  assert(merge.includes("inspectPdf"),"merge upload validation missing");
+  assert(merge.includes("Password-protected PDFs are not supported"),"password handling missing");
+  assert(merge.includes('COLLECTING: "collecting"'),"one-file collecting phase missing");
+  assert(merge.includes('REVIEW: "review"'),"ready review phase missing");
+  assert(merge.includes("function phaseForItems()"),"minimum-file phase gate missing");
+  assert(merge.includes("state.items.length < LIMITS.minFiles ? PHASE.COLLECTING : PHASE.REVIEW"),"2-PDF activation gate missing");
+  assert(merge.includes("state.session += 1"),"stale upload cancellation guard missing");
+  assert(merge.includes("merge-drag-handle"),"dedicated reorder handle missing");
+  assert(css.includes('merge-workspace[data-phase="review"] > [data-step="upload"]'),"incremental upload visibility missing");
+  assert(css.includes('merge-workspace[data-phase="collecting"]'),"one-file CSS state missing");
+  assert(css.includes('merge-workspace[data-phase="results"] > .merge-action-card'),"merge result action isolation missing");
+  assert(page.includes("merge-action-card"),"merge action card missing");
+  assert(page.includes("data-reset-inline"),"one-file clear action missing");
+});
+let passed=0;for(const t of tests){try{t.f();console.log(`PASS ${t.n}`);passed++;}catch(e){console.error(`FAIL ${t.n}: ${e.message}`);process.exitCode=1;}}console.log(`\n${passed}/${tests.length} regression checks passed.`);
