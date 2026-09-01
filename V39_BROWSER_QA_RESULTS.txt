@@ -1,0 +1,17 @@
+PASS | compress-images load | 
+FAIL | compress-images workflow | Exception("input not found [data-image-input] eval={'id': 8, 'result': {'result': {'type': 'object', 'subtype': 'null', 'value': None}}}")
+PASS | convert-images load | 
+FAIL | convert-images workflow | Exception("input not found [data-image-input] eval={'id': 12, 'result': {'result': {'type': 'object', 'subtype': 'null', 'value': None}}}")
+PASS | resize-images load | 
+FAIL | resize-images workflow | Exception("input not found [data-image-input] eval={'id': 16, 'result': {'result': {'type': 'object', 'subtype': 'null', 'value': None}}}")
+PASS | crop-rotate load | 
+FAIL | crop-rotate workflow | Exception("input not found [data-image-input] eval={'id': 20, 'result': {'result': {'type': 'object', 'subtype': 'null', 'value': None}}}")
+PASS | images-to-pdf load | 
+FAIL | images-to-pdf workflow | Exception("input not found [data-pdf-input] eval={'id': 22, 'result': {'result': {'type': 'object', 'subtype': 'null', 'value': None}}}")
+PASS | split-pdf load | 
+FAIL | split-pdf workflow | Exception("input not found [data-pdf-input] eval={'id': 24, 'result': {'result': {'type': 'object', 'subtype': 'null', 'value': None}}}")
+PASS | pdf-to-images load | 
+FAIL | pdf-to-images workflow | Exception("input not found [data-pdf-input] eval={'id': 26, 'result': {'result': {'type': 'object', 'subtype': 'null', 'value': None}}}")
+PASS | merge-pdf load | 
+FAIL | merge workflow | Exception("input not found [data-pdf-input] eval={'id': 28, 'result': {'result': {'type': 'object', 'subtype': 'null', 'value': None}}}")
+SUMMARY 8/16

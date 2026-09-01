@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://aurastudiofiles.vercel.app/</loc></url>
-  <url><loc>https://aurastudiofiles.vercel.app/tools.html</loc></url>
-  <url><loc>https://aurastudiofiles.vercel.app/help.html</loc></url>
-  <url><loc>https://aurastudiofiles.vercel.app/about.html</loc></url>
-  <url><loc>https://aurastudiofiles.vercel.app/contact.html</loc></url>
-  <url><loc>https://aurastudiofiles.vercel.app/privacy.html</loc></url>
-  <url><loc>https://aurastudiofiles.vercel.app/terms.html</loc></url>
-  <url><loc>https://aurastudiofiles.vercel.app/compress-images.html</loc></url>
-  <url><loc>https://aurastudiofiles.vercel.app/resize-images.html</loc></url>
-  <url><loc>https://aurastudiofiles.vercel.app/crop-rotate.html</loc></url>
-  <url><loc>https://aurastudiofiles.vercel.app/convert-images.html</loc></url>
-  <url><loc>https://aurastudiofiles.vercel.app/merge-pdf.html</loc></url>
-  <url><loc>https://aurastudiofiles.vercel.app/pdf-to-images.html</loc></url>
-  <url><loc>https://aurastudiofiles.vercel.app/images-to-pdf.html</loc></url>
-  <url><loc>https://aurastudiofiles.vercel.app/split-pdf.html</loc></url>
+  <url><loc>/index.html</loc></url>
+  <url><loc>/all-tools.html</loc></url>
+  <url><loc>/about.html</loc></url>
+  <url><loc>/help.html</loc></url>
+  <url><loc>/contact.html</loc></url>
+  <url><loc>/privacy.html</loc></url>
+  <url><loc>/terms.html</loc></url>
+  <url><loc>/image-tools/compress-images.html</loc></url>
+  <url><loc>/image-tools/resize-images.html</loc></url>
+  <url><loc>/image-tools/convert-images.html</loc></url>
+  <url><loc>/image-tools/crop-rotate.html</loc></url>
+  <url><loc>/pdf-tools/images-to-pdf.html</loc></url>
+  <url><loc>/pdf-tools/merge-pdf.html</loc></url>
+  <url><loc>/pdf-tools/split-pdf.html</loc></url>
+  <url><loc>/pdf-tools/pdf-to-images.html</loc></url>
 </urlset>

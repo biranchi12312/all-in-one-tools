@@ -1,0 +1,9 @@
+{
+  "name":"OrivaStudio",
+  "short_name":"OrivaStudio",
+  "start_url":"./index.html",
+  "display":"standalone",
+  "background_color":"#ffffff",
+  "theme_color":"#ffffff",
+  "description":"A unified file workspace for common image and PDF tasks."
+}

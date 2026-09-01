@@ -1,173 +1,174 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><title>AuraStudio — Free Image & PDF Tools</title><meta name="description" content="Compress and convert images, merge PDFs and manage everyday files with AuraStudio. Complete supported tasks in a clean, focused workspace."><meta name="robots" content="index,follow"><meta name="theme-color" content="#0f1115"><link rel="canonical" href="https://aurastudiofiles.vercel.app/"><meta property="og:type" content="website"><meta property="og:title" content="AuraStudio — Free Image & PDF Tools"><meta property="og:description" content="Compress and convert images, merge PDFs and manage everyday files with AuraStudio. Complete supported tasks in a clean, focused workspace."><meta property="og:url" content="https://aurastudiofiles.vercel.app/"><link rel="stylesheet" href="/style.css"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"></head><body><header class="navbar">
-<a class="logo" href="/" id="logoBtn">Aura<span>Studio</span></a>
-<div class="nav-status">
-<span class="pulse-dot"></span>
-            Secure Engine Active
-        </div>
-<div class="nav-tools">
-<a aria-label="Open Help Center" class="nav-help-link" data-open-view="help" href="/help.html">
-<span aria-hidden="true">?</span>
-<b>Help</b>
-</a>
-<button aria-controls="toolsMenu" aria-expanded="false" aria-label="Open tools menu" class="menu-toggle" id="menuToggle" onclick="window.__auraToggleMenu&amp;&amp;window.__auraToggleMenu(event)" type="button">
-<span></span><span></span><span></span>
-</button>
-</div>
-</header><div aria-hidden="true" class="menu-backdrop" id="menuBackdrop"></div><aside aria-hidden="true" aria-label="Tool directory" class="tools-menu" id="toolsMenu">
-<div class="tools-menu-head">
-<div>
-<span>TOOL DIRECTORY</span>
-<strong>Find the right tool.</strong>
-<p>Browse by category, then jump straight into the task you want to finish.</p>
-</div>
-<button aria-label="Close tools menu" class="menu-close" id="menuClose" type="button"><span aria-hidden="true"></span></button>
-</div>
-<div class="menu-accordion" id="menuAccordion">
-<section class="menu-category">
-<button aria-expanded="false" class="menu-category-trigger" type="button">
-<span class="menu-category-copy"><b>Image Tools</b><small>Compress, convert and prepare images</small></span>
-<span class="menu-category-meta"><em>4 tools</em><i aria-hidden="true"></i></span>
-</button>
-<div class="menu-category-panel">
-<div class="menu-category-panel-inner">
-<a class="menu-item menu-item-live" data-open-view="compressor" href="/compress-images.html"><span><b>Compress Images</b><small>Reduce file size in batches</small></span><em aria-label="Open tool">→</em></a>
-<a class="menu-item menu-item-live" data-open-view="converter" href="/convert-images.html"><span><b>Convert Images</b><small>Switch between supported formats</small></span><em aria-label="Open tool">→</em></a>
-<a class="menu-item menu-item-live" data-open-view="resize" href="/resize-images.html"><span><b>Resize Images</b><small>Prepare images for any layout</small></span><em aria-label="Open tool">→</em></a>
-<a class="menu-item menu-item-live" data-open-view="cropRotate" href="/crop-rotate.html"><span><b>Crop &amp; Rotate</b><small>Quick framing and orientation tools</small></span><em aria-label="Open tool">→</em></a>
-</div>
-</div>
-</section>
-<section class="menu-category">
-<button aria-expanded="false" class="menu-category-trigger" type="button">
-<span class="menu-category-copy"><b>PDF Tools</b><small>Combine, split and transform documents</small></span>
-<span class="menu-category-meta"><em>4 tools</em><i aria-hidden="true"></i></span>
-</button>
-<div class="menu-category-panel">
-<div class="menu-category-panel-inner">
-<a class="menu-item menu-item-live" data-open-view="pdfMerge" href="/merge-pdf.html"><span><b>Merge PDF</b><small>Combine multiple PDFs into one</small></span><em aria-label="Open tool">→</em></a>
-<a class="menu-item menu-item-live" data-open-view="pdfToImages" href="/pdf-to-images.html"><span><b>PDF to Images</b><small>Turn pages into image files</small></span><em aria-label="Open tool">→</em></a>
-<a class="menu-item menu-item-live" data-open-view="imagesToPdf" href="/images-to-pdf.html"><span><b>Images to PDF</b><small>Combine images into one PDF</small></span><em aria-label="Open tool">→</em></a>
-<a class="menu-item menu-item-live" data-open-view="pdfSplit" href="/split-pdf.html"><span><b>Split PDF</b><small>Separate pages into new files</small></span><em aria-label="Open tool">→</em></a>
-</div>
-</div>
-</section>
-</div>
-<div class="tools-menu-foot">
-<span>Need guidance or want to browse everything?</span>
-<div class="tools-menu-foot-actions">
-<a class="menu-foot-link" data-open-view="tools" href="/tools.html">All Tools <b aria-hidden="true">→</b></a>
-<a class="menu-foot-link menu-foot-link-primary" data-open-view="help" href="/help.html">Help Center <b aria-hidden="true">→</b></a>
-</div>
-</div>
-</aside><main class="container"><section class="view active" id="dashboardView">
-<section class="hero hero-home">
-<div class="hero-glow"></div>
-<span class="badge hero-enter">ALL-IN-ONE FILE WORKSPACE</span>
-<h1 class="hero-title">Your files.<br/><span>Your workflow. One place.</span></h1>
-<p class="hero-description">One place for the file tools you need today, with more to explore next. From quick fixes to bigger tasks, AuraStudio keeps everyday work moving without the clutter.</p>
-<div class="hero-capabilities hero-home-capabilities">
-<div class="capability-pill"><span class="capability-icon">✦</span>More tools. One workspace.</div>
-<div class="capability-pill"><span class="capability-icon">↗</span>Made for everyday files.</div>
-<div class="capability-pill"><span class="capability-icon">☰</span>Explore what’s next.</div>
-</div>
-</section>
-<section aria-label="Advertisement area" class="sponsored-dock reveal">
-<div class="sponsored-dock-top"><span class="sponsored-kicker"><i class="sponsored-dot"></i>SPONSORED</span><span class="sponsored-support">Supporting AuraStudio</span></div>
-<div aria-label="Advertisement" class="ad-slot ad-slot-primary" id="homeAdPrimary"><div class="ad-safe-inner"><span class="ad-slot-label">ADVERTISEMENT</span></div></div>
-</section>
-<section class="tools-section home-tools-section">
-<div class="section-top reveal"><div><span class="section-label">MOST WANTED</span><h2>The premium tools everyone comes back for.</h2></div></div>
-<div class="tools-grid tools-grid-featured">
-<a class="tool-card reveal reveal-delay-1" data-open-view="pdfToImages" href="/pdf-to-images.html"><div class="tool-card-top"><div class="tool-icon">▣</div><span class="tool-number">01</span></div><div class="tool-card-bottom"><div><h3>PDF to Images</h3><p>Turn pages into image files.</p></div><span class="tool-arrow">→</span></div></a>
-<a class="tool-card reveal reveal-delay-2" data-open-view="imagesToPdf" href="/images-to-pdf.html"><div class="tool-card-top"><div class="tool-icon">📎</div><span class="tool-number">02</span></div><div class="tool-card-bottom"><div><h3>Images to PDF</h3><p>Combine images into one PDF.</p></div><span class="tool-arrow">→</span></div></a>
-<a class="tool-card reveal reveal-delay-3" data-open-view="pdfMerge" href="/merge-pdf.html"><div class="tool-card-top"><div class="tool-icon">📄</div><span class="tool-number">03</span></div><div class="tool-card-bottom"><div><h3>Merge PDF</h3><p>Combine documents in your order.</p></div><span class="tool-arrow">→</span></div></a>
-</div>
-</section>
-<section class="feature-discovery">
-<div class="feature-discovery-intro reveal"><span class="section-label">WHAT'S NEXT?</span><h2>There’s more you can do from here</h2><p>Choose the tool that fits your next task and get started</p></div>
-<div class="discovery-grid">
-<a class="discovery-card reveal reveal-delay-1" data-open-view="resize" href="/resize-images.html"><span class="discovery-index">01</span><span class="discovery-icon">↔</span><h3>Resize Images</h3><p>Need a specific width, height or platform-ready size?</p><span class="discovery-question">Open tool <b>→</b></span></a>
-<a class="discovery-card reveal reveal-delay-2" data-open-view="cropRotate" href="/crop-rotate.html"><span class="discovery-index">02</span><span class="discovery-icon">✂</span><h3>Crop &amp; Rotate</h3><p>Fix framing, orientation and unwanted edges in one workspace.</p><span class="discovery-question">Open tool <b>→</b></span></a>
-</div>
-<div class="discovery-footer reveal"><span>More tools are organized inside the menu.</span><button class="discovery-menu-link" data-open-menu="" type="button">Browse tool categories <b>☰</b></button></div>
-</section>
-<section aria-label="Advertisement area" class="sponsored-dock sponsored-dock-secondary reveal">
-<div class="sponsored-dock-top"><span class="sponsored-kicker"><i class="sponsored-dot"></i>SPONSORED</span><span class="sponsored-support">Supporting free tools</span></div>
-<div aria-label="Advertisement" class="ad-slot ad-slot-secondary" id="homeAdSecondary"><div class="ad-safe-inner"><span class="ad-slot-label">ADVERTISEMENT</span></div></div>
-</section>
-<section class="feature-intro">
-<div class="feature-intro-left reveal"><span class="section-label">ONE CLEAN WORKFLOW</span><h2>Less friction.<br/><span>More control.</span></h2></div>
-<div class="feature-intro-right reveal reveal-delay-1"><p class="large-copy">AuraStudio keeps file tasks focused. Choose the file task you need, make the changes that matter, download the result when you're done.</p><div class="feature-points"><div class="feature-point"><span>01</span><p>Pick the tool for what you need to get done.</p></div><div class="feature-point"><span>02</span><p>Set things your way, then let the work move forward.</p></div><div class="feature-point"><span>03</span><p>Get your finished file and move on to what’s next.</p></div></div></div>
-</section>
-<section class="info-section reveal">
-<div class="faq-heading"><span class="section-label">FAQ</span><h2>Frequently asked questions.</h2></div>
-<div class="faq-item"><button aria-expanded="false" class="faq-question" type="button">How many images can I upload?<span>+</span></button><div class="faq-answer"><p>You can process up to 100 supported images in one batch, with a 100 MB per-file limit and a 500 MB total batch safety cap.</p></div></div>
-<div class="faq-item"><button aria-expanded="false" class="faq-question" type="button">Which image formats are supported?<span>+</span></button><div class="faq-answer"><p>JPG, JPEG, PNG and WebP are supported for compress and convert. Other formats are shown in the converter and stay locked until their engine is added.</p></div></div>
-<div class="faq-item"><button aria-expanded="false" class="faq-question" type="button">How does PDF merge work?<span>+</span></button><div class="faq-answer"><p>Upload 2 to 20 PDFs, drag them into order, then merge. The batch can be up to 250 MB and 500 pages. Password-protected PDFs are not supported.</p></div></div>
-<div class="faq-item"><button aria-expanded="false" class="faq-question" type="button">How does PDF to Images work?<span>+</span></button><div class="faq-answer"><p>Upload up to 10 PDFs at a time (100 MB each, 250 MB total, 100 pages per batch). Choose PNG or JPG, convert, then download images one by one or as a ZIP. Password-protected PDFs are not supported.</p></div></div>
-<div class="faq-item"><button aria-expanded="false" class="faq-question" type="button">How does Images to PDF work?<span>+</span></button><div class="faq-answer"><p>Upload up to 30 JPG, PNG or WebP images (100 MB each, 250 MB total). Reorder them, choose Fit to image, A4 or Letter pages, then create a single PDF. Large images may be safely resized when needed to complete the workflow.</p></div></div>
-<div class="faq-item"><button aria-expanded="false" class="faq-question" type="button">How are my files handled?<span>+</span></button><div class="faq-answer"><p>Files are used to provide the tool workflow you choose. For details about how AuraStudio handles information as the service evolves, review the Privacy page.</p></div></div>
-<div class="faq-item"><button aria-expanded="false" class="faq-question" type="button">Can I use AuraStudio on mobile?<span>+</span></button><div class="faq-answer"><p>Yes. The interface is responsive and the tools can be used on supported mobile and desktop browsers.</p></div></div>
-</section>
-</section></main><footer class="footer">
-<div class="footer-inner">
-<p>© 2026 AuraStudio. All rights reserved.</p>
-<nav aria-label="AuraStudio information" class="footer-links">
-<a data-open-view="about" href="/about.html">About</a>
-<a data-open-view="contact" href="/contact.html">Contact</a>
-<a data-open-view="privacy" href="/privacy.html">Privacy</a>
-<a data-open-view="terms" href="/terms.html">Terms</a>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Oriva Studio — Free Image & PDF Tools</title>
+<meta name="description" content="Compress and convert images, merge PDFs and manage everyday files with Oriva Studio. Complete supported tasks in a clean, focused workspace.">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#070709">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/layout.css">
+<link rel="stylesheet" href="assets/css/components.css">
+<link rel="stylesheet" href="assets/css/foundation.css">
+<link rel="stylesheet" href="assets/css/production.css">
+<link rel="stylesheet" href="assets/css/home-v76-inspired.css">
+<link rel="manifest" href="site.webmanifest">
+</head>
+<body class="home-page">
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<header class="home-header">
+  <div class="home-container home-header-inner">
+    <a class="home-logo" href="index.html">Oriva<span>Studio</span></a>
+    <div class="engine-status"><span class="pulse-dot"></span>Secure Engine Active</div>
+    <div class="home-header-actions">
+      <a class="home-help" href="help.html" aria-label="Open Help Center"><span aria-hidden="true">?</span><b>Help</b></a>
+      <button class="home-menu-btn" type="button" aria-label="Open tools menu" aria-expanded="false" data-home-menu-button><i></i></button>
+    </div>
+  </div>
+</header>
+
+<nav class="home-menu" data-home-menu data-open="false" aria-label="Main navigation">
+  <div class="home-menu-inner">
+    <a href="all-tools.html">All Tools</a>
+        <a href="help.html">Help &amp; Guides</a>
+    <a href="about.html">About Oriva Studio</a>
+  </div>
 </nav>
-</div>
-</footer><script>
-    (function () {
-        function setOpen(open) {
-            var menu = document.getElementById("toolsMenu");
-            var toggle = document.getElementById("menuToggle");
-            var backdrop = document.getElementById("menuBackdrop");
-            if (!menu || !toggle) return;
-            menu.classList.toggle("open", !!open);
-            toggle.classList.toggle("active", !!open);
-            if (backdrop) backdrop.classList.toggle("open", !!open);
-            document.body.classList.toggle("menu-open", !!open);
-            toggle.setAttribute("aria-expanded", String(!!open));
-            menu.setAttribute("aria-hidden", String(!open));
-            // Categories stay as user left them — no auto-open
-        }
-        window.__auraToggleMenu = function (e) {
-            if (e) { e.preventDefault(); e.stopPropagation(); }
-            var menu = document.getElementById("toolsMenu");
-            if (!menu) return;
-            setOpen(!menu.classList.contains("open"));
-        };
-        window.__auraSetMenu = setOpen;
-        document.addEventListener("click", function (e) {
-            var t = e.target;
-            if (!t || !t.closest) return;
-            if (t.closest("#menuClose") || t.closest("#menuBackdrop")) {
-                setOpen(false);
-                return;
-            }
-            var trigger = t.closest(".menu-category-trigger");
-            if (trigger) {
-                e.preventDefault();
-                e.stopPropagation();
-                var cat = trigger.closest(".menu-category");
-                if (!cat) return;
-                var willOpen = !cat.classList.contains("open");
-                document.querySelectorAll(".menu-category").forEach(function (c) {
-                    c.classList.remove("open");
-                    var tr = c.querySelector(".menu-category-trigger");
-                    if (tr) tr.setAttribute("aria-expanded", "false");
-                });
-                if (willOpen) {
-                    cat.classList.add("open");
-                    trigger.setAttribute("aria-expanded", "true");
-                }
-            }
-        });
-        document.addEventListener("keydown", function (e) {
-            if (e.key === "Escape") setOpen(false);
-        });
-    })();
-    </script><script src="/dialog.js"></script><script src="/core/processing-manager.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js" defer></script></body></html>
+
+<main id="main-content" class="home-main">
+  <div class="home-container">
+    <section class="home-hero">
+      <div class="hero-glow"></div>
+      <div class="hero-content">
+        <span class="eyebrow reveal">ALL-IN-ONE FILE WORKSPACE</span>
+        <h1 class="hero-title reveal reveal-delay-1">Your files.<br><span>Your workflow. One place.</span></h1>
+        <p class="hero-description reveal reveal-delay-2">One place for the file tools you need today, with more to explore next. From quick fixes to bigger tasks, Oriva Studio keeps everyday work moving without the clutter.</p>
+        <div class="capability-list reveal reveal-delay-3">
+          <span class="capability-pill"><b class="capability-icon">✦</b>More tools. One workspace.</span>
+          <span class="capability-pill"><b class="capability-icon">↗</b>Made for everyday files.</span>
+          <span class="capability-pill"><b class="capability-icon">☰</b>Explore what’s next.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="sponsored-dock reveal" aria-label="Advertisement area">
+      <div class="sponsored-top">
+        <span class="sponsored-kicker"><i></i>SPONSORED</span>
+        <span class="sponsored-support">Supporting Oriva Studio</span>
+      </div>
+      <div class="ad-slot" id="homeAdPrimary" aria-label="Advertisement"><span class="ad-slot-label">ADVERTISEMENT</span></div>
+    </section>
+
+    <section class="home-section">
+      <div class="section-top reveal">
+        <span class="section-label">MOST WANTED</span>
+        <h2>The premium tools everyone comes back for.</h2>
+      </div>
+      <div class="tools-grid">
+        <a class="tool-card reveal reveal-delay-1" href="pdf-tools/pdf-to-images.html">
+          <div class="tool-card-top"><span class="tool-icon">▣</span><span class="tool-number">01</span></div>
+          <div class="tool-card-bottom"><div><h3>PDF to Images</h3><p>Turn pages into image files.</p></div><span class="tool-arrow">→</span></div>
+        </a>
+        <a class="tool-card reveal reveal-delay-2" href="pdf-tools/images-to-pdf.html">
+          <div class="tool-card-top"><span class="tool-icon">📎</span><span class="tool-number">02</span></div>
+          <div class="tool-card-bottom"><div><h3>Images to PDF</h3><p>Combine images into one PDF.</p></div><span class="tool-arrow">→</span></div>
+        </a>
+        <a class="tool-card reveal reveal-delay-3" href="pdf-tools/merge-pdf.html">
+          <div class="tool-card-top"><span class="tool-icon">📄</span><span class="tool-number">03</span></div>
+          <div class="tool-card-bottom"><div><h3>Merge PDF</h3><p>Combine documents in your order.</p></div><span class="tool-arrow">→</span></div>
+        </a>
+      </div>
+    </section>
+
+    <section class="feature-discovery">
+      <div class="feature-discovery-intro reveal">
+        <span class="section-label">WHAT'S NEXT?</span>
+        <h2>There’s more you can do from here</h2>
+        <p>Choose the tool that fits your next task and get started</p>
+      </div>
+      <div class="discovery-grid">
+        <a class="discovery-card reveal reveal-delay-1" href="image-tools/resize-images.html">
+          <span class="discovery-index">01</span><span class="discovery-icon">↔</span>
+          <h3>Resize Images</h3><p>Need a specific width, height or platform-ready size?</p>
+          <span class="discovery-question">Open tool <b>→</b></span>
+        </a>
+        <a class="discovery-card reveal reveal-delay-2" href="image-tools/crop-rotate.html">
+          <span class="discovery-index">02</span><span class="discovery-icon">✂</span>
+          <h3>Crop &amp; Rotate</h3><p>Fix framing, orientation and unwanted edges in one workspace.</p>
+          <span class="discovery-question">Open tool <b>→</b></span>
+        </a>
+      </div>
+      <div class="discovery-footer reveal">
+        <span>More tools are organized inside the menu.</span>
+        <button class="discovery-menu-link" type="button" data-open-tools-menu>Browse tool categories <b>☰</b></button>
+      </div>
+    </section>
+
+    <section class="sponsored-dock sponsored-dock-secondary reveal" aria-label="Advertisement area">
+      <div class="sponsored-top">
+        <span class="sponsored-kicker"><i></i>SPONSORED</span>
+        <span class="sponsored-support">Supporting free tools</span>
+      </div>
+      <div class="ad-slot" id="homeAdSecondary" aria-label="Advertisement"><span class="ad-slot-label">ADVERTISEMENT</span></div>
+    </section>
+
+    <section class="why-section">
+      <div class="why-intro reveal">
+        <span class="section-label">WHY CHOOSE ORIVASTUDIO</span>
+        <h2>Built to keep everyday file work simple.</h2>
+        <p>Open the tool you need, stay focused on the task, and move on when the result is ready.</p>
+      </div>
+      <div class="why-grid">
+        <article class="why-card reveal reveal-delay-1"><span>01</span><h3>Essential tools in one place</h3><p>Compress, resize, crop, convert and handle PDFs without jumping between different websites.</p></article>
+        <article class="why-card reveal reveal-delay-2"><span>02</span><h3>Simple from start to finish</h3><p>Choose a tool, add your file, make the changes you need and get your result without unnecessary complexity.</p></article>
+        <article class="why-card reveal reveal-delay-3"><span>03</span><h3>Free tools for everyday work</h3><p>Use practical file tools whenever you need them for everyday tasks, quick edits and document workflows.</p></article>
+      </div>
+    </section>
+
+    <section class="feature-intro">
+      <div class="feature-intro-left reveal">
+        <span class="section-label">ONE CLEAN WORKFLOW</span>
+        <h2>Less friction.<br><span>More control.</span></h2>
+      </div>
+      <div class="feature-intro-right reveal reveal-delay-1">
+        <p class="large-copy">Oriva Studio keeps file tasks focused. Choose the file task you need, make the changes that matter, download the result when you're done.</p>
+        <div class="feature-points">
+          <div class="feature-point"><span>01</span><p>Pick the tool for what you need to get done.</p></div>
+          <div class="feature-point"><span>02</span><p>Set things your way, then let the work move forward.</p></div>
+          <div class="feature-point"><span>03</span><p>Get your finished file and move on to what’s next.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="guides-gateway reveal">
+      <div class="guides-copy">
+        <span class="section-label">HELP &amp; GUIDES</span>
+        <h2>Need a hand? Start with a clear guide.</h2>
+        <p>Find straightforward explanations for common file tasks, supported workflows and practical next steps.</p>
+      </div>
+      <div class="guides-actions">
+        <a class="guides-primary" href="help.html">Explore Help &amp; Guides <b>→</b></a>
+        <a class="guides-secondary" href="all-tools.html">Browse all tools</a>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="home-footer">
+  <div class="home-container footer-grid">
+    <div class="footer-brand"><a class="home-logo" href="index.html">Oriva<span>Studio</span></a></div>
+    <div><h3>Help</h3><a href="help.html">Help &amp; Guides</a><a href="contact.html">Contact</a><a href="about.html">About Oriva Studio</a></div>
+    <div><h3>Legal</h3><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+  </div>
+  <div class="home-container footer-bottom">© 2026 Oriva Studio. All rights reserved.</div>
+</footer>
+
+<script type="module" src="assets/js/core/app.js"></script>
+<script type="module" src="assets/js/core/production.js"></script>
+<script type="module" src="assets/js/core/sw-register.js"></script>
+<script src="assets/js/home-v76-inspired.js" defer></script>
+</body>
+</html>

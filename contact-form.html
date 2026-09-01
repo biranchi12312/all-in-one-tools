@@ -1,0 +1,44 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Contact Form | OrivaStudio</title><meta name="description" content="Send a question, feedback or issue to Oriva Studio through the contact form."><meta name="robots" content="index,follow"><meta name="theme-color" content="#070709"><link rel="stylesheet" href="assets/css/tokens.css"><link rel="stylesheet" href="assets/css/base.css"><link rel="stylesheet" href="assets/css/foundation.css"><link rel="stylesheet" href="assets/css/production.css"><link rel="stylesheet" href="assets/css/pages/content-v3.css"><link rel="manifest" href="site.webmanifest"></head><body class="content-v3"><a class="skip-link" href="#main-content">Skip to content</a><header class="site-header"><div class="container header"><a class="brand" href="index.html">Oriva<span style="color:#d9ff45">Studio</span></a><nav class="nav"><a href="all-tools.html">All Tools</a><a href="help.html">Help</a><a href="about.html">About</a></nav><button class="menu-btn" type="button" data-menu aria-expanded="false" aria-controls="mobile-menu">Menu</button></div><div class="container mobile-menu" id="mobile-menu" data-open="false"><a href="all-tools.html">All Tools</a><a href="help.html">Help &amp; Guides</a><a href="about.html">About Oriva Studio</a></div></header><main id="main-content"><section class="container"><span class="eyebrow">ORIVASTUDIO</span><h1>Contact Form</h1><p class="lead">Send your question, feedback or issue with the details we need to understand it clearly.</p><div class="contact-form-page"><article class="card"><form id="oriva-contact-form" action="https://formspree.io/f/myeyeeqq" method="POST"><input type="hidden" name="_subject" value="OrivaStudio Contact Form Submission"><div class="field"><label for="name">Name</label><input id="name" name="name" type="text" autocomplete="name" required></div><div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required></div><div class="field"><label for="subject">Subject</label><input id="subject" name="subject" type="text" required></div><div class="field"><label for="message">Message</label><textarea id="message" name="message" required></textarea></div><p class="form-note">Please include the page or tool name, what you expected, what happened instead and the browser or device you were using.</p><p id="form-error" class="form-note" role="alert" aria-live="polite" hidden></p><button id="form-submit" class="btn form-submit" type="submit">Send Message</button></form></article></div></section></main><footer class="footer"><div class="container"><div class="footer-brand">Oriva<span>Studio</span></div><div class="footer-links"><section><h2>Help</h2><a href="help.html">Help &amp; Guides</a><a href="contact.html">Contact</a><a href="about.html">About Oriva Studio</a></section><section><h2>Legal</h2><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></section></div><div class="copyright">© 2026 Oriva Studio. All rights reserved.</div></div></footer><script type="module" src="assets/js/core/app.js"></script><script type="module" src="assets/js/ui/menu.js"></script><script type="module" src="assets/js/ui/dialog.js"></script><script type="module" src="assets/js/core/sw-register.js"></script><script type="module" src="assets/js/core/production.js"></script><script>
+(function () {
+  const form = document.getElementById('oriva-contact-form');
+  const submitButton = document.getElementById('form-submit');
+  const errorBox = document.getElementById('form-error');
+  if (!form || !submitButton || !errorBox) return;
+
+  form.addEventListener('submit', async function (event) {
+    event.preventDefault();
+    if (submitButton.disabled) return;
+
+    errorBox.hidden = true;
+    errorBox.textContent = '';
+    submitButton.disabled = true;
+    submitButton.textContent = 'Sending...';
+
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' }
+      });
+
+      if (!response.ok) {
+        let message = 'We could not send your message. Please try again.';
+        try {
+          const result = await response.json();
+          if (result && result.errors && result.errors.length) {
+            message = result.errors.map(function (item) { return item.message; }).join(' ');
+          }
+        } catch (_) {}
+        throw new Error(message);
+      }
+
+      window.location.href = 'contact-success.html';
+    } catch (error) {
+      errorBox.textContent = error && error.message ? error.message : 'We could not send your message. Please try again.';
+      errorBox.hidden = false;
+      submitButton.disabled = false;
+      submitButton.textContent = 'Send Message';
+    }
+  });
+})();
+</script></body></html>
